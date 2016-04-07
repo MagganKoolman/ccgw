@@ -25,6 +25,8 @@ $RECYCLE.BIN/
 *.idb
 *.opendb
 *.db
+*.vcxproj.filters
+*.vcxproj.user
 
 # Windows shortcuts
 *.lnk
