@@ -24,6 +24,6 @@ private:
 	glm::vec2 mPosition;
 	glm::quat mRotation;
 
-	Mesh* mpMesh;
+	tempMesh* mpMesh;
 	Texture* mpTexture;
 };

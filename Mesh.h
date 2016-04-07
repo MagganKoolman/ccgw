@@ -7,7 +7,7 @@
 #include <sstream>
 #include <GLM\glm.hpp>
 
-class Mesh : public Asset
+class tempMesh : public Asset
 {
 public:
 	/*Load a mesh from a file. Returns true if the load was successful.*/
@@ -15,10 +15,10 @@ public:
 	/*Unloads the mesh and frees the memory on the GPU.*/
 	void unload();
 
-	Mesh& operator=(const Mesh& ref);
-	Mesh(const Mesh& ref);
-	Mesh();
-	~Mesh();
+	tempMesh& operator=(const tempMesh& ref);
+	tempMesh(const tempMesh& ref);
+	tempMesh();
+	~tempMesh();
 
 private:
 	GLuint mVertexArray;
