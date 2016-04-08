@@ -156,7 +156,6 @@
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="FbxImport.cpp" />
     <ClCompile Include="FbxMesh.cpp" />
-    <ClCompile Include="FileExporter.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
