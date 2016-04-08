@@ -7,6 +7,7 @@ FbxImport::~FbxImport()
 FbxImport::FbxImport()
 {
 	meshCount = 1;
+	materialCounter = 1;
 }
 
 
@@ -98,6 +99,8 @@ void FbxImport::processMesh(FbxMesh * inputMesh)
 	processBiTangents(inputMesh);
 
 	processUVs(inputMesh);
+
+	processMaterials(inputMesh);
 
 	/*mMeshList.push_back(mesh.mp_VertexList);*/ //Want to push back a mesh with a vertex list... or? 
 }
@@ -440,6 +443,39 @@ void FbxImport::processUVs(FbxMesh * inputMesh)
 					mesh.mpVertexList.at(polyIndexCount).vertexUV[1] = UVs.mData[1];
 
 					polyIndexCount++;
+				}
+			}
+		}
+	}
+}
+
+void FbxImport::processMaterials(FbxMesh * inputMesh)
+{
+	if (inputMesh)
+	{
+		int materialCount = 0;
+
+		cout << "\n" << "Material number 1:" << " " << "\n";
+
+		materialCount = inputMesh->GetElementMaterialCount();
+
+		if (materialCount > 0)
+		{
+			for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
+			{
+				FbxSurfaceMaterial* material = inputMesh->GetNode()->GetMaterial(materialIndex);
+
+				if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
+				{
+					FbxDouble3 ambientColor, diffuseColor;
+
+					ambientColor = ((FbxSurfaceLambert *)material)->Ambient;
+
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+
+					mesh.mpMaterialList.push_back(mesh.materialData);
 				}
 			}
 		}

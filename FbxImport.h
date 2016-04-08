@@ -24,6 +24,7 @@ public:
 	void processTangents(FbxMesh* inputMesh);
 	void processBiTangents(FbxMesh* inputMesh);
 	void processUVs(FbxMesh* inputMesh);
+	void processMaterials(FbxMesh* inputMesh);
 
 	void processLight(FbxLight* inputLight);
 	void processCamera(FbxCamera* inputCamera);
@@ -49,6 +50,7 @@ private:
 	FbxScene* pmScene;
 
 	int meshCount;
+	int materialCounter;
 };
 
 

@@ -25,12 +25,17 @@ public:
 
 	struct sMaterialData
 	{
+		float ambientColor[3];
+		float diffuseColor[3];
+		float specularColor[3];
+
 		char* diffuseTexture;
 		char* specularTexture;
 		char* normalTexture;
 	};
 
 	sVertexData vertexData;
+	sMaterialData materialData;
 
 	std::vector<sVertexData> mpVertexList;
 	std::vector<sMaterialData> mpMaterialList;
