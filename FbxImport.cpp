@@ -32,7 +32,7 @@ void FbxImport::initializeImporter()
 
 	FbxImporter* pImporter = FbxImporter::Create(pmManager, "");
 
-	bool importStatus = pImporter->Initialize("C:/Users/pixet/Documents/fbx_boxsmooth.fbx", -1, pmManager->GetIOSettings());
+	bool importStatus = pImporter->Initialize("C:/Users/Dator/Documents/Visual Studio 2015/Projects/CCGW Game/CCGW Game/Models/test.fbx", -1, pmManager->GetIOSettings());
 	/*Abort if the importer can't be intitialized.*/
 	if (importStatus == false) {
 		FBXSDK_printf("Error: Can't initialize the importer. Aborting...\n");
