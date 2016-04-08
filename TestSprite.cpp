@@ -65,9 +65,15 @@ void TestSprite::init(float x, float y, float width, float height) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	worldMat = glm::mat4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 }
 
-void TestSprite::draw() {
+void TestSprite::draw(const GLuint &shaderProg) {
+	worldMat *= -1;
+	GLuint world = glGetUniformLocation(shaderProg, "world");
+	glUniformMatrix4fv(world, 1, GL_FALSE, &this->worldMat[0][0]);
+
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x));

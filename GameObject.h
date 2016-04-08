@@ -2,7 +2,7 @@
 
 #include <GLM\glm.hpp>
 #include <glm\gtx\quaternion.hpp>
-#include "Mesh.h"
+#include "tempMesh.h"
 #include "Texture.h"
 #include "Input.h"
 
