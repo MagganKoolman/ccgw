@@ -176,6 +176,7 @@
     </ClInclude>
     <ClInclude Include="FbxImport.h" />
     <ClInclude Include="FbxMesh.h" />
+    <ClInclude Include="FileExport.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
