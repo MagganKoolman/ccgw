@@ -89,14 +89,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\lib\vs2015\x86\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,11 +152,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
+    <ClCompile Include="FbxImport.cpp" />
+    <ClCompile Include="FbxMesh.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -165,14 +170,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="FbxImport.h" />
+    <ClInclude Include="FbxMesh.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sound.h" />
