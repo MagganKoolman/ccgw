@@ -472,6 +472,7 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 					ambientColor = ((FbxSurfaceLambert *)material)->Ambient;
 					diffuseColor = ((FbxSurfaceLambert *)material)->Diffuse;
 
+
 					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
 					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
 					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
@@ -490,7 +491,20 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 					cout << "\n" << "Material Number " << materialCounter << ": " << material->GetName() << "\n";
 
 					ambientColor = ((FbxSurfacePhong *)material)->Ambient;
-					
+					diffuseColor = ((FbxSurfacePhong *)material)->Diffuse;
+					specularColor = ((FbxSurfacePhong *)material)->Specular;
+
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
+					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
+
+					mesh.materialData.diffuseColor[0] = diffuseColor.mData[0];
+					mesh.materialData.diffuseColor[1] = diffuseColor.mData[1];
+					mesh.materialData.diffuseColor[2] = diffuseColor.mData[2];
+
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
 
 					materialCounter++;
 				}
