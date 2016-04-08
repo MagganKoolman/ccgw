@@ -455,8 +455,6 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 	{
 		int materialCount = 0;
 
-		cout << "\n" << "Material number 1:" << " " << "\n";
-
 		materialCount = inputMesh->GetElementMaterialCount();
 
 		if (materialCount > 0)
@@ -465,17 +463,36 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 			{
 				FbxSurfaceMaterial* material = inputMesh->GetNode()->GetMaterial(materialIndex);
 
+				FbxDouble3 ambientColor, diffuseColor, specularColor;
+
 				if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
 				{
-					FbxDouble3 ambientColor, diffuseColor;
+					cout << "\n" << "Material number " << materialCounter << ": " << material->GetName() << "\n";
 
 					ambientColor = ((FbxSurfaceLambert *)material)->Ambient;
+					diffuseColor = ((FbxSurfaceLambert *)material)->Diffuse;
 
 					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
-					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
-					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
+					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
+
+					mesh.materialData.diffuseColor[0] = diffuseColor.mData[0];
+					mesh.materialData.diffuseColor[1] = diffuseColor.mData[1];
+					mesh.materialData.diffuseColor[2] = diffuseColor.mData[2];
 
 					mesh.mpMaterialList.push_back(mesh.materialData);
+
+					materialCounter++;
+				}
+
+				else if (material->GetClassId().Is(FbxSurfacePhong::ClassId))
+				{
+					cout << "\n" << "Material Number " << materialCounter << ": " << material->GetName() << "\n";
+
+					ambientColor = ((FbxSurfacePhong *)material)->Ambient;
+					
+
+					materialCounter++;
 				}
 			}
 		}
