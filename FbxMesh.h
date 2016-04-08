@@ -29,6 +29,8 @@ public:
 		float diffuseColor[3];
 		float specularColor[3];
 
+		float shinyFactor;
+
 		char* diffuseTexture;
 		char* specularTexture;
 		char* normalTexture;

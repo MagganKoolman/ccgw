@@ -481,6 +481,12 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 					mesh.materialData.diffuseColor[1] = diffuseColor.mData[1];
 					mesh.materialData.diffuseColor[2] = diffuseColor.mData[2];
 
+					/*No specular attributes and shininess for lambert material, so set the values to 0.*/
+					mesh.materialData.specularColor[0] = 0;
+					mesh.materialData.specularColor[1] = 0;
+					mesh.materialData.specularColor[2] = 0;
+					mesh.materialData.shinyFactor = 0;
+
 					mesh.mpMaterialList.push_back(mesh.materialData);
 
 					materialCounter++;
@@ -494,6 +500,8 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 					diffuseColor = ((FbxSurfacePhong *)material)->Diffuse;
 					specularColor = ((FbxSurfacePhong *)material)->Specular;
 
+					float shininess = ((FbxSurfacePhong*)material)->Shininess;
+
 					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
 					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
 					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
@@ -505,6 +513,10 @@ void FbxImport::processMaterials(FbxMesh * inputMesh)
 					mesh.materialData.specularColor[0] = specularColor.mData[0];
 					mesh.materialData.specularColor[0] = specularColor.mData[0];
 					mesh.materialData.specularColor[0] = specularColor.mData[0];
+
+					mesh.materialData.shinyFactor = shininess;
+
+					mesh.mpMaterialList.push_back(mesh.materialData);
 
 					materialCounter++;
 				}
