@@ -15,7 +15,7 @@ struct objVertex
 	glm::vec3 normal;
 };
 
-bool Mesh::load(string file)
+bool tempMesh::load(string file)
 {
 	bool result = false;
 
@@ -134,7 +134,7 @@ bool Mesh::load(string file)
 	return result;
 }
 
-void Mesh::unload()
+void tempMesh::unload()
 {
 	if (mVertexArray > 0)
 		glDeleteVertexArrays(1, &mVertexArray);
@@ -146,7 +146,7 @@ void Mesh::unload()
 	mVertexArray = mVertexBuffer = mIndexBuffer = 0;
 }
 
-Mesh& Mesh::operator=(const Mesh& ref)
+tempMesh& tempMesh::operator=(const tempMesh& ref)
 {
 	mVertexArray = ref.mVertexArray;
 	mVertexBuffer = ref.mVertexBuffer;
@@ -154,16 +154,16 @@ Mesh& Mesh::operator=(const Mesh& ref)
 	return *this;
 }
 
-Mesh::Mesh(const Mesh& ref)
+tempMesh::tempMesh(const tempMesh& ref)
 	: mVertexArray(ref.mVertexArray), mVertexBuffer(ref.mVertexBuffer), mIndexBuffer(ref.mIndexBuffer)
 {
 }
 
-Mesh::Mesh()
+tempMesh::tempMesh()
 	: mVertexArray(0), mVertexBuffer(0), mIndexBuffer(0)
 {
 }
 
-Mesh::~Mesh()
+tempMesh::~tempMesh()
 {
 }

@@ -24,6 +24,6 @@ protected: // <-- changed to protected from private. because i wanted to reach t
 	glm::vec3 mPosition;
 	glm::quat mRotation;
 
-	Mesh* mpMesh;
+	tempMesh* mpMesh;
 	Texture* mpTexture;
 };

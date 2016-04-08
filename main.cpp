@@ -5,6 +5,7 @@
 #include <SDL\SDL.h>
 #include "Game.h"
 #include "Input.h"
+#include "FbxImport.h"
 
 using namespace std;
 
@@ -36,6 +37,10 @@ int main(int argc, char** argv) {
 
 	Game game;
 
+	FbxImport* fbxptr = new FbxImport;
+
+	fbxptr->initializeImporter();
+
 	while (running)
 	{
 		timeStamp2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
@@ -48,5 +53,12 @@ int main(int argc, char** argv) {
 			running = false;
 		SDL_GL_SwapWindow(window);
 	}
+
+	if (fbxptr)
+	{
+		delete fbxptr;
+		fbxptr = 0;
+	}
+
 	return 0;
 }
