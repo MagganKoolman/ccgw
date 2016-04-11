@@ -10,9 +10,12 @@ struct objFace
 
 struct objVertex
 {
-	glm::vec3 position;
+	/*glm::vec3 position;
 	glm::vec2 uv;
-	glm::vec3 normal;
+	glm::vec3 normal;*/
+	float px, py, pz;
+	float u, v;
+	float nx, ny, nz;
 };
 
 bool tempMesh::load(string file)
@@ -85,7 +88,7 @@ bool tempMesh::load(string file)
 		int curIndex = 0;
 		for (std::vector<objFace>::const_iterator it = faces.begin(); it != faces.end(); it++)
 		{
-			objVertex v1;
+			/*objVertex v1;
 			v1.position = v[it->p1 - 1];
 			v1.uv = vt[it->u1 - 1];
 			v1.normal = vn[it->n1 - 1];
@@ -98,7 +101,36 @@ bool tempMesh::load(string file)
 			objVertex v3;
 			v3.position = v[it->p3 - 1];
 			v3.uv = vt[it->u3 - 1];
-			v3.normal = vn[it->n3 - 1];
+			v3.normal = vn[it->n3 - 1];*/
+			objVertex v1;
+			v1.px = v[it->p1 - 1].x;
+			v1.py = v[it->p1 - 1].y;
+			v1.pz = v[it->p1 - 1].z;
+			v1.u = v[it->p1 - 1].x;
+			v1.v = v[it->p1 - 1].y;
+			v1.nx = v[it->p1 - 1].x;
+			v1.ny = v[it->p1 - 1].y;
+			v1.nz = v[it->p1 - 1].z;
+
+			objVertex v2;
+			v2.px = v[it->p2 - 1].x;
+			v2.py = v[it->p2 - 1].y;
+			v2.pz = v[it->p2 - 1].z;
+			v2.u = v[it->p2 - 1].x;
+			v2.v = v[it->p2 - 1].y;
+			v2.nx = v[it->p2 - 1].x;
+			v2.ny = v[it->p2 - 1].y;
+			v2.nz = v[it->p2 - 1].z;
+
+			objVertex v3;
+			v3.px = v[it->p3 - 1].x;
+			v3.py = v[it->p3 - 1].y;
+			v3.pz = v[it->p3 - 1].z;
+			v3.u = v[it->p3 - 1].x;
+			v3.v = v[it->p3 - 1].y;
+			v3.nx = v[it->p3 - 1].x;
+			v3.ny = v[it->p3 - 1].y;
+			v3.nz = v[it->p3 - 1].z;
 
 			vertices.push_back(v1);
 			vertices.push_back(v2);
@@ -107,7 +139,7 @@ bool tempMesh::load(string file)
 			for (int i = 0; i<3; i++)
 				indices.push_back(curIndex++);
 		}
-
+		mSize = faces.size() * 3;
 		// Push data to the GPU
 		glGenVertexArrays(1, &mVertexArray);
 		glBindVertexArray(mVertexArray);
@@ -120,17 +152,15 @@ bool tempMesh::load(string file)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*indices.size(), indices.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3));
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 5));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 3));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 5));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-
 		result = true;
 	}
-
 	return result;
 }
 
@@ -142,8 +172,20 @@ void tempMesh::unload()
 		glDeleteBuffers(1, &mVertexBuffer);
 	if (mIndexBuffer > 0)
 		glDeleteBuffers(1, &mIndexBuffer);
-
 	mVertexArray = mVertexBuffer = mIndexBuffer = 0;
+}
+
+void tempMesh::draw(const GLuint &shaderProg) {
+	GLuint world = glGetUniformLocation(shaderProg, "world");
+	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), 0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 3));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 5));
+
+	glDrawArrays(GL_TRIANGLES, 0, mSize);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 tempMesh& tempMesh::operator=(const tempMesh& ref)
@@ -160,8 +202,10 @@ tempMesh::tempMesh(const tempMesh& ref)
 }
 
 tempMesh::tempMesh()
-	: mVertexArray(0), mVertexBuffer(0), mIndexBuffer(0)
+	: mVertexArray(0), mVertexBuffer(0), mIndexBuffer(0), mSize(0)
 {
+	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	//mWorld = mWorld * glm::mat4x4(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1,1, 1, 2, 1);
 }
 
 tempMesh::~tempMesh()

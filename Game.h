@@ -3,6 +3,8 @@
 #include "DeferredProgram.h"
 #include "ForwardProgram.h"
 #include "TestSprite.h"
+#include "tempMesh.h"
+
 
 class Game {
 public:
@@ -17,6 +19,8 @@ private:
 	
 	TestSprite tSprite;
 	GLuint testScreen;
+
+	tempMesh playerModel;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

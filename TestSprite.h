@@ -17,5 +17,7 @@ private:
 
 	glm::mat4x4 worldMat;
 
+	GLuint mVertexArray;
+	GLuint mIndexBuffer;
 	GLuint _vboID;
 };
