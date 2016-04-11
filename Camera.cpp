@@ -3,36 +3,6 @@
 #include "glm\gtx\transform.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
-/*bool Camera::update() {
-=======
-bool Camera::update() 
-{
->>>>>>> origin/master
-	return true;
-}
-
-glm::mat4x4* Camera::getViewMat() const 
-{
-	return mViewMat;
-}
-
-glm::mat4x4* Camera::getPerspectiveMat() const 
-{
-	return mPerspectiveMat;
-}
-
-Camera::Camera()
-{
-	mPosition = glm::vec3(0, 0, -5);
-	mViewDir = glm::vec3(0, 0, 1);
-	mPerspectiveMat = new glm::mat4x4(glm::perspective(45.0f, 1080.f / 720.0f, 0.5f, 75.0f));
-	mViewMat = new glm::mat4x4(glm::lookAt(mPosition, mPosition + mViewDir, glm::vec3(0, 1, 0))); 
-}
-
-Camera::~Camera()
-{
-}*/
-
 void Camera::follow( glm::vec3 position, float rotation, float distance )
 {
 	glm::vec3 dir( cos( rotation ), 0.0f, sin( rotation ) );
