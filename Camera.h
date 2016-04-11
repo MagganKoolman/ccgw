@@ -21,7 +21,6 @@ private:
 	glm::mat4x4* mPerspectiveMat;
 
 	void passUniforms();
-<<<<<<< HEAD
 };*/
 
 class Camera
@@ -48,7 +47,4 @@ private:
 	glm::vec3 mPosition;
 	glm::mat4 mView;
 	glm::mat4 mPerspective;
-=======
-	void follow(GameObject* object);
->>>>>>> origin/master
 };
