@@ -36,8 +36,8 @@ int main(int argc, char** argv) {
 	Input input;
 	Game game;
 
-	FbxImport fbx;
-	fbx.initializeImporter();
+	//FbxImport fbx;
+	//fbx.initializeImporter();
 
 	while (running)
 	{
