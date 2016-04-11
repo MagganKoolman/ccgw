@@ -5,7 +5,8 @@
 #include <SDL\SDL.h>
 #include "Game.h"
 #include "Input.h"
-#include "FbxImport.h"
+#include "global_variables.h"
+//#include "FbxImport.h"
 
 using namespace std;
 
@@ -17,12 +18,19 @@ int main(int argc, char** argv) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = nullptr;
 
+
+
 	chrono::milliseconds timeStamp = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
 	chrono::milliseconds timeStamp2;
 	long long dt = timeStamp.count();
 	bool running = true;
 
-	window = SDL_CreateWindow("Try hard!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_OPENGL);
+	SDL_DisplayMode dm;
+	SDL_GetDesktopDisplayMode(0, &dm);
+	gWidth = dm.w - 2;
+	gHeight = dm.h - 60;
+
+	window = SDL_CreateWindow("Try hard!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gWidth, gHeight, SDL_WINDOW_OPENGL); // can get the border & titlebar sizes to fix a more precise windowed "fullscreen"
 	SDL_GLContext glContext = SDL_GL_CreateContext(window);
 	if (glContext == nullptr)
 		std::cout << "SDLFEL";
@@ -30,6 +38,8 @@ int main(int argc, char** argv) {
 	if (error != GLEW_OK)
 		std::cout << "GlewFel!";
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+
 	glClearColor(0.7f, 0.7f, 1.0f, 1.0);
 	glEnable(GL_DEPTH_TEST);
 

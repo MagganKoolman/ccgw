@@ -1,6 +1,6 @@
 #pragma once
 
-#include <fbxsdk.h>
+//#include <fbxsdk.h>
 #include <vector>
 #include "Mesh.h"
 #include "Light.h"
