@@ -5,7 +5,7 @@
 #include <SDL\SDL.h>
 #include "Game.h"
 #include "Input.h"
-#include "FbxImport.h"
+//6#include "FbxImport.h"
 
 using namespace std;
 
@@ -37,9 +37,9 @@ int main(int argc, char** argv) {
 
 	Game game;
 
-	FbxImport* fbxptr = new FbxImport;
+	//FbxImport* fbxptr = new FbxImport;
 
-	fbxptr->initializeImporter();
+	//fbxptr->initializeImporter();
 
 	while (running)
 	{
@@ -54,11 +54,11 @@ int main(int argc, char** argv) {
 		SDL_GL_SwapWindow(window);
 	}
 
-	if (fbxptr)
+	/*if (fbxptr)
 	{
 		delete fbxptr;
 		fbxptr = 0;
-	}
+	}*/
 
 	return 0;
 }

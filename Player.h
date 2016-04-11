@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Weapon.h"
 
 class Player : public GameObject{
 public:
@@ -10,5 +11,5 @@ public:
 	Player();
 	~Player();
 private: 
-	
+	Weapon* mWeapon;
  };
