@@ -6,7 +6,9 @@
 class Mesh
 {
 public:
-
+	/**
+	If the mesh isn't animated, use this struct.
+	**/
 	struct sVertexData
 	{
 		float vertexPos[3];
@@ -15,7 +17,22 @@ public:
 		float biTangentNormal[3];
 		float vertexUV[2];
 	};
-
+	/**
+	If the mesh's animated, use this struct.
+	**/
+	struct sAnimatedVertexData
+	{
+		float vertexPos[3];
+		float vertexNormal[3];
+		float tangentNormal[3];
+		float biTangentNormal[3];
+		float vertexUV[2];
+		float boneInfluences[4];
+		float boneWeights[4];
+	};
+	/**
+	The mesh's "transform matrix components"
+	**/
 	struct sTransformData
 	{
 		FbxAMatrix worldPos;

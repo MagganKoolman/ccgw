@@ -1,15 +1,16 @@
 #pragma once
 
-#include "fbxsdk.h"
-#include <vector>
-#include "FbxMesh.h"
-#include "Light.h"
-#include "Camera.h"
 #include <assert.h>
 #include <iostream>
 #include <string>
-using namespace std;
+#include <vector>
 
+#include "fbxsdk.h"
+#include "FbxMesh.h"
+#include "Light.h"
+#include "Camera.h"
+#include "Joint.h"
+using namespace std;
 
 class FbxImport
 {

@@ -86,6 +86,12 @@ void FbxImport::initializeImporter()
 		}
 	}
 
+	for (int meshIndex = 0; meshIndex < mMeshList.size(); ++meshIndex)
+	{
+		cout << meshIndex << "\n";
+		getchar();
+	}
+
 }
 
 void FbxImport::processMesh(FbxMesh * inputMesh)
