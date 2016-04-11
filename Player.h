@@ -4,9 +4,9 @@
 
 class Player : public GameObject{
 public:
-	void update(Input* input);
-	bool load(Assets* assets);
-	void render();
+	void update(Input* inputs);
+	bool load(tempMesh* assets);
+	void render(const GLuint &programID);
 
 	Player();
 	~Player();

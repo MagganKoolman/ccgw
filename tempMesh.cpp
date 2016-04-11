@@ -161,8 +161,6 @@ bool tempMesh::load(string file)
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 3));
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 5));
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		result = true;
 	}
@@ -180,24 +178,9 @@ void tempMesh::unload()
 	mVertexArray = mVertexBuffer = mIndexBuffer = 0;
 }
 
-void tempMesh::draw(const GLuint &shaderProg) {
-	GLuint world = glGetUniformLocation(shaderProg, "world");
-	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
-
+void tempMesh::draw() {
 	glBindVertexArray(mVertexArray);
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-
-	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), 0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 3));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 5));
-
-	glDrawArrays(GL_TRIANGLES, 0, mSize);*/
-
 	glDrawElements(GL_TRIANGLES, mSize, GL_UNSIGNED_INT, 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
