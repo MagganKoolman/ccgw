@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="ForwardProgram.h" />
@@ -32,8 +33,10 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
@@ -47,6 +50,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\deferred.geometry" />

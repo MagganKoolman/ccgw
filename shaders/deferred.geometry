@@ -10,8 +10,6 @@ in vec2 colorOut[];
 out vec2 colorOut2;
 out vec3 normalOut2;
 
-uniform mat4 world;
-
 void main()
 {
 	for (int i = 0; i < 3; i++)
