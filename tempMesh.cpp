@@ -144,6 +144,10 @@ bool tempMesh::load(string file)
 		glGenVertexArrays(1, &mVertexArray);
 		glBindVertexArray(mVertexArray);
 
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+
 		glGenBuffers(1, &mVertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(objVertex)*vertices.size(), vertices.data(), GL_STATIC_DRAW);
@@ -178,13 +182,12 @@ void tempMesh::unload()
 void tempMesh::draw(const GLuint &shaderProg) {
 	GLuint world = glGetUniformLocation(shaderProg, "world");
 	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
+
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), 0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 3));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objVertex), (void*)(sizeof(float) * 5));
 
-	glDrawArrays(GL_TRIANGLES, 0, mSize);
+	glDrawElements(GL_TRIANGLES, mSize, GL_UNSIGNED_INT, 0);
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

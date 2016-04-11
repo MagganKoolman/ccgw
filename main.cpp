@@ -5,7 +5,7 @@
 #include <SDL\SDL.h>
 #include "Game.h"
 #include "Input.h"
-#include "FbxImport.h"
+//#include "FbxImport.h"
 
 using namespace std;
 
