@@ -14,7 +14,7 @@ public:
 	bool load(string file);
 	/*Unloads the mesh and frees the memory on the GPU.*/
 	void unload();
-	void draw(const GLuint &shaderProg);
+	void draw();
 
 	tempMesh& operator=(const tempMesh& ref);
 	tempMesh(const tempMesh& ref);
@@ -25,6 +25,5 @@ private:
 	GLuint mVertexArray;
 	GLuint mVertexBuffer;
 	GLuint mIndexBuffer;
-	glm::mat4x4 mWorld;
 	int mSize;
 };

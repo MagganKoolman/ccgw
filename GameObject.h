@@ -10,18 +10,17 @@ class GameObject
 {
 public:
 	/*Abstract method. Don't call.*/
-	virtual bool load(Assets* assets) = 0;
+	virtual bool load(tempMesh* assets) = 0;
 	/*Abstract method. Don't call.*/
-	virtual void update(Input* input) = 0;
+	virtual void update();
 	/*Abstract method. Don't call.*/
-	virtual void render(GLuint programID);
+	virtual void render(const GLuint &programID) = 0;
 
 	GameObject(const GameObject& ref);
 	GameObject();
 	virtual ~GameObject();
-
 protected: // <-- changed to protected from private. because i wanted to reach these from subclasses.
-	glm::vec3 mPosition;
+	glm::mat4 mWorld;
 	glm::quat mRotation;
 
 	tempMesh* mpMesh;

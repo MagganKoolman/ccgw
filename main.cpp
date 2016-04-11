@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
 		timeStamp = timeStamp2;
 
 		running = input.update();
-		game.update();
+		game.run();
 		if( input.keyPressed( SDLK_ESCAPE ) )
 			running = false;
 		SDL_GL_SwapWindow(window);

@@ -29,9 +29,11 @@ void Game::drawOnScreenQuad() {
 Game::Game() {
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
+
 	createScreenQuad();
 	tSprite.init(0.5, 0.5, 1.0, 0.8);
 	playerModel.load("Models/box2.obj");
+	mPlayer.load(&playerModel);	
 }
 
 Game::~Game() {
@@ -39,22 +41,25 @@ Game::~Game() {
 	delete pForwardProgram;
 }
 
-bool Game::update() {
+bool Game::run() {
+	update();
 	render();
 	return true;
 }
 
 void Game::render() {
 	pDeferredProgram->use();
-	//glUseProgram(pDeferredProgram->getProgramID());
 	tSprite.draw(pDeferredProgram->getProgramID());
-	playerModel.draw(pDeferredProgram->getProgramID());
+	mPlayer.render(pDeferredProgram->getProgramID());
 	pDeferredProgram->unUse();
-	//glUseProgram(0);
 
 	pForwardProgram->use();
 	dynamic_cast<DeferredProgram*> (pDeferredProgram)->enableTextures(pForwardProgram->getProgramID());
 	drawOnScreenQuad();
 	dynamic_cast<DeferredProgram*> (pDeferredProgram)->disableTextures();
 	pForwardProgram->unUse();
+}
+
+void Game::update() {
+	mPlayer.update(&mInputs);
 }
