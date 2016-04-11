@@ -13,9 +13,13 @@ void Player::render(const GLuint &programID)
 	mpMesh->draw();
 }
 
-void Player::update(Input* inputs)
+void Player::update(const Input* inputs)
 {
-	
+	if (inputs->keyDown(SDLK_w))
+		mWorld = glm::translate(mWorld, glm::vec3(0, 0.001, 0));
+	if (inputs->keyDown(SDLK_s))
+		mWorld = glm::translate(mWorld, glm::vec3(0, -0.001, 0));
+
 }
 
 Player::Player() : GameObject() 

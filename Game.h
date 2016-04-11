@@ -10,7 +10,7 @@
 
 class Game {
 public:
-	bool run();
+	bool run(const Input* inputs);
 
 	Game();
 	~Game();
@@ -25,10 +25,8 @@ private:
 	tempMesh playerModel;
 	Player mPlayer;
 
-	Input mInputs;
-
 	void createScreenQuad();
 	void drawOnScreenQuad();
 	void render();
-	void update();
+	void update(const Input* inputs);
 };

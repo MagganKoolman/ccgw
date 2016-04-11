@@ -6,7 +6,6 @@
 #include "Game.h"
 #include "Input.h"
 #include "global_variables.h"
-//#include "FbxImport.h"
 
 using namespace std;
 
@@ -46,9 +45,6 @@ int main(int argc, char** argv) {
 	Input input;
 	Game game;
 
-	//FbxImport fbx;
-	//fbx.initializeImporter();
-
 	while (running)
 	{
 		timeStamp2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
@@ -56,7 +52,7 @@ int main(int argc, char** argv) {
 		timeStamp = timeStamp2;
 
 		running = input.update();
-		game.run();
+		game.run(&input);
 		if( input.keyPressed( SDLK_ESCAPE ) )
 			running = false;
 		SDL_GL_SwapWindow(window);

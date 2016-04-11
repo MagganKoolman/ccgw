@@ -4,7 +4,7 @@
 
 class Player : public GameObject{
 public:
-	void update(Input* inputs);
+	void update(const Input* inputs);
 	bool load(tempMesh* assets);
 	void render(const GLuint &programID);
 

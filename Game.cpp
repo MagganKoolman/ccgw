@@ -41,8 +41,8 @@ Game::~Game() {
 	delete pForwardProgram;
 }
 
-bool Game::run() {
-	update();
+bool Game::run(const Input* inputs) {
+	update(inputs);
 	render();
 	return true;
 }
@@ -60,6 +60,6 @@ void Game::render() {
 	pForwardProgram->unUse();
 }
 
-void Game::update() {
-	mPlayer.update(&mInputs);
+void Game::update(const Input* inputs) {
+	mPlayer.update(inputs);
 }
