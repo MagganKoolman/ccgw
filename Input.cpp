@@ -23,7 +23,7 @@ bool Input::update()
 			if (key >= 0 && key < MAX_KEYS)
 				mCurKeys[key] = true;
 		}
-		else if (e.type == SDL_KEYUP) // user released a key
+		else if (e.type == SDL_KEYUP) //  user released a key
 		{
 			int key = e.key.keysym.sym;
 			if (key >= 0 && key < MAX_KEYS)

@@ -1,27 +1,43 @@
 #pragma once
 
-#include "Assets.h"
-#include <GL\glew.h>
-#include <fstream>
 #include <vector>
-#include <sstream>
-#include <GLM\glm.hpp>
+#include <fbxsdk.h>
 
-class Mesh : public Asset
+class Mesh
 {
 public:
-	/*Load a mesh from a file. Returns true if the load was successful.*/
-	bool load(string file);
-	/*Unloads the mesh and frees the memory on the GPU.*/
-	void unload();
 
-	Mesh& operator=(const Mesh& ref);
-	Mesh(const Mesh& ref);
+	struct sVertexData
+	{
+		float vertexPos[3];
+		float vertexNormal[3];
+		float tangentNormal[3];
+		float biTangentNormal[3];
+		float vertexUV[2];
+	};
+
+	struct sTransformData
+	{
+		FbxAMatrix worldPos;
+		FbxAMatrix worldRot;
+		FbxAMatrix worldScale; 
+	};
+
+	struct sMaterialData
+	{
+		char* diffuseTexture;
+		char* specularTexture;
+		char* normalTexture;
+	};
+
+	sVertexData vertexData;
+
+	std::vector<sVertexData> mpVertexList;
+	std::vector<sMaterialData> mpMaterialList;
+
 	Mesh();
 	~Mesh();
 
 private:
-	GLuint mVertexArray;
-	GLuint mVertexBuffer;
-	GLuint mIndexBuffer;
 };
+

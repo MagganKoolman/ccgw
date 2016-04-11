@@ -5,6 +5,7 @@
 #include <SDL\SDL.h>
 #include "Game.h"
 #include "Input.h"
+#include "FbxImport.h"
 
 using namespace std;
 
@@ -33,8 +34,10 @@ int main(int argc, char** argv) {
 	glEnable(GL_DEPTH_TEST);
 
 	Input input;
-
 	Game game;
+
+	FbxImport fbx;
+	fbx.initializeImporter();
 
 	while (running)
 	{

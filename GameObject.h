@@ -2,7 +2,7 @@
 
 #include <GLM\glm.hpp>
 #include <glm\gtx\quaternion.hpp>
-#include "Mesh.h"
+#include "tempMesh.h"
 #include "Texture.h"
 #include "Input.h"
 
@@ -14,16 +14,16 @@ public:
 	/*Abstract method. Don't call.*/
 	virtual void update(Input* input) = 0;
 	/*Abstract method. Don't call.*/
-	virtual void render() = 0;
+	virtual void render(GLuint programID);
 
 	GameObject(const GameObject& ref);
 	GameObject();
 	virtual ~GameObject();
 
-private:
-	glm::vec2 mPosition;
+protected: // <-- changed to protected from private. because i wanted to reach these from subclasses.
+	glm::vec3 mPosition;
 	glm::quat mRotation;
 
-	Mesh* mpMesh;
+	tempMesh* mpMesh;
 	Texture* mpTexture;
 };

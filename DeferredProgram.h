@@ -8,7 +8,7 @@ public:
 	~DeferredProgram();
 
 	void use();
-	void unUse();
+	void unUse(); 
 
 	void enableTextures(GLuint nextShader) const;
 	void disableTextures() const;
