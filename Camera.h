@@ -2,16 +2,18 @@
 
 #include <vector>
 #include <glm\glm.hpp>
-#include "fbxsdk.h"
+#include "GameObject.h"
+//#include "fbxsdk.h"
 
 class Camera
 {
 public:
-	Camera();
-	~Camera();
 	bool update();
 	glm::mat4x4* getViewMat() const;
 	glm::mat4x4* getPerspectiveMat() const;
+
+	Camera();
+	~Camera();
 private:
 	glm::vec3 mPosition;
 	glm::vec3 mViewDir;
@@ -19,4 +21,5 @@ private:
 	glm::mat4x4* mPerspectiveMat;
 
 	void passUniforms();
+	void follow(GameObject* object);
 };

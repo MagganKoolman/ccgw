@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="global_variables.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
@@ -38,10 +40,12 @@
   <ItemGroup>
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="global_variables.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />

@@ -2,7 +2,8 @@
 #include "GameObject.h"
 
 
-class Weapon {
+class Weapon 
+{
 public:
 	float reloadTime;
 	float timeSinceLastShot;

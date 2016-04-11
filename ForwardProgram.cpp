@@ -1,4 +1,5 @@
 #include "ForwardProgram.h"
+#include "global_variables.h"
 
 ForwardProgram::ForwardProgram(){
 
@@ -19,7 +20,7 @@ void ForwardProgram::use() {
 		glEnableVertexAttribArray(i);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
-	glViewport(0, 0, 1080, 720);
+	glViewport(0, 0, gWidth, gHeight);
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
