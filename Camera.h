@@ -21,5 +21,4 @@ private:
 	glm::mat4x4* mPerspectiveMat;
 
 	void passUniforms();
-	void follow(GameObject* object);
 };

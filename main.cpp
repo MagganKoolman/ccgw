@@ -10,9 +10,6 @@
 
 using namespace std;
 
-int screen_width = 1080;
-int screen_height = 720;
-
 int main(int argc, char** argv) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	SDL_Init(SDL_INIT_EVERYTHING);
