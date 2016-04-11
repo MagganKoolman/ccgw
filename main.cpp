@@ -34,12 +34,10 @@ int main(int argc, char** argv) {
 	glEnable(GL_DEPTH_TEST);
 
 	Input input;
-
 	Game game;
 
-	//FbxImport* fbxptr = new FbxImport;
-
-	//fbxptr->initializeImporter();
+	FbxImport fbx;
+	fbx.initializeImporter();
 
 	while (running)
 	{
@@ -53,12 +51,5 @@ int main(int argc, char** argv) {
 			running = false;
 		SDL_GL_SwapWindow(window);
 	}
-
-	/*if (fbxptr)
-	{
-		delete fbxptr;
-		fbxptr = 0;
-	}*/
-
 	return 0;
 }

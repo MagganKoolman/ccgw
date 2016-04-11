@@ -46,7 +46,7 @@ bool Game::update() {
 
 void Game::render() {
 	pDeferredProgram->use();
-	tSprite.draw();
+	tSprite.draw(pDeferredProgram->getProgramID());
 	pDeferredProgram->unUse();
 
 	

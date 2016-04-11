@@ -5,5 +5,5 @@ public:
 	GameState();
 	~GameState();
 private:
-	virtual const bool update() = 0;
+	virtual bool update() = 0;
 };

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 #include <vector>
-#include "FbxMesh.h"
+#include "Mesh.h"
 #include "Light.h"
 #include "Camera.h"
 #include <assert.h>
