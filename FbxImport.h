@@ -1,15 +1,15 @@
 #pragma once
 
-//#include <fbxsdk.h>
 #include <vector>
-#include "Mesh.h"
-#include "Light.h"
-#include "Camera.h"
+#include "FbxMesh.h"
+#include "FbxLight.h"
+#include "FbxCamera.h"
 #include <assert.h>
 #include <iostream>
 #include <string>
-using namespace std;
+#include "fbxsdk.h"
 
+using namespace std;
 
 class FbxImport
 {
@@ -18,25 +18,35 @@ public:
 
 	void initializeImporter();
 	void processMesh(FbxMesh* inputMesh);
-	
+
 	void processVertices(FbxMesh* inputMesh);
 	void processNormals(FbxMesh* inputMesh);
 	void processTangents(FbxMesh* inputMesh);
 	void processBiTangents(FbxMesh* inputMesh);
 	void processUVs(FbxMesh* inputMesh);
+	void processMaterials(FbxMesh* inputMesh);
+
+	void processTextures(FbxMesh* inputMesh);
+	void processDiffuseMaps(FbxProperty inputProp);
+	void processSpecularMaps(FbxProperty inputProp);
+	void processNormalMaps(FbxProperty inputProp);
+
+
+	void processTransformations(FbxMesh* inputMesh);
 
 	void processLight(FbxLight* inputLight);
 	void processCamera(FbxCamera* inputCamera);
 
-	std::vector<Mesh> mMeshList;
+	std::vector<MeshFbx> mMeshList;
 	//for(mMeshList.size()):
 	//vertices localVertexList = mMeshList[i].getVertices();
 	//material currMat = mMeshList[i].getMaterial();
 	//matrix meshOis = 
-	std::vector<Light*> mLightList;
-	std::vector<Camera*> mCameraList;
+	std::vector<LightFbx*> mLightList;
+	std::vector<CameraFbx*> mCameraList;
 
-	Mesh mesh;
+	MeshFbx mesh;
+	CameraFbx camera;
 
 	FbxImport();
 	~FbxImport();
@@ -48,7 +58,11 @@ private:
 	FbxIOSettings* pmSettings;
 	FbxScene* pmScene;
 
-	int meshCount;
+	int meshCounter;
+	int materialCounter;
+	int textureCounter;
+	int cameraCounter;
+	int lightCounter;
 };
 
 

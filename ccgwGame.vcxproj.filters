@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\FbxDeclarations">
+      <UniqueIdentifier>{69748cff-7f60-45ba-829d-d6a1ef393db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FbxDefinitions">
+      <UniqueIdentifier>{636a04b9-6fe0-475b-8ff0-c2e481b5816b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets.h">
@@ -66,6 +72,24 @@
     <ClInclude Include="global_variables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FbxCamera.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxImport.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxLight.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxMesh.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
+    <ClInclude Include="FileExporter.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
+    <ClInclude Include="Joint.h">
+      <Filter>Header Files\FbxDeclarations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp">
@@ -118,6 +142,24 @@
     </ClCompile>
     <ClCompile Include="global_variables.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxCamera.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxImport.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxLight.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxMesh.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="FileExporter.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Joint.cpp">
+      <Filter>Source Files\FbxDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
