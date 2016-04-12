@@ -38,15 +38,12 @@ public:
 	void processCamera(FbxCamera* inputCamera);
 
 	std::vector<MeshFbx> mMeshList;
-	//for(mMeshList.size()):
-	//vertices localVertexList = mMeshList[i].getVertices();
-	//material currMat = mMeshList[i].getMaterial();
-	//matrix meshOis = 
-	std::vector<LightFbx*> mLightList;
-	std::vector<CameraFbx*> mCameraList;
+	std::vector<LightFbx> mLightList;
+	std::vector<CameraFbx> mCameraList;
 
 	MeshFbx mesh;
 	CameraFbx camera;
+	LightFbx light;
 
 	FbxImport();
 	~FbxImport();
