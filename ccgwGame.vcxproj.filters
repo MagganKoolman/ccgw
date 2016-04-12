@@ -90,6 +90,9 @@
     <ClInclude Include="Joint.h">
       <Filter>Header Files\FbxDeclarations</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp">
@@ -160,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="Joint.cpp">
       <Filter>Source Files\FbxDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 10.0){
 
 	createScreenQuad();
 	playerModel.load("Models/box2.obj");
-	terrainModel.load("Models/box.obj");
+	terrainModel.load("Models/plane.obj");
 	mPlayer.load(&playerModel);	
 	mGround.load(&terrainModel);
 }
@@ -64,6 +64,6 @@ void Game::render() {
 }
 
 void Game::update(const Input* inputs) {
-	mPlayer.update(inputs);
-	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 1);
+	mPlayer.update(inputs, 0.02f);
+	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
 }

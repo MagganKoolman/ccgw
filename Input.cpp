@@ -60,7 +60,7 @@ bool Input::keyUp(int key)
 	return !mCurKeys[key];
 }
 
-bool Input::keyPressed(int key)
+bool Input::keyPressed(int key) const
 {
 	if (key < 0 || key >= MAX_KEYS)
 		return false;

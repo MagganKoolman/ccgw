@@ -51,6 +51,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="tempMesh.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Weapon.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="tempMesh.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Weapon.cpp" />

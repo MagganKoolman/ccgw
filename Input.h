@@ -24,7 +24,7 @@ public:
 	/* Returns true if the key is currently up. Use the SDLK_ enum as parameter.*/
 	bool keyUp(int key);
 	/* Returns true if the key is currently down and previously up. Use the SDLK_ enum as parameter.*/
-	bool keyPressed(int key);
+	bool keyPressed(int key) const;
 	/* Returns true if the key is currently up and previously down. Use the SDLK_ enum as parameter.*/
 	bool keyReleased(int key);
 
