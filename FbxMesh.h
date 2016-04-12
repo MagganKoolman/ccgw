@@ -16,9 +16,23 @@ public:
 		float vertexUV[2];
 	};
 
+	struct sVertexAnimData
+	{
+		float vertexPos[3];
+		float vertexNormal[3];
+		float tangentNormal[3];
+		float biTangentNormal[3];
+		float vertexUV[2];
+		float influences[4];
+		float weights[4];
+	};
+
 	struct sTransformData
 	{
-		float transformData[4][4];
+		float translate[3];
+		float rotation[3];
+		float scale[3];
+
 	};
 
 	struct sMaterialData
@@ -35,6 +49,7 @@ public:
 	};
 
 	sVertexData vertexData;
+	sTransformData transformData;
 	sMaterialData materialData;
 
 	std::vector<sVertexData> mpVertexList;
