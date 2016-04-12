@@ -46,7 +46,7 @@ bool Input::update()
 	return result;
 }
 
-bool Input::keyDown(int key)
+bool Input::keyDown(int key) const
 {
 	if (key < 0 || key >= MAX_KEYS)
 		return false;

@@ -155,17 +155,17 @@
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
-    <ClCompile Include="FbxImport.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="global_variables.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="tempMesh.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -174,16 +174,17 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="Assets.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="global_variables.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="tempMesh.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>

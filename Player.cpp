@@ -40,6 +40,8 @@ void Player::update(Input* inputs, float dt)
 	
 }
 
+}
+
 Player::Player() : GameObject() 
 {
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };

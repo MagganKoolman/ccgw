@@ -26,17 +26,34 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 10.0){
+	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
+	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 
-bool Game::run(Input* input) {
-	update(input);
+	createScreenQuad();
+	playerModel.load("Models/box2.obj");
+	terrainModel.load("Models/box.obj");
+	mPlayer.load(&playerModel);	
+	mGround.load(&terrainModel);
+}
+
+Game::~Game() {
+	delete pDeferredProgram;
+	delete pForwardProgram;
+}
+
+bool Game::run(const Input* inputs) {
+	update(inputs);
 	render();
 	return true;
 }
 
 void Game::render() {
 	pDeferredProgram->use();
-	tSprite.draw(pDeferredProgram->getProgramID());
+
+	mCamera.update(pDeferredProgram->getProgramID());
 	mPlayer.render(pDeferredProgram->getProgramID());
+	mGround.render(pDeferredProgram->getProgramID());
 	pDeferredProgram->unUse();
 
 	pForwardProgram->use();
@@ -46,22 +63,7 @@ void Game::render() {
 	pForwardProgram->unUse();
 }
 
-void Game::update(Input* input) {
-	mPlayer.update(input, 0.02f);
-}
-
-
-Game::Game() {
-	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
-	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
-
-	createScreenQuad();
-	tSprite.init(0.5, 0.5, 1.0, 0.8);
-	playerModel.load("Models/box2.obj");
-	mPlayer.load(&playerModel);	
-}
-
-Game::~Game() {
-	delete pDeferredProgram;
-	delete pForwardProgram;
+void Game::update(const Input* inputs) {
+	mPlayer.update(inputs);
+	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 1);
 }
