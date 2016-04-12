@@ -3,11 +3,11 @@
 #include <vector>
 #include "fbxsdk.h"
 
-class Light 
+class LightFbx 
 {
 public:
-	Light();
-	~Light();
+	LightFbx();
+	~LightFbx();
 private:
 	
 };

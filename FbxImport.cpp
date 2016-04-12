@@ -6,7 +6,11 @@ FbxImport::~FbxImport()
 
 FbxImport::FbxImport()
 {
-	meshCount = 1;
+	meshCounter = 1;
+	materialCounter = 1;
+	textureCounter = 0;
+	cameraCounter = 1;
+	lightCounter = 1;
 }
 
 
@@ -32,18 +36,19 @@ void FbxImport::initializeImporter()
 
 	FbxImporter* pImporter = FbxImporter::Create(pmManager, "");
 
-	bool importStatus = pImporter->Initialize("Models/test.fbx", -1, pmManager->GetIOSettings());
+	bool importStatus = pImporter->Initialize("Models/testCamera.fbx", -1, pmManager->GetIOSettings());
 	/*Abort if the importer can't be intitialized.*/
 	if (importStatus == false) {
 		FBXSDK_printf("Error: Can't initialize the importer. Aborting...\n");
 		exit(1);
 	}
+
 	FbxScene* pScene = FbxScene::Create(pmManager, "MyScene");
 
 	importStatus = pImporter->Import(pScene);
 	/*Abort if the scene can't be imported.*/
 	if (importStatus == false) {
-		FBXSDK_printf("Error: Can't initialize the importer. Aborting...\n");
+		FBXSDK_printf("Error: Can't import the scene. Aborting...\n");
 		exit(1);
 	}
 	pImporter->Destroy();
@@ -53,7 +58,9 @@ void FbxImport::initializeImporter()
 
 	for (int childIndex = 0; childIndex < pmRootNode->GetChildCount(); childIndex++)
 	{
-		/*Getting the child nodes in the scene and their node attribute types.*/
+		/*Getting the child nodes in the scene and their node attr
+
+		ibute types.*/
 		FbxNode* childNode = pmRootNode->GetChild(childIndex);
 		FbxNodeAttribute::EType attributeType = childNode->GetNodeAttribute()->GetAttributeType();
 
@@ -65,20 +72,20 @@ void FbxImport::initializeImporter()
 		if (attributeType != FbxNodeAttribute::eMesh && attributeType != FbxNodeAttribute::eLight &&
 			attributeType != FbxNodeAttribute::eCamera)
 			continue;
-		
+
 		if (attributeType == FbxNodeAttribute::eMesh)
 		{
-			cout << "\n" << "Object nr: " << meshCount << "\n";
+			cout << "\n" << "Object nr: " << meshCounter << " Name: " << childNode->GetName() << "\n";
 
 			processMesh((FbxMesh*)childNode->GetNodeAttribute());
-			meshCount += 1;
+			meshCounter += 1;
 		}
-		
+
 		if (attributeType == FbxNodeAttribute::eLight)
 		{
 			processLight((FbxLight*)childNode->GetNodeAttribute());
 		}
-		
+
 		if (attributeType == FbxNodeAttribute::eCamera)
 		{
 			processCamera((FbxCamera*)childNode->GetNodeAttribute());
@@ -99,18 +106,24 @@ void FbxImport::processMesh(FbxMesh * inputMesh)
 
 	processUVs(inputMesh);
 
+	processMaterials(inputMesh);
+
+	processTextures(inputMesh);
+
+	processTransformations(inputMesh);
+
 	/*mMeshList.push_back(mesh.mp_VertexList);*/ //Want to push back a mesh with a vertex list... or? 
 }
 
 void FbxImport::processVertices(FbxMesh * inputMesh)
 {
 	/*Array of the control points of mesh.*/
-	FbxVector4* vertices = inputMesh->GetControlPoints();  
+	FbxVector4* vertices = inputMesh->GetControlPoints();
 
 	for (int i = 0; i < inputMesh->GetPolygonCount(); i++)
 	{
 		/*Getting vertices of a polygon in the mesh.*/
-		int numPolygonVertices = inputMesh->GetPolygonSize(i); 
+		int numPolygonVertices = inputMesh->GetPolygonSize(i);
 
 		/*If the mesh is not triangulated, meaning that there are quads in the mesh,
 		then the program should abort, terminating the process.*/
@@ -119,16 +132,16 @@ void FbxImport::processVertices(FbxMesh * inputMesh)
 		for (int j = 0; j < numPolygonVertices; j++)
 		{
 			/*Getting the index to a control point "vertex".*/
-			int polygonVertex = inputMesh->GetPolygonVertex(i, j); 
+			int polygonVertex = inputMesh->GetPolygonVertex(i, j);
 
 			mesh.vertexData.vertexPos[0] = (float)vertices[polygonVertex].mData[0];
 			mesh.vertexData.vertexPos[1] = (float)vertices[polygonVertex].mData[1];
 			mesh.vertexData.vertexPos[2] = (float)vertices[polygonVertex].mData[2];
 
-			cout << "\n" << "Position: " << (float)vertices[polygonVertex].mData[0] << " " << 
-											(float)vertices[polygonVertex].mData[1] << " " <<
-											(float)vertices[polygonVertex].mData[1] << "\n";
-	
+			cout << "\n" << "Position: " << (float)vertices[polygonVertex].mData[0] << " " <<
+				(float)vertices[polygonVertex].mData[1] << " " <<
+				(float)vertices[polygonVertex].mData[1] << "\n";
+
 			mesh.mpVertexList.push_back(mesh.vertexData);
 		}
 	}
@@ -137,12 +150,12 @@ void FbxImport::processVertices(FbxMesh * inputMesh)
 void FbxImport::processNormals(FbxMesh * inputMesh)
 {
 	/*Get the normal element of the mesh.*/
-	FbxGeometryElementNormal* normalElement = inputMesh->GetElementNormal(); 
+	FbxGeometryElementNormal* normalElement = inputMesh->GetElementNormal();
 
 	if (normalElement) /*If there is normal element then proceed.*/
 	{
 		/*Obtain normal of each vertex.*/
-		if (normalElement->GetMappingMode() == FbxGeometryElement::eByControlPoint) 
+		if (normalElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
 		{
 			/*Obtain the normals of each vertex, because the mapping mode of the normal element is by control point.*/
 			for (int vertexIndex = 0; vertexIndex < inputMesh->GetControlPointsCount(); vertexIndex++)
@@ -162,9 +175,9 @@ void FbxImport::processNormals(FbxMesh * inputMesh)
 				}
 
 				/*Normals of each vertex is obtained.*/
-				FbxVector4 normals = normalElement->GetDirectArray().GetAt(normalIndex); 
+				FbxVector4 normals = normalElement->GetDirectArray().GetAt(normalIndex);
 
-				cout << "\n" << "Normal: "<< normals.mData[0] << " " << normals.mData[1] << " " << normals.mData[2] << "\n";
+				cout << "\n" << "Normal: " << normals.mData[0] << " " << normals.mData[1] << " " << normals.mData[2] << "\n";
 
 				mesh.mpVertexList.at(vertexIndex).vertexNormal[0] = normals.mData[0];
 				mesh.mpVertexList.at(vertexIndex).vertexNormal[1] = normals.mData[1];
@@ -173,7 +186,7 @@ void FbxImport::processNormals(FbxMesh * inputMesh)
 		}
 
 		/*Get the normals by obtaining polygon-vertex.*/
-		else if (normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) 
+		else if (normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
 		{
 			int indexPolygonVertex = 0;
 
@@ -181,7 +194,7 @@ void FbxImport::processNormals(FbxMesh * inputMesh)
 			for (int polygonIndex = 0; polygonIndex < inputMesh->GetPolygonCount(); polygonIndex++)
 			{
 				/*Get the polygon size, to know how many vertices in current polygon.*/
-				int polygonSize = inputMesh->GetPolygonSize(polygonIndex); 
+				int polygonSize = inputMesh->GetPolygonSize(polygonIndex);
 
 				for (int i = 0; i < polygonSize; i++) //Obtain each vertex of the current polygon.
 				{
@@ -216,7 +229,7 @@ void FbxImport::processNormals(FbxMesh * inputMesh)
 void FbxImport::processTangents(FbxMesh * inputMesh)
 {
 	int tangentCount = inputMesh->GetElementTangentCount();
-	
+
 	for (int i = 0; i < tangentCount; i++)
 	{
 		FbxGeometryElementTangent* tangentElement = inputMesh->GetElementTangent(i);
@@ -249,7 +262,7 @@ void FbxImport::processTangents(FbxMesh * inputMesh)
 				}
 
 			}
-		
+
 			else if (tangentElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
 			{
 				int indexPolygonVertex = 0;
@@ -317,13 +330,13 @@ void FbxImport::processBiTangents(FbxMesh * inputMesh)
 					FbxVector4 biTangents = biElement->GetDirectArray().GetAt(biTangentIndex);
 
 					cout << "\n" << "BiTangent normals: " << biTangents.mData[0] << " " << biTangents.mData[1] << " " << biTangents.mData[2] << "\n";
-					
+
 					mesh.mpVertexList.at(vertexIndex).biTangentNormal[0] = biTangents.mData[0];
 					mesh.mpVertexList.at(vertexIndex).biTangentNormal[1] = biTangents.mData[1];
 					mesh.mpVertexList.at(vertexIndex).biTangentNormal[2] = biTangents.mData[2];
 				}
 			}
-			
+
 			else if (biElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
 			{
 				int indexPolygonVertex = 0;
@@ -392,7 +405,7 @@ void FbxImport::processUVs(FbxMesh * inputMesh)
 
 		const int polyCount = inputMesh->GetPolygonCount(); //Get the polygon count of mesh.
 
-		/*If the mapping mode is "eByControlPoint".*/
+															/*If the mapping mode is "eByControlPoint".*/
 		if (UVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
 		{
 			for (int polyIndex = 0; polyIndex < polyCount; ++polyIndex)
@@ -446,11 +459,266 @@ void FbxImport::processUVs(FbxMesh * inputMesh)
 	}
 }
 
+void FbxImport::processMaterials(FbxMesh * inputMesh)
+{
+	int materialCount = 0;
+
+	if (inputMesh)
+	{
+		materialCount = inputMesh->GetNode()->GetMaterialCount();
+
+		if (materialCount > 0)
+		{
+			for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
+			{
+				FbxSurfaceMaterial* material = inputMesh->GetNode()->GetMaterial(materialIndex);
+
+				FbxDouble3 ambientColor, diffuseColor, specularColor;
+
+				if (material->GetClassId().Is(FbxSurfacePhong::ClassId))
+				{
+					cout << "\n" << "Material Number " << materialCounter << ": " << material->GetName() << "\n";
+
+					ambientColor = ((FbxSurfacePhong *)material)->Ambient;
+					diffuseColor = ((FbxSurfacePhong *)material)->Diffuse;
+					specularColor = ((FbxSurfacePhong *)material)->Specular;
+
+					float shininess = ((FbxSurfacePhong*)material)->Shininess;
+
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
+					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
+
+					cout << "\n" << "Ambient color: " << ambientColor.mData[0] << " " << ambientColor.mData[1] <<
+						" " << ambientColor.mData[2] << "\n";
+
+					mesh.materialData.diffuseColor[0] = diffuseColor.mData[0];
+					mesh.materialData.diffuseColor[1] = diffuseColor.mData[1];
+					mesh.materialData.diffuseColor[2] = diffuseColor.mData[2];
+
+					cout << "\n" << "Diffuse color: " << diffuseColor.mData[0] << " " << diffuseColor.mData[1] <<
+						" " << diffuseColor.mData[2] << "\n";
+
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
+					mesh.materialData.specularColor[0] = specularColor.mData[0];
+
+					cout << "\n" << "Specular color: " << specularColor.mData[0] << " " << specularColor.mData[1] <<
+						" " << specularColor.mData[2] << "\n";
+
+					mesh.materialData.shinyFactor = shininess;
+
+					cout << "\n" << "Shininess factor: " << shininess << "\n";
+
+					mesh.mpMaterialList.push_back(mesh.materialData);
+
+					materialCounter++;
+				}
+
+				else if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
+				{
+					cout << "\n" << "Material number " << materialCounter << ": " << material->GetName() << "\n";
+
+					ambientColor = ((FbxSurfaceLambert *)material)->Ambient;
+					diffuseColor = ((FbxSurfaceLambert *)material)->Diffuse;
+
+					mesh.materialData.ambientColor[0] = ambientColor.mData[0];
+					mesh.materialData.ambientColor[1] = ambientColor.mData[1];
+					mesh.materialData.ambientColor[2] = ambientColor.mData[2];
+
+					cout << "\n" << "Ambient color: " << ambientColor.mData[0] << " " << ambientColor.mData[1] <<
+						" " << ambientColor.mData[2] << "\n";
+
+					mesh.materialData.diffuseColor[0] = diffuseColor.mData[0];
+					mesh.materialData.diffuseColor[1] = diffuseColor.mData[1];
+					mesh.materialData.diffuseColor[2] = diffuseColor.mData[2];
+
+					cout << "\n" << "Diffuse color: " << diffuseColor.mData[0] << " " << diffuseColor.mData[1] <<
+						" " << diffuseColor.mData[2] << "\n";
+
+					/*No specular attributes and shininess for lambert material, so set the values to 0.*/
+					mesh.materialData.specularColor[0] = 0;
+					mesh.materialData.specularColor[1] = 0;
+					mesh.materialData.specularColor[2] = 0;
+					mesh.materialData.shinyFactor = 0;
+
+					mesh.mpMaterialList.push_back(mesh.materialData);
+
+					materialCounter++;
+				}
+			}
+		}
+	}
+}
+
+void FbxImport::processTextures(FbxMesh * inputMesh)
+{
+	FbxProperty propDiffus, propSpecular, propNormal;
+
+	int materialCount = inputMesh->GetNode()->GetSrcObjectCount<FbxSurfaceMaterial>();
+
+	for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
+	{
+		FbxSurfaceMaterial* material = inputMesh->GetNode()->GetSrcObject<FbxSurfaceMaterial>(materialIndex);
+
+		if (material)
+		{
+			propDiffus = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+			propSpecular = material->FindProperty(FbxSurfaceMaterial::sSpecular);
+			propNormal = material->FindProperty(FbxSurfaceMaterial::sNormalMap);
+
+			FbxTexture* texture;
+			int textureCount;
+
+			if (propDiffus.IsValid())
+			{
+				processDiffuseMaps(propDiffus);
+			}
+
+			if (propSpecular.IsValid())
+			{
+				processSpecularMaps(propSpecular);
+			}
+
+			if (propNormal.IsValid())
+			{
+				processNormalMaps(propNormal);
+			}
+		}
+	}
+}
+
+void FbxImport::processDiffuseMaps(FbxProperty diffuseProp)
+{
+	int textureCount = diffuseProp.GetSrcObjectCount<FbxTexture>();
+
+	for (int textureIndex = 0; textureIndex < textureCount; textureIndex++)
+	{
+		FbxTexture* texture = diffuseProp.GetSrcObject<FbxTexture>(textureIndex);
+		FbxFileTexture* fileTexture = FbxCast<FbxFileTexture>(texture);
+		FbxString fileTextureName = fileTexture->GetName();
+
+		cout << "\n" << "Texturename Nr " << textureCounter + 1 << ": " << fileTextureName << "\n";
+
+		wchar_t* textureToWchar;
+		FbxUTF8ToWC(fileTextureName.Buffer(), textureToWchar, NULL);
+
+		mesh.mpMaterialList.at(textureCounter).diffuseTexture = textureToWchar;
+
+		textureCounter++;
+	}
+}
+
+void FbxImport::processSpecularMaps(FbxProperty propSpecular)
+{
+	int textureCount = propSpecular.GetSrcObjectCount<FbxTexture>();
+
+	for (int textureIndex = 0; textureIndex < textureCount; textureIndex++)
+	{
+		FbxTexture* texture = propSpecular.GetSrcObject<FbxTexture>(textureIndex);
+		FbxFileTexture* fileTexture = FbxCast<FbxFileTexture>(texture);
+		FbxString fileTextureName = fileTexture->GetName();
+
+		cout << "\n" << "Texturename Nr " << textureCounter + 1 << ": " << fileTextureName << "\n";
+
+		wchar_t* textureToWchar;
+		FbxUTF8ToWC(fileTextureName.Buffer(), textureToWchar, NULL);
+
+		mesh.mpMaterialList.at(textureCounter).specularTexture = textureToWchar;
+
+		textureCounter++;
+	}
+}
+
+void FbxImport::processNormalMaps(FbxProperty propNormal)
+{
+	int textureCount = propNormal.GetSrcObjectCount<FbxTexture>();
+
+	for (int textureIndex = 0; textureIndex < textureCount; textureIndex++)
+	{
+		FbxTexture* texture = propNormal.GetSrcObject<FbxTexture>(textureIndex);
+		FbxFileTexture* fileTexture = FbxCast<FbxFileTexture>(texture);
+		FbxString fileTextureName = fileTexture->GetName();
+
+		cout << "\n" << "Texturename Nr " << textureCounter + 1 << ": " << fileTextureName << "\n";
+
+		wchar_t* textureToWchar;
+		FbxUTF8ToWC(fileTextureName.Buffer(), textureToWchar, NULL);
+
+		mesh.mpMaterialList.at(textureCounter).normalTexture = textureToWchar;
+
+		textureCounter++;
+	}
+}
+
+void FbxImport::processTransformations(FbxMesh* inputMesh)
+{
+
+}
+
 void FbxImport::processLight(FbxLight * inputLight)
 {
+	FbxString lightName = inputLight->GetNode()->GetName();
+
+	cout << "\n" << "Light nr " << lightCounter++ << ": " << lightName;
+
+	FbxVector4 lightColor = inputLight->Color.Get();
+
+	cout << "\n" << "Light color: " << lightColor.mData[0] << " "
+		<< lightColor.mData[1] << " " << lightColor.mData[2];
+
+	float lightIntensity = inputLight->Intensity.Get();
+
+	cout << "\n" << "Light intensity: " << lightIntensity;
+
+	FbxVector4 shadowColor = inputLight->ShadowColor.Get();
+
+	cout << "\n" << "Shadow color: " << shadowColor.mData[0] << " "
+		<< shadowColor.mData[1] << " " << shadowColor.mData[2];
 }
 
 void FbxImport::processCamera(FbxCamera * inputCamera)
 {
+	FbxString cameraName = inputCamera->GetName();
+
+	cout << "\n\n" << "Camera nr " << cameraCounter++ << ": " << cameraName << "\n";
+
+	FbxVector4 cameraPos = inputCamera->Position.Get();
+
+	cout << "\n" << "Camera position: " << cameraPos.mData[0] << " " << cameraPos.mData[1]
+		<< " " << cameraPos.mData[2];
+
+	camera.camData.camPos[0] = cameraPos.mData[0];
+	camera.camData.camPos[1] = cameraPos.mData[1];
+	camera.camData.camPos[2] = cameraPos.mData[2];
+
+	FbxVector4 camUpVector = inputCamera->UpVector.Get();
+
+	cout << "\n" << "Camera Up Vector: " << camUpVector.mData[0] << " " << camUpVector.mData[1]
+		<< " " << camUpVector.mData[2];
+
+	camera.camData.upVector[0] = camUpVector.mData[0];
+	camera.camData.upVector[1] = camUpVector.mData[1];
+	camera.camData.upVector[2] = camUpVector.mData[2];
+
+	float fov = inputCamera->FieldOfView.Get();
+
+	cout << "\n" << "Field of view: " << fov << " degrees";
+
+	camera.camData.fov = fov;
+
+	float nearPlane = inputCamera->NearPlane.Get();
+
+	cout << "\n" << "Near plane: " << nearPlane;
+
+	camera.camData.nearPlane = nearPlane;
+
+	float farPlane = inputCamera->FarPlane.Get();
+
+	cout << "\n" << "Far plane: " << farPlane;
+
+	camera.camData.farPlane = farPlane;
+
+	camera.mpCameraList.push_back(camera.camData);
 }
 
