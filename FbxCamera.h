@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "fbxsdk.h"
+//#include "fbxsdk.h"
 
 class CameraFbx
 {

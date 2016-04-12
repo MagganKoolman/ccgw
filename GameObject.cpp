@@ -11,7 +11,7 @@ GameObject::GameObject(const GameObject& ref)
 }
 
 GameObject::GameObject()
-	: mWorld(0.0f), mRotation(0.0f, 0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
+	:mLookat(0,0,1), mWorld(0.0f), mRotation(0.0f, 0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
 {
 }
 

@@ -22,11 +22,21 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="FbxCamera.h" />
-    <ClInclude Include="FbxImport.h" />
-    <ClInclude Include="FbxLight.h" />
-    <ClInclude Include="FbxMesh.h" />
-    <ClInclude Include="FileExporter.h" />
+    <ClInclude Include="FbxCamera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="FbxImport.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="FbxLight.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="FbxMesh.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="FileExporter.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="global_variables.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="ForwardProgram.h" />
@@ -34,7 +44,9 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Joint.h" />
+    <ClInclude Include="Joint.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sound.h" />
@@ -48,17 +60,29 @@
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
-    <ClCompile Include="FbxCamera.cpp" />
-    <ClCompile Include="FbxImport.cpp" />
-    <ClCompile Include="FbxLight.cpp" />
-    <ClCompile Include="FbxMesh.cpp" />
-    <ClCompile Include="FileExporter.cpp" />
+    <ClCompile Include="FbxCamera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FbxImport.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FbxLight.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FbxMesh.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="FileExporter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="global_variables.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Joint.cpp" />
+    <ClCompile Include="Joint.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -154,7 +178,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;SDL2_image.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

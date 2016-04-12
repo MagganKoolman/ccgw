@@ -26,23 +26,9 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Game::Game() {
-	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
-	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 
-	createScreenQuad();
-	tSprite.init(0.5, 0.5, 1.0, 0.8);
-	playerModel.load("Models/box2.obj");
-	mPlayer.load(&playerModel);	
-}
-
-Game::~Game() {
-	delete pDeferredProgram;
-	delete pForwardProgram;
-}
-
-bool Game::run() {
-	update();
+bool Game::run(Input* input) {
+	update(input);
 	render();
 	return true;
 }
@@ -60,6 +46,22 @@ void Game::render() {
 	pForwardProgram->unUse();
 }
 
-void Game::update() {
-	mPlayer.update(&mInputs);
+void Game::update(Input* input) {
+	mPlayer.update(input, 0.02f);
+}
+
+
+Game::Game() {
+	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
+	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
+
+	createScreenQuad();
+	tSprite.init(0.5, 0.5, 1.0, 0.8);
+	playerModel.load("Models/box2.obj");
+	mPlayer.load(&playerModel);	
+}
+
+Game::~Game() {
+	delete pDeferredProgram;
+	delete pForwardProgram;
 }

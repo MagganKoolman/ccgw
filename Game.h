@@ -10,7 +10,7 @@
 
 class Game {
 public:
-	bool run();
+	bool run(Input* input);
 
 	Game();
 	~Game();
@@ -30,5 +30,5 @@ private:
 	void createScreenQuad();
 	void drawOnScreenQuad();
 	void render();
-	void update();
+	void update(Input* input);
 };
