@@ -3,13 +3,14 @@
 #include <vector>
 #include <glm\glm.hpp>
 #include "GameObject.h"
+#include <gl\glew.h>
 
 class Camera
 {
 public:
 	/*Makes the camera follow a target offset by the supplied distance.*/
-	void follow( glm::vec3 position, float rotation, float distance );
-
+	void follow( glm::vec3 position, const glm::vec3 &lookAt, float distance );
+	void update(const GLuint &programID);
 	// Getters & Setters are evul!
 
 	void setPerspective( float fov, float aspectRatio, float nearplane = 0.01f, float farplane = 100.0f );

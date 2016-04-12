@@ -1,13 +1,18 @@
 #include "Camera.h"
-#include <gl\glew.h>
+
 #include "glm\gtx\transform.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
-void Camera::follow( glm::vec3 position, float rotation, float distance )
+void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance )
 {
-	glm::vec3 dir( cos( rotation ), 0.0f, sin( rotation ) );
-	dir = -glm::normalize( dir );
-	mPosition = position + ( dir * distance );
+	mPosition = position + ( -lookDir * distance );
+	mView = glm::lookAt(mPosition, mPosition + lookDir, glm::vec3(0, 1, 0));
+}
+
+void Camera::update(const GLuint &programID) {
+	glm::mat4 viewPersp = mPerspective * mView;
+	GLuint viewPerspective = glGetUniformLocation(programID, "viewProjection");
+	glUniformMatrix4fv(viewPerspective, 1, GL_FALSE, &viewPersp[0][0]);
 }
 
 void Camera::setPerspective( float fov, float aspectRatio, float nearplane, float farplane )
@@ -18,7 +23,7 @@ void Camera::setPerspective( float fov, float aspectRatio, float nearplane, floa
 void Camera::setPosition( glm::vec3 position )
 {
 	mPosition = position;
-	mView = glm::translate( glm::mat4(), position );
+	mView = glm::translate( glm::mat4(), -position );
 }
 
 glm::vec3 Camera::getPosition() const
@@ -57,6 +62,7 @@ Camera::Camera( const Camera& ref )
 Camera::Camera( float fov, float aspectRatio, float nearplane, float farplane )
 {
 	setPerspective( fov, aspectRatio, nearplane, farplane );
+	//mView = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 5) + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
 Camera::~Camera()
