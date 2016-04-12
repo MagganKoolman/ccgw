@@ -16,6 +16,17 @@ public:
 		float vertexUV[2];
 	};
 
+	struct sVertexAnimData
+	{
+		float vertexPos[3];
+		float vertexNormal[3];
+		float tangentNormal[3];
+		float biTangentNormal[3];
+		float vertexUV[2];
+		float influences[4];
+		float weights[4];
+	};
+
 	struct sTransformData
 	{
 		float transformData[4][4];
