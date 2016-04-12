@@ -1,5 +1,17 @@
 #include "GameObject.h"
 
+bool GameObject::load(tempMesh* assets)
+{
+	mpMesh = assets;
+	return (mpMesh != nullptr);
+}
+
+bool GameObject::loadTex(Texture * texture)
+{
+	mpTexture = texture;
+	return (mpTexture != nullptr);
+}
+
 void GameObject::update() {
 
 }
@@ -23,10 +35,11 @@ GameObject::GameObject(glm::vec3 position = { 0, 0, 0 })
 GameObject::GameObject()
 	: mRotation(0.0f, 0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
 {
-	mPosition = { 0, 0, -3 };
+	mPosition = { 0, 0, 0 };
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 }
 
 GameObject::~GameObject()
 {
+
 }

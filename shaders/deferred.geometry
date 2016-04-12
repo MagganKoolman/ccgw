@@ -7,7 +7,7 @@ in vec3 posOut[];
 in vec3 normalOut[];
 in vec2 colorOut[];
 
-out vec2 colorOut2;
+out vec2 uvOut2;
 out vec3 normalOut2;
 
 uniform mat4 world;
@@ -18,8 +18,8 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		gl_Position = viewProjection * world * vec4(posOut[i], 1.0);
-		colorOut2 = colorOut[i];
-		normalOut2 = normalOut[i];
+		uvOut2 = colorOut[i];
+		normalOut2 = normalize(posOut[i]);
 		EmitVertex();
 	}
 	EndPrimitive();

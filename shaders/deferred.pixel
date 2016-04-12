@@ -5,9 +5,12 @@ layout(location = 1) out vec4 normalTex;
 layout(location = 2) out vec3 specularTex;
 layout(location = 3) out vec3 diffuseTex;
 
-in vec2 colorOut2;
+in vec2 uvOut2;
 in vec3 normalOut2;
 
+uniform sampler2D texSampler;
+
 void main (){
-	color = vec4(normalOut2, 1.0);
+	color = texture(texSampler, vec2(uvOut2.s, 1 - uvOut2.t));
+	//color = vec4(normalOut2, 1.0);
 }

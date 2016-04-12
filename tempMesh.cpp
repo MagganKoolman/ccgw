@@ -88,49 +88,36 @@ bool tempMesh::load(string file)
 		int curIndex = 0;
 		for (std::vector<objFace>::const_iterator it = faces.begin(); it != faces.end(); it++)
 		{
-			/*objVertex v1;
-			v1.position = v[it->p1 - 1];
-			v1.uv = vt[it->u1 - 1];
-			v1.normal = vn[it->n1 - 1];
-
-			objVertex v2;
-			v2.position = v[it->p2 - 1];
-			v2.uv = vt[it->u2 - 1];
-			v2.normal = vn[it->n2 - 1];
-
-			objVertex v3;
-			v3.position = v[it->p3 - 1];
-			v3.uv = vt[it->u3 - 1];
-			v3.normal = vn[it->n3 - 1];*/
+			
 			objVertex v1;
 			v1.px = v[it->p1 - 1].x;
 			v1.py = v[it->p1 - 1].y;
 			v1.pz = v[it->p1 - 1].z;
-			v1.u = v[it->p1 - 1].x;
-			v1.v = v[it->p1 - 1].y;
-			v1.nx = v[it->p1 - 1].x;
-			v1.ny = v[it->p1 - 1].y;
-			v1.nz = v[it->p1 - 1].z;
+			v1.u = vt[it->u1 - 1].x;
+			v1.v = vt[it->u1 - 1].y;
+			v1.nx = vn[it->n1 - 1].x;
+			v1.ny = vn[it->n1 - 1].y;
+			v1.nz = vn[it->n1 - 1].z;
 
 			objVertex v2;
 			v2.px = v[it->p2 - 1].x;
 			v2.py = v[it->p2 - 1].y;
 			v2.pz = v[it->p2 - 1].z;
-			v2.u = v[it->p2 - 1].x;
-			v2.v = v[it->p2 - 1].y;
-			v2.nx = v[it->p2 - 1].x;
-			v2.ny = v[it->p2 - 1].y;
-			v2.nz = v[it->p2 - 1].z;
+			v2.u = vt[it->u2 - 1].x;
+			v2.v = vt[it->u2 - 1].y;
+			v2.nx = vn[it->n2 - 1].x;
+			v2.ny = vn[it->n2 - 1].y;
+			v2.nz = vn[it->n2 - 1].z;
 
 			objVertex v3;
 			v3.px = v[it->p3 - 1].x;
 			v3.py = v[it->p3 - 1].y;
 			v3.pz = v[it->p3 - 1].z;
-			v3.u = v[it->p3 - 1].x;
-			v3.v = v[it->p3 - 1].y;
-			v3.nx = v[it->p3 - 1].x;
-			v3.ny = v[it->p3 - 1].y;
-			v3.nz = v[it->p3 - 1].z;
+			v3.u = vt[it->u3 - 1].x;
+			v3.v = vt[it->u3 - 1].y;
+			v3.nx = vn[it->n3 - 1].x;
+			v3.ny = vn[it->n3 - 1].y;
+			v3.nz = vn[it->n3 - 1].z;
 
 			vertices.push_back(v1);
 			vertices.push_back(v2);

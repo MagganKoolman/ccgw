@@ -8,15 +8,18 @@ bool Texture::load(string file)
 	if (img)
 	{
 		glGenTextures(1, &mID);
+		glBindTexture(GL_TEXTURE_2D, mID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
 
 		mWidth = img->w;
 		mHeight = img->h;
 
 		SDL_FreeSurface(img);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+	
 	return result;
 }
 
@@ -25,6 +28,11 @@ void Texture::unload()
 	if (mID > 0)
 		glDeleteTextures(1, &mID);
 	mWidth = mHeight = 0;
+}
+
+GLuint Texture::getID() const
+{
+	return mID;
 }
 
 Texture& Texture::operator=(const Texture& ref)

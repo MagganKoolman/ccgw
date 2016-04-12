@@ -5,8 +5,8 @@
 
 void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance )
 {
-	mPosition = position + ( -lookDir * distance );
-	mView = glm::lookAt(mPosition, mPosition + lookDir, glm::vec3(0, 1, 0));
+	mPosition = position + glm::vec3(0, distance/2, distance);
+	mView = glm::lookAt(mPosition, position, glm::vec3(0, 1, 0));
 }
 
 void Camera::update(const GLuint &programID) {
@@ -62,7 +62,6 @@ Camera::Camera( const Camera& ref )
 Camera::Camera( float fov, float aspectRatio, float nearplane, float farplane )
 {
 	setPerspective( fov, aspectRatio, nearplane, farplane );
-	//mView = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 5) + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
 Camera::~Camera()

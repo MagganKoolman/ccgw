@@ -11,7 +11,8 @@ class GameObject
 {
 public:
 	/*Abstract method. Don't call.*/
-	virtual bool load(tempMesh* assets) = 0;
+	bool load(tempMesh* assets);
+	bool loadTex(Texture* texture);
 	/*Abstract method. Don't call.*/
 	virtual void update();
 	/*Abstract method. Don't call.*/

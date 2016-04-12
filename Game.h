@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "global_variables.h"
 #include "Terrain.h"
+#include "Texture.h"
 
 
 class Game {
@@ -25,6 +26,8 @@ private:
 
 	tempMesh playerModel;
 	tempMesh terrainModel;
+	Texture texture;
+	Texture texture2;
 	Player mPlayer;
 	Terrain mGround;
 

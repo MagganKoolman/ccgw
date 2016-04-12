@@ -11,6 +11,7 @@ public:
 	bool load(string file);
 	/*Destroys the texture and frees the memory in the GPU.*/
 	void unload();
+	GLuint getID() const;
 
 	Texture& operator=(const Texture& ref);
 	Texture(const Texture& ref);
