@@ -68,6 +68,6 @@ void Game::render() {
 }
 
 void Game::update(const Input* inputs) {
-	mPlayer.update(inputs);
-	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 4);
+	mPlayer.update(inputs, 0.02f);
+	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
 }
