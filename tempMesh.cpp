@@ -200,7 +200,7 @@ tempMesh::tempMesh(const tempMesh& ref)
 tempMesh::tempMesh()
 	: mVertexArray(0), mVertexBuffer(0), mIndexBuffer(0), mSize(0)
 {
-	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	//mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	//mWorld = mWorld * glm::mat4x4(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1,1, 1, 2, 1);
 }
 

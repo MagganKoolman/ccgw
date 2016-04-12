@@ -36,7 +36,7 @@ Camera::~Camera()
 void Camera::follow( glm::vec3 position, float rotation, float distance )
 {
 	glm::vec3 dir( cos( rotation ), 0.0f, sin( rotation ) );
-	dir = -normalize( dir );
+	dir = -glm::normalize( dir );
 	mPosition = position + ( dir * distance );
 }
 

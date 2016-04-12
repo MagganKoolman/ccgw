@@ -147,7 +147,7 @@ Input::Input(const Input& ref)
 	// copy values from reference
 	for (int i = 0; i<MAX_KEYS; i++)
 	{
-		mCurKeys[i] = ref.mCurKeys[i];
+		mCurKeys[i] = ref.mCurKeys[i]; 
 		mPrevKeys[i] = ref.mPrevKeys[i];
 	}
 
