@@ -20,7 +20,7 @@ public:
 	bool update();
 
 	/* Returns true if the key is currently down. Use the SDLK_ enum as parameter.*/
-	bool keyDown(int key);
+	bool keyDown(int key) const;
 	/* Returns true if the key is currently up. Use the SDLK_ enum as parameter.*/
 	bool keyUp(int key);
 	/* Returns true if the key is currently down and previously up. Use the SDLK_ enum as parameter.*/

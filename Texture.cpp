@@ -17,7 +17,6 @@ bool Texture::load(string file)
 
 		SDL_FreeSurface(img);
 	}
-
 	return result;
 }
 

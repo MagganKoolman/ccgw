@@ -29,7 +29,10 @@ public:
 
 	struct sTransformData
 	{
-		float transformData[4][4];
+		float translate[3];
+		float rotation[3];
+		float scale[3];
+
 	};
 
 	struct sMaterialData
@@ -46,6 +49,7 @@ public:
 	};
 
 	sVertexData vertexData;
+	sTransformData transformData;
 	sMaterialData materialData;
 
 	std::vector<sVertexData> mpVertexList;

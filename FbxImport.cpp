@@ -112,7 +112,9 @@ void FbxImport::processMesh(FbxMesh * inputMesh)
 
 	processTransformations(inputMesh);
 
-	/*mMeshList.push_back(mesh.mp_VertexList);*/ //Want to push back a mesh with a vertex list... or? 
+	/*How to put all the information for a mesh in a new list???*/
+
+	/*mMeshList.push_back(mesh.mpVertexList);*/
 }
 
 void FbxImport::processVertices(FbxMesh * inputMesh)
@@ -653,7 +655,33 @@ void FbxImport::processNormalMaps(FbxProperty propNormal)
 
 void FbxImport::processTransformations(FbxMesh* inputMesh)
 {
+	FbxAMatrix transformMatrix = inputMesh->GetNode()->EvaluateGlobalTransform();
 
+	FbxVector4 trans, scale, rotat;
+
+	trans = transformMatrix.GetT();
+	scale = transformMatrix.GetS();
+	rotat = transformMatrix.GetR();
+
+	cout << "\n" << "Position: " << trans.mData[0] << " " << trans.mData[1] << " " << trans.mData[2] << "\n";
+
+	mesh.transformData.translate[0] = trans.mData[0];
+	mesh.transformData.translate[1] = trans.mData[1];
+	mesh.transformData.translate[2] = trans.mData[2];
+
+	cout << "\n" << "Scale: " << scale.mData[0] << " " << scale.mData[1] << " " << scale.mData[2] << "\n";
+
+	mesh.transformData.scale[0] = scale.mData[0];
+	mesh.transformData.scale[1] = scale.mData[1];
+	mesh.transformData.scale[2] = scale.mData[2];
+
+	cout << "\n" << "Rotation: " << rotat.mData[0] << " " << rotat.mData[1] << " " << rotat.mData[2] << "\n";
+
+	mesh.transformData.rotation[0] = rotat.mData[0];
+	mesh.transformData.rotation[1] = rotat.mData[1];
+	mesh.transformData.rotation[2] = rotat.mData[2];
+
+	mesh.mpTransformList.push_back(mesh.transformData);
 }
 
 void FbxImport::processLight(FbxLight * inputLight)
@@ -664,17 +692,46 @@ void FbxImport::processLight(FbxLight * inputLight)
 
 	FbxVector4 lightColor = inputLight->Color.Get();
 
+	light.lightData.color[0] = lightColor.mData[0];
+	light.lightData.color[1] = lightColor.mData[1];
+	light.lightData.color[2] = lightColor.mData[2];
+
 	cout << "\n" << "Light color: " << lightColor.mData[0] << " "
 		<< lightColor.mData[1] << " " << lightColor.mData[2];
 
 	float lightIntensity = inputLight->Intensity.Get();
 
+	light.lightData.intensity = lightIntensity;
+
 	cout << "\n" << "Light intensity: " << lightIntensity;
 
-	FbxVector4 shadowColor = inputLight->ShadowColor.Get();
+	FbxAMatrix lightPosition = inputLight->GetNode()->EvaluateGlobalTransform();
 
-	cout << "\n" << "Shadow color: " << shadowColor.mData[0] << " "
-		<< shadowColor.mData[1] << " " << shadowColor.mData[2];
+	FbxVector4 trans, rot, scal;
+
+	trans = lightPosition.GetT();
+	rot = lightPosition.GetR();
+	scal = lightPosition.GetS();
+
+	light.lightData.lightPos[0] = trans.mData[0];
+	light.lightData.lightPos[1] = trans.mData[1];
+	light.lightData.lightPos[2] = trans.mData[2];
+
+	cout << "\n" << "Light position: " << trans.mData[0] << " " << trans.mData[1] << " " << trans.mData[2];
+
+	light.lightData.lightScale[0] = rot.mData[0];
+	light.lightData.lightScale[1] = rot.mData[1];
+	light.lightData.lightScale[2] = rot.mData[2];
+
+	cout << "\n" << "Light orientation: " << rot.mData[0] << " " << rot.mData[1] << " " << rot.mData[2];
+
+	light.lightData.lightRot[0] = scal.mData[0];
+	light.lightData.lightRot[0] = scal.mData[1];
+	light.lightData.lightRot[0] = scal.mData[2];
+
+	cout << "\n" << "Light scale: " << scal.mData[0] << " " << scal.mData[1] << " " << scal.mData[2];
+
+	light.mLightList.push_back(light.lightData);
 }
 
 void FbxImport::processCamera(FbxCamera * inputCamera)
