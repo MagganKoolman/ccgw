@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Particle.h"
+#include "Billboard.h"
 
 /*Class for emitting particles.*/
 class Emitter
@@ -20,10 +21,13 @@ public:
 
 	Emitter& operator=( const Emitter& ref );
 	Emitter( const Emitter& ref );
-	Emitter( int maxParticles );
+	Emitter( Camera* camera, BillboardProgram* billboardProgram, int maxParticles );
 	~Emitter();
 
 private:
+	Camera* mpCamera;
+	BillboardProgram* mpBillboardProgram;
+
 	Particle* mpParticles;
 	int mMax;
 

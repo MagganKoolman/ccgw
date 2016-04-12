@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm\glm.hpp>
+#include "Billboard.h"
 #include "Texture.h"
 
 class Particle
@@ -13,7 +14,7 @@ public:
 	/*Updates the position, velocity, scale and lifetime of the particle.*/
 	void update( float deltaTime );
 	/*Draws the particle.*/
-	void draw();
+	void draw( Camera* camera, BillboardProgram* billboardProgram );
 
 	float getLifetime() const;
 	float getElapsed() const;

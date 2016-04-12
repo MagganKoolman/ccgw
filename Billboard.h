@@ -1,22 +1,25 @@
 #pragma once
 
-#include <GL\glew.h>
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
+#include "ShaderProgram.h"
+#include "Camera.h"
 
-/*We only ever need one of these.*/
-class Billboard
+class BillboardProgram : public ShaderProgram
 {
 public:
-	/*Allocates memory on the GPU.*/
-	void alloc();
-	/*Deallocates memory on the GPU.*/
-	void dealloc();
-	/*Draws the billboard.*/
-	void draw();
+	/*Sets this shader as the active one.*/
+	void use();
+	/*Sets the active shader to 0.*/
+	void unUse();
+	/*Draw a billboard with the specified position and scale.*/
+	void draw( Camera* camera, glm::vec3 position, glm::vec2 size );
 
-	Billboard& operator=( const Billboard& ref );
-	Billboard( const Billboard& ref );
-	Billboard();
-	~Billboard();
+	BillboardProgram& operator=( const BillboardProgram& ref );
+	BillboardProgram( const BillboardProgram& ref );
+	BillboardProgram();
+	BillboardProgram( const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath );
+	~BillboardProgram();
 
 private:
 	GLuint mVertexArray;

@@ -2,10 +2,9 @@
 
 in vec3 pos;
 
-out vec3 posOut;
-
 uniform mat4 world;
+uniform mat4 view;
 
 void main(){
-	posOut = world * pos;
+	gl_Position = world * view * vec4( pos, 1.0 );
 }
