@@ -26,8 +26,8 @@ public:
 protected: // <-- changed to protected from private. because i wanted to reach these from subclasses.
 	glm::mat4 mWorld;
 	glm::vec3 mPosition;
-	glm::quat mRotation;
 	glm::vec3 mLookat;
+	glm::quat mRotation;
 
 	tempMesh* mpMesh;
 	Texture* mpTexture;

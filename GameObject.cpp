@@ -36,6 +36,7 @@ GameObject::GameObject()
 	: mRotation(0.0f, 0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
 {
 	mPosition = { 0, 0, 0 };
+	mLookat = { 0, 0, -1 };
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 }
 
