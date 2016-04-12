@@ -9,8 +9,5 @@ in vec2 colorOut2;
 in vec3 normalOut2;
 
 void main (){
-	color = vec4(1,0.5, 0.3, 1.0);
-	normalTex = vec4(1,0.5, 0.3, 1.0);
-	specularTex = vec3(1,0.5, 1.0);
-	diffuseTex = vec3(1,0.5, 1.0);
+	color = vec4(normalOut2, 1.0);
 }

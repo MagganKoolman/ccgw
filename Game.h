@@ -2,10 +2,12 @@
 #include "ActionState.h"
 #include "DeferredProgram.h"
 #include "ForwardProgram.h"
-#include "TestSprite.h"
 #include "tempMesh.h"
 #include "Player.h"
 #include "Input.h"
+#include "Camera.h"
+#include "global_variables.h"
+#include "Terrain.h"
 
 
 class Game {
@@ -19,11 +21,14 @@ private:
 	ShaderProgram* pDeferredProgram;
 	ShaderProgram* pForwardProgram;
 	
-	TestSprite tSprite;
 	GLuint testScreen;
 
 	tempMesh playerModel;
+	tempMesh terrainModel;
 	Player mPlayer;
+	Terrain mGround;
+
+	Camera mCamera;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();
