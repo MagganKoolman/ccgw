@@ -1,0 +1,11 @@
+#version 420 core
+
+in vec3 pos;
+
+out vec3 posOut;
+
+uniform mat4 world;
+
+void main(){
+	posOut = world * pos;
+}
