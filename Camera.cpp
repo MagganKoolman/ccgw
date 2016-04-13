@@ -1,12 +1,12 @@
 #include "Camera.h"
+#include <iostream>
 
 #include "glm\gtx\transform.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
 void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance )
 {
-	glm::vec3 templookDir = glm::normalize(glm::vec3(lookDir.x, 0, lookDir.z));
-	mPosition = position - distance * lookDir + glm::cross(lookDir, glm::cross( glm::vec3(0,1,0), templookDir))*(distance/4);// (-lookDir * distance);
+	mPosition = position - distance * lookDir + glm::vec3(glm::cross(lookDir, glm::cross(glm::vec3(0,1,0),lookDir)))*(distance/4);// (-lookDir * distance);
 	mView = glm::lookAt(mPosition, position + lookDir*distance, glm::vec3(0, 1, 0));
 }
 
@@ -14,6 +14,9 @@ void Camera::update(const GLuint &programID) {
 	glm::mat4 viewPersp = mPerspective * mView;
 	GLuint viewPerspective = glGetUniformLocation(programID, "viewProjection");
 	glUniformMatrix4fv(viewPerspective, 1, GL_FALSE, &viewPersp[0][0]);
+
+	GLuint cameraPos = glGetUniformLocation(programID, "cameraPos");
+	glUniform3fv(cameraPos, 1, &mPosition[0]);
 }
 
 void Camera::setPerspective( float fov, float aspectRatio, float nearplane, float farplane )

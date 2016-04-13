@@ -26,7 +26,7 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50.0){
+Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 
@@ -39,6 +39,8 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50.0){
 	mGround.load(&terrainModel);
 	mPlayer.loadTex(&texture);
 	mGround.loadTex(&texture);
+	aBox.load(&playerModel);
+	aBox.loadTex(&texture);
 }
 
 Game::~Game() {
@@ -54,9 +56,9 @@ bool Game::run(const Input* inputs) {
 
 void Game::render() {
 	pDeferredProgram->use();
-
 	mCamera.update(pDeferredProgram->getProgramID());
-	mPlayer.render(pDeferredProgram->getProgramID());
+	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
+	aBox.render(pDeferredProgram->getProgramID());
 	mGround.render(pDeferredProgram->getProgramID());
 	pDeferredProgram->unUse();
 

@@ -29,6 +29,7 @@ private:
 	Texture texture;
 	Texture texture2;
 	Player mPlayer;
+	Terrain aBox;
 	Terrain mGround;
 
 	Camera mCamera;
