@@ -54,16 +54,23 @@ void Player::update(const Input* inputs, float dt)
 								0,0,0,1
 								};
 
+
+	// #fuckedup maths, https://en.wikipedia.org/wiki/Rotation_matrix for formula, might gimbalock??
 	glm::vec3 axis = glm::cross(tempLookat, glm::vec3(0,1,0));
 	glm::mat3 ucm = {	0,-axis.z, axis.y,
 						axis.z, 0, -axis.x,
 						-axis.y, axis.x, 0};
-	glm::mat4 rotateAroundZ = glm::mat4();//cosf(rad)* glm::mat4() + sinf(rad)
-								/*{ cosf(rad) + axis.x*axis.x*(1-cosf(rad)), axis.x*axis.y*(1-cosf(rad)) - axis.z*sinf(rad), axis.x*axis.zsinf(rad),0,0,
-								-sinf(rad), cosf(rad),0,0,
-								0,0,1,0,
-								0,0,0,1
-								};*/
+	glm::mat3 tensorprodU = {	axis.x*axis.x, axis.x*axis.y, axis.x*axis.z,
+								axis.y*axis.x, axis.y*axis.y, axis.y*axis.z,
+								axis.z*axis.x, axis.z*axis.y, axis.z*axis.z};
+
+	glm::mat3 tempMatrix = cosf(rad)* glm::mat3() + sinf(rad)*ucm + (1 - cosf(rad))*tensorprodU;
+	glm::mat4 rotateAroundZ = glm::mat4(
+										glm::vec4(tempMatrix[0], 0),
+										glm::vec4(tempMatrix[1], 0),
+										glm::vec4(tempMatrix[2], 0),
+										glm::vec4(0,0,0,1)
+										);
 
 	this->mLookat = glm::vec3((rotateAroundZ *rotatematrix) * glm::vec4(mLookat,1) );
 	mWorld =  rotatematrix * mWorld;
