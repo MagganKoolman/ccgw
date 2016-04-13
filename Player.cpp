@@ -38,9 +38,21 @@ void Player::update(const Input* inputs, float dt)
 		speedY += 1;
 	}
 	this->mPosition += mDirection * mSpeed * dt + glm::vec3(0, speedY * dt, 0);
-	if (mPosition.y < 0) {
-		mPosition.y = 0;
+	if (mPosition.y < 0.5) {
+		mPosition.y = 0.5;
 		speedY = 0;
+	}
+
+	float degree = 1 * dt;
+	glm::mat4 rotatematrix = {	cosf(degree), 0, sinf(degree),0,
+								0,1,0,0,
+								-sinf(degree), 0, cosf(degree),0,
+								0,0,0,1
+								};
+
+	if (inputs->keyDown(SDLK_e)) {
+		this->mLookat = glm::vec3(rotatematrix * glm::vec4(mLookat,1) );
+		mWorld = rotatematrix * mWorld;
 	}
 	
 	mWorld[3][0] = mPosition.x;
