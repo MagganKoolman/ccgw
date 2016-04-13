@@ -11,21 +11,24 @@ out vec2 uvOut2;
 out vec3 normalOut2;
 
 uniform mat4 viewProjection;
+uniform mat4 world;
+uniform mat4 normalMat;
 uniform vec3 cameraPos;
 
 void main()
 {
 	vec3 p1 = posOut[0].xyz - posOut[1].xyz;
 	vec3 p2 = posOut[2].xyz - posOut[1].xyz;
-	normalOut2 = normalize(cross(p1, p2));
+	vec3 testNormal = normalize(cross(p1, p2));
 	vec3 aVector = normalize(cameraPos - posOut[1].xyz);
-	if(dot(normalOut2, aVector) > 0.0f)
+	if(dot(testNormal, aVector) > 0.0f)
 	{
 		for (int i = 0; i < 3; i++)
 		{
 			gl_Position = viewProjection * vec4(posOut[i]);
 			uvOut2 = colorOut[i];
-			normalOut2 = normalOut[i];
+			vec4 tja = world * vec4(normalOut[i], 0.0);
+			normalOut2 = vec3(normalMat * tja);
 			EmitVertex();
 		}
 		EndPrimitive();

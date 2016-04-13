@@ -17,6 +17,7 @@ public:
 	virtual void update(const float &dt);
 	/*Abstract method. Don't call.*/
 	virtual void render(const GLuint &programID);
+	virtual void render(const GLuint &programID, const glm::mat4 &viewMat);
 	glm::vec3 getPosition() const;
 
 	GameObject(const GameObject& ref);

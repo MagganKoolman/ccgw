@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include <iostream>
 
 bool GameObject::load(tempMesh* assets)
 {
@@ -19,6 +20,28 @@ void GameObject::render(const GLuint & programID)
 {
 	GLuint world = glGetUniformLocation(programID, "world");
 	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
+
+	GLuint texLocation = glGetUniformLocation(programID, "texSampler");
+	glUniform1i(texLocation, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mpTexture->getID());
+	mpMesh->draw();
+}
+
+void GameObject::render(const GLuint & programID, const glm::mat4 &viewMat)
+{
+	GLuint world = glGetUniformLocation(programID, "world");
+	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
+	
+	glm::mat4 normalMatrix = glm::transpose(glm::inverse(viewMat * mWorld));
+	GLuint normalMat = glGetUniformLocation(programID, "normalMat");
+	glUniformMatrix4fv(normalMat, 1, GL_FALSE, &normalMatrix[0][0]);
+
+	/*if (mPosition != glm::vec3(0, 0, 0)) {
+		glm::vec4 hej(glm::vec4(glm::vec4(0, 1, 0, 0) * normalMatrix));
+		std::cout << hej.x << "\t" << hej.y << "\t" << hej.z << std::endl;
+	}*/
+
 	GLuint texLocation = glGetUniformLocation(programID, "texSampler");
 	glUniform1i(texLocation, 0);
 	glActiveTexture(GL_TEXTURE0);

@@ -13,6 +13,7 @@ void Camera::update(const GLuint &programID) {
 	glm::mat4 viewPersp = mPerspective * mView;
 	GLuint viewPerspective = glGetUniformLocation(programID, "viewProjection");
 	glUniformMatrix4fv(viewPerspective, 1, GL_FALSE, &viewPersp[0][0]);
+
 	GLuint cameraPos = glGetUniformLocation(programID, "cameraPos");
 	glUniform3fv(cameraPos, 1, &mPosition[0]);
 }
