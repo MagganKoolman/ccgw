@@ -28,7 +28,7 @@ void main()
 			gl_Position = viewProjection * vec4(posOut[i]);
 			uvOut2 = colorOut[i];
 			vec4 tja = world * vec4(normalOut[i], 0.0);
-			normalOut2 = vec3(normalMat * tja);
+			normalOut2 = normalize(vec3(normalMat * tja));
 			EmitVertex();
 		}
 		EndPrimitive();

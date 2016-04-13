@@ -10,9 +10,6 @@ struct objFace
 
 struct objVertex
 {
-	/*glm::vec3 position;
-	glm::vec2 uv;
-	glm::vec3 normal;*/
 	float px, py, pz;
 	float u, v;
 	float nx, ny, nz;

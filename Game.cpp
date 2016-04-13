@@ -39,6 +39,8 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	mGround.load(&terrainModel);
 	mPlayer.loadTex(&texture2);
 	mGround.loadTex(&texture);
+	aBox.load(&playerModel);
+	aBox.loadTex(&texture);
 }
 
 Game::~Game() {
@@ -56,6 +58,7 @@ void Game::render() {
 	pDeferredProgram->use();
 	mCamera.update(pDeferredProgram->getProgramID());
 	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
+	aBox.render(pDeferredProgram->getProgramID());
 	mGround.render(pDeferredProgram->getProgramID());
 	pDeferredProgram->unUse();
 

@@ -11,5 +11,5 @@ uniform sampler2D depthT;
 
 void main (){
 	finalColor = texture(normalT, texOut).rgb * 2 - 1;
-	//finalColor = texture(ambientT, texOut) * 2 - 1;
+	//finalColor = texture(ambientT, texOut);
 }

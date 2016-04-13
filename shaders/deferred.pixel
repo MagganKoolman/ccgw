@@ -12,5 +12,5 @@ uniform sampler2D texSampler;
 
 void main (){
 	color = texture(texSampler, vec2(uvOut2.s, 1 - uvOut2.t));
-	normalTex = vec4(normalOut2, 1.0);
+	normalTex = vec4(normalOut2, 0.0);
 }
