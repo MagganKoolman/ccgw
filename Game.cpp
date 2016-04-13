@@ -26,7 +26,7 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 10.0){
+Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 

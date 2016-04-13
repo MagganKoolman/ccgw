@@ -4,6 +4,8 @@ in vec2 texOut;
 out vec4 finalColor;
 
 uniform sampler2D ambientT;
+uniform sampler2D normalT;
+uniform sampler2D depthT;
 
 void main (){
 	finalColor = texture(ambientT, texOut);
