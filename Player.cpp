@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 void Player::render(const GLuint &programID)
 {
@@ -42,18 +43,17 @@ void Player::update(const Input* inputs, float dt)
 		mPosition.y = 0.5;
 		speedY = 0;
 	}
+	
+	float degree = (inputs->mouseDelta().x)/200 *-1;
 
-	float degree = 1 * dt;
 	glm::mat4 rotatematrix = {	cosf(degree), 0, sinf(degree),0,
 								0,1,0,0,
 								-sinf(degree), 0, cosf(degree),0,
 								0,0,0,1
 								};
 
-	if (inputs->keyDown(SDLK_e)) {
-		this->mLookat = glm::vec3(rotatematrix * glm::vec4(mLookat,1) );
-		mWorld = rotatematrix * mWorld;
-	}
+	this->mLookat = glm::vec3(rotatematrix * glm::vec4(mLookat,1) );
+	mWorld = rotatematrix * mWorld;
 	
 	mWorld[3][0] = mPosition.x;
 	mWorld[3][1] = mPosition.y;
@@ -72,7 +72,7 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 Player::Player() : GameObject() 
 {
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-	mMaxSpeed = 1;
+	mMaxSpeed = 3;
 	speedY = 0;
 }
 
