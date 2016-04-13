@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "global_variables.h"
 
 bool Input::update()
 {
@@ -11,7 +12,7 @@ bool Input::update()
 	for (int i = 0; i<MAX_BUTTONS; i++)
 		mPrevButtons[i] = mCurButtons[i];
 
-	this->mPrevMouse = mCurMouse;
+
 	// poll SDL for input
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -45,9 +46,18 @@ bool Input::update()
 		
 		else if (e.type == SDL_MOUSEMOTION) 
 		{
+			this->mPrevMouse = mCurMouse;
 			this->mCurMouse = glm::vec2(e.motion.x, e.motion.y);
 		}
 	}
+	int tempx = 0; int tempy = 0; 
+	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
+	SDL_FlushEvent(SDL_MOUSEMOTION);
+
+	SDL_GetWindowPosition(window, &tempx, &tempy);
+
+	this->mPrevMouse =glm::vec2(gWidth/2 - tempx, gHeight/2 - tempy);
+
 	return result;
 }
 
@@ -163,7 +173,7 @@ Input::Input(const Input& ref)
 	}
 }
 
-Input::Input()
+Input::Input(SDL_Window* w)
 {
 	// initialize all values to false
 	for (int i = 0; i<MAX_KEYS; i++)
@@ -171,7 +181,7 @@ Input::Input()
 
 	for (int i = 0; i<MAX_BUTTONS; i++)
 		mCurButtons[i] = mPrevButtons[i] = false;
-
+	this->window = w;
 	// TODO: Initialize mouse position?
 }
 

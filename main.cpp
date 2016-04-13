@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 	glClearColor(0.7f, 0.7f, 1.0f, 1.0);
 	glEnable(GL_DEPTH_TEST);
 
-	Input input;
+	Input input(window);
 	Game game;
 
 	while (running)
