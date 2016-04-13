@@ -37,7 +37,7 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50.0){
 	texture2.load("Models/Chesterfield_texture.png");
 	mPlayer.load(&playerModel);	
 	mGround.load(&terrainModel);
-	mPlayer.loadTex(&texture2);
+	mPlayer.loadTex(&texture);
 	mGround.loadTex(&texture);
 }
 
