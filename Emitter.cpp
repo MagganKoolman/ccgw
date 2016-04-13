@@ -15,8 +15,13 @@ bool Emitter::load( Assets* assets, string texture )
 void Emitter::spawn( glm::vec3 velocity, float lifetime, glm::vec2 startScale, glm::vec2 endScale, float drag )
 {
 	for( int i=0; i<mMax; i++ )
+	{
 		if( mpParticles[i].getLifetime() <= mpParticles[i].getElapsed() )
+		{
 			mpParticles[i].spawn( mPosition, velocity, lifetime,startScale, endScale, drag );
+			break;
+		}
+	}
 }
 
 void Emitter::update( float deltaTime )
@@ -28,7 +33,7 @@ void Emitter::update( float deltaTime )
 void Emitter::draw()
 {
 	for( int i=0; i<mMax; i++ )
-		mpParticles[i].draw();
+		mpParticles[i].draw( mpCamera, mpBillboardProgram );
 }
 
 void Emitter::setPosition( glm::vec3 position )
@@ -62,8 +67,8 @@ Emitter::Emitter( const Emitter& ref )
 		mpParticles[i] = ref.mpParticles[i];
 }
 
-Emitter::Emitter( int maxParticles )
-	: mMax( maxParticles ), mpParticles( nullptr )
+Emitter::Emitter( Camera* camera, BillboardProgram* billboardProgram, int maxParticles )
+	: mpCamera( camera ), mpBillboardProgram( billboardProgram ), mMax( maxParticles ), mpParticles( nullptr ), mPosition( 0.0f, 0.0f, 0.0f )
 {
 }
 
