@@ -44,7 +44,7 @@ public:
 
 	Input& operator=(const Input& ref);
 	Input(const Input& ref);
-	Input();
+	Input(SDL_Window* w);
 	~Input();
 
 private:
@@ -54,4 +54,6 @@ private:
 	bool mPrevButtons[MAX_BUTTONS];
 	glm::vec2 mCurMouse;
 	glm::vec2 mPrevMouse;
+
+	SDL_Window* window;
 };
