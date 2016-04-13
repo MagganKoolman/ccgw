@@ -11,6 +11,7 @@ bool Input::update()
 	for (int i = 0; i<MAX_BUTTONS; i++)
 		mPrevButtons[i] = mCurButtons[i];
 
+	this->mPrevMouse = mCurMouse;
 	// poll SDL for input
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -41,8 +42,12 @@ bool Input::update()
 			if (button >= 0 && button < MAX_BUTTONS)
 				mCurButtons[button] = false;
 		}
+		
+		else if (e.type == SDL_MOUSEMOTION) 
+		{
+			this->mCurMouse = glm::vec2(e.motion.x, e.motion.y);
+		}
 	}
-
 	return result;
 }
 
@@ -53,7 +58,7 @@ bool Input::keyDown(int key) const
 	return mCurKeys[key];
 }
 
-bool Input::keyUp(int key)
+bool Input::keyUp(int key)const
 {
 	if (key < 0 || key >= MAX_KEYS)
 		return false;
@@ -69,7 +74,7 @@ bool Input::keyPressed(int key) const
 	return mCurKeys[key];
 }
 
-bool Input::keyReleased(int key)
+bool Input::keyReleased(int key)const
 {
 	if (key < 0 || key >= MAX_KEYS)
 		return false;
@@ -78,21 +83,21 @@ bool Input::keyReleased(int key)
 	return mPrevKeys[key];
 }
 
-bool Input::buttonDown(int button)
+bool Input::buttonDown(int button)const
 {
 	if (button < 0 || button >= MAX_BUTTONS)
 		return false;
 	return mCurButtons[button];
 }
 
-bool Input::buttonUp(int button)
+bool Input::buttonUp(int button)const
 {
 	if (button < 0 || button >= MAX_BUTTONS)
 		return false;
 	return !mCurButtons[button];
 }
 
-bool Input::buttonPressed(int button)
+bool Input::buttonPressed(int button)const
 {
 	if (button < 0 || button >= MAX_BUTTONS)
 		return false;
@@ -101,7 +106,7 @@ bool Input::buttonPressed(int button)
 	return mCurButtons[button];
 }
 
-bool Input::buttonReleased(int button)
+bool Input::buttonReleased(int button)const
 {
 	if (button < 0 || button >= MAX_BUTTONS)
 		return false;
@@ -110,12 +115,12 @@ bool Input::buttonReleased(int button)
 	return mPrevButtons[button];
 }
 
-glm::vec2 Input::mousePosition()
+glm::vec2 Input::mousePosition()const
 {
 	return mCurMouse;
 }
 
-glm::vec2 Input::mouseDelta()
+glm::vec2 Input::mouseDelta()const
 {
 	return (mPrevMouse - mCurMouse);
 }

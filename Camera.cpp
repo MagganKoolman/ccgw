@@ -5,8 +5,8 @@
 
 void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance )
 {
-	mPosition = position - distance * lookDir;
-	mView = glm::lookAt(mPosition, position, glm::vec3(0, 1, 0));
+	mPosition = position - distance * lookDir + glm::vec3(glm::cross(lookDir, glm::cross(glm::vec3(0,1,0),lookDir)))*(distance/4);// (-lookDir * distance);
+	mView = glm::lookAt(mPosition, position + lookDir*distance, glm::vec3(0, 1, 0));
 }
 
 void Camera::update(const GLuint &programID) {
