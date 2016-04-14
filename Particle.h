@@ -34,4 +34,6 @@ private:
 	float mLifetime, mElapsed, mDrag;
 
 	Texture* mpTexture;
+
+	float mSinVal;
 };
