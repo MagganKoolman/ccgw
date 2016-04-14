@@ -29,6 +29,10 @@ void Game::drawOnScreenQuad() {
 Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
+	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
+	pEmitter = new Emitter( &mCamera, pBillboardShader, 25 );
+	pEmitter->load( nullptr, " " );
+	pEmitter->setPosition( glm::vec3( 2.0f, 0.0f, 0.0f ) );
 
 	createScreenQuad();
 	playerModel.load("Models/box2.obj");
@@ -60,6 +64,11 @@ void Game::render() {
 	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
 	aBox.render(pDeferredProgram->getProgramID());
 	mGround.render(pDeferredProgram->getProgramID());
+
+	pBillboardShader->use();
+	pEmitter->draw();
+	pBillboardShader->unUse();
+
 	pDeferredProgram->unUse();
 
 	pForwardProgram->use();
@@ -72,4 +81,7 @@ void Game::render() {
 void Game::update(const Input* inputs) {
 	mPlayer.update(inputs, 0.02f);
 	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
+
+	pEmitter->spawn( glm::vec3( 0.0f, 0.1f, 0.0f ), 5.0f, 0.99f );
+	pEmitter->update( 0.01f );
 }

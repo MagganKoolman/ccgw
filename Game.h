@@ -9,7 +9,8 @@
 #include "global_variables.h"
 #include "Terrain.h"
 #include "Texture.h"
-
+#include "Billboard.h"
+#include "Emitter.h"
 
 class Game {
 public:
@@ -21,6 +22,7 @@ private:
 	GameState* pActionState;
 	ShaderProgram* pDeferredProgram;
 	ShaderProgram* pForwardProgram;
+	BillboardProgram* pBillboardShader;
 	
 	GLuint testScreen;
 
@@ -33,6 +35,8 @@ private:
 	Terrain mGround;
 
 	Camera mCamera;
+
+	Emitter* pEmitter;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

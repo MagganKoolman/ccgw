@@ -12,13 +12,13 @@ bool Emitter::load( Assets* assets, string texture )
 	return result;
 }
 
-void Emitter::spawn( glm::vec3 velocity, float lifetime, glm::vec2 startScale, glm::vec2 endScale, float drag )
+void Emitter::spawn( glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
 {
 	for( int i=0; i<mMax; i++ )
 	{
 		if( mpParticles[i].getLifetime() <= mpParticles[i].getElapsed() )
 		{
-			mpParticles[i].spawn( mPosition, velocity, lifetime,startScale, endScale, drag );
+			mpParticles[i].spawn( mPosition, velocity, lifetime, drag, startScale, endScale );
 			break;
 		}
 	}

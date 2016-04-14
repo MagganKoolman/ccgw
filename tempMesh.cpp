@@ -27,53 +27,56 @@ bool tempMesh::load(string file)
 		std::vector<glm::vec3> vn;
 		std::vector<objFace> faces;
 
-		std::string line;
 		while (stream)
 		{
 			// read the file line by line
+			std::string line;
 			std::getline(stream, line);
 
-			std::stringstream ss(line);
-			if (line[0] == 'v')
+			if( line.size() > 0 )
 			{
-				ss.ignore();
-
-				if (line[1] == 't') // add texture coordinates
+				std::stringstream ss(line);
+				if (line[0] == 'v')
 				{
 					ss.ignore();
 
-					glm::vec2 uv;
-					ss >> uv.x >> uv.y;
+					if (line[1] == 't') // add texture coordinates
+					{
+						ss.ignore();
 
-					vt.push_back(uv);
+						glm::vec2 uv;
+						ss >> uv.x >> uv.y;
+
+						vt.push_back(uv);
+					}
+					else if (line[1] == 'n') // add vertex normal
+					{
+						ss.ignore();
+
+						glm::vec3 normal;
+						ss >> normal.x >> normal.y >> normal.z;
+
+						vn.push_back(normal);
+					}
+					else // add vertex position
+					{
+						glm::vec3 vertex;
+						ss >> vertex.x >> vertex.y >> vertex.z;
+
+						v.push_back(vertex);
+					}
 				}
-				else if (line[1] == 'n') // add vertex normal
+				else if (line[0] == 'f') // add face
 				{
-					ss.ignore();
+					ss.ignore(1);
 
-					glm::vec3 normal;
-					ss >> normal.x >> normal.y >> normal.z;
+					objFace face;
+					ss >> face.p1 >> face.u1 >> face.n1;
+					ss >> face.p2 >> face.u2 >> face.n2;
+					ss >> face.p3 >> face.u3 >> face.n3;
 
-					vn.push_back(normal);
+					faces.push_back(face);
 				}
-				else // add vertex position
-				{
-					glm::vec3 vertex;
-					ss >> vertex.x >> vertex.y >> vertex.z;
-
-					v.push_back(vertex);
-				}
-			}
-			else if (line[0] == 'f') // add face
-			{
-				ss.ignore(1);
-
-				objFace face;
-				ss >> face.p1 >> face.u1 >> face.n1;
-				ss >> face.p2 >> face.u2 >> face.n2;
-				ss >> face.p3 >> face.u3 >> face.n3;
-
-				faces.push_back(face);
 			}
 		}
 

@@ -7,7 +7,7 @@ bool Particle::load( Assets* assets, string texture )
 	return true;
 }
 
-void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, glm::vec2 startScale, glm::vec2 endScale, float drag )
+void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
 {
 	mPosition = position;
 	mVelocity = velocity;
