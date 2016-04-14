@@ -15,6 +15,8 @@ void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, fl
 	mEndScale = endScale;
 	mDrag = drag;
 	mElapsed = 0.0f;
+
+	mSinVal = 0.0f;
 }
 
 void Particle::update( float deltaTime )
