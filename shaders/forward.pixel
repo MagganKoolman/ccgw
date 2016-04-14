@@ -1,7 +1,7 @@
 #version 420 core
 
 in vec2 texOut;
-out vec3 finalColor;
+out vec4 finalColor;
 
 uniform sampler2D ambientT;
 uniform sampler2D diffuseT;
@@ -10,6 +10,6 @@ uniform sampler2D normalT;
 uniform sampler2D depthT;
 
 void main (){
-	finalColor = texture(normalT, texOut).rgb * 2 - 1;
-	//finalColor = texture(ambientT, texOut);
+	//finalColor = texture(normalT, texOut).rgb * 2 - 1;
+	finalColor = texture(ambientT, texOut);
 }

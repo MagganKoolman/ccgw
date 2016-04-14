@@ -30,7 +30,7 @@ void Player::update(const Input* inputs, float dt)
 		speedY += 5;
 	}
 	this->mPosition += mDirection * mSpeed * dt + glm::vec3(0, speedY * dt, 0);
-	if (mPosition.y < 0.5) { 
+	if (mPosition.y < 0.5) {
 		mPosition.y = 0.5;
 		speedY = 0;
 	}
@@ -46,7 +46,7 @@ void Player::update(const Input* inputs, float dt)
 								};
 
 
-	// #fuckedup maths, https://en.wikipedia.org/wiki/Rotation_matrix for formula, might gimbalock??
+	// #fuckedup maths, https://en.wikipedia.org/wiki/Rotation_matrix for formula, might gimbalock??(but probably not)
 	glm::vec3 axis = glm::normalize(glm::cross(tempLookat, glm::vec3(0,1,0)));
 	glm::mat3 ucm = {	0,-axis.z, axis.y,
 						axis.z, 0, -axis.x,
@@ -63,7 +63,11 @@ void Player::update(const Input* inputs, float dt)
 										glm::vec4(0,0,0,1)
 										);
 
-	this->mLookat = glm::vec3((rotatematrix * rotateAroundZ ) * glm::vec4(mLookat,1) );
+	if (glm::dot(glm::vec3(rotateAroundZ * glm::vec4(mLookat, 1)), tempLookat) > 0) {
+		this->mLookat = glm::vec3(  rotateAroundZ * glm::vec4(mLookat, 1));
+	}
+
+	this->mLookat = glm::vec3(rotatematrix * glm::vec4(mLookat, 1));
 	mWorld = rotatematrix * mWorld;
 	
 	mWorld[3][0] = mPosition.x;
