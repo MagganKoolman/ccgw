@@ -1,11 +1,11 @@
 #include "Weapon.h"
 
-GameObject* Weapon::shoot(glm::vec3 position, glm::quat rotation) 
+Arrow* Weapon::shoot(glm::vec3 position, glm::quat rotation) 
 {
-	GameObject* projectile = nullptr;
+	Arrow* projectile = nullptr;
 	if (timeSinceLastShot > reloadTime) {
 		timeSinceLastShot = 0;
-		projectile = nullptr; // = new Arrow();
+		projectile =  new Arrow(glm::vec3(1,0,0),2, glm::vec3(0,-1,0));
 	}
 	return projectile;
 }

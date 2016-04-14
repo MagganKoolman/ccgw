@@ -1,19 +1,20 @@
 #pragma once
 #include "GameObject.h"
+#include "Arrow.h"
 
 
 class Weapon 
 {
 public:
-	float reloadTime;
-	float timeSinceLastShot;
+	Arrow* shoot(glm::vec3 position, glm::quat rotation);
 	
-
-
-private:
-	GameObject* shoot(glm::vec3 position, glm::quat rotation);
 
 	void update(float dt);
 	Weapon(float rt);
 	~Weapon();
+
+private:
+	float reloadTime;
+	float timeSinceLastShot;
+
 };

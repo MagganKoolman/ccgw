@@ -5,6 +5,11 @@ glm::vec3 Player::getLookAt() const {
 	return this->mLookat;
 }
 
+GameObject* Player::shoot()
+{
+	return this->mWeapon->shoot(this->mPosition, glm::quat(1.f, 1.f, 1.f, 1.f));
+}
+
 void Player::update(const Input* inputs, float dt)
 {
 	speedY -= 2*dt;
