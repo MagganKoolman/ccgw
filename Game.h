@@ -26,11 +26,11 @@ private:
 	
 	GLuint testScreen;
 
-	tempMesh playerModel;
-	tempMesh terrainModel;
-	Texture texture;
-	Texture texture2;
-	Texture texture3;
+	Assets mAssets;
+	//tempMesh playerModel;
+	//tempMesh terrainModel;
+	//Texture texture;
+	//Texture texture2;
 	Player mPlayer;
 	Terrain aBox;
 	Terrain mGround;

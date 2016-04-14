@@ -18,6 +18,7 @@ bool Texture::load(string file)
 
 		SDL_FreeSurface(img);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		result = true;
 	}
 	
 	return result;
@@ -28,6 +29,12 @@ void Texture::unload()
 	if (mID > 0)
 		glDeleteTextures(1, &mID);
 	mWidth = mHeight = 0;
+}
+
+void Texture::bind( int location )
+{
+	glActiveTexture( location );
+	glBindTexture( GL_TEXTURE_2D, mID );
 }
 
 GLuint Texture::getID() const

@@ -24,11 +24,17 @@ public:
 
 		map<string, Asset*>::const_iterator it = mAssets.find(file);
 		if (it != mAssets.end())
+		{
 			result = (T*)it->second;
+		}
 		else
 		{
 			result = new T();
-			if (!result->load(file))
+			if( result->load( file ) )
+			{
+				mAssets.insert( std::pair<string,Asset*>( file, result ) );
+			}
+			else
 			{
 				delete result;
 				result = nullptr;

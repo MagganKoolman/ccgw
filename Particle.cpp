@@ -2,9 +2,8 @@
 
 bool Particle::load( Assets* assets, string texture )
 {
-	//mpTexture = assets->load<Texture>( texture );
-	//return ( mpTexture != nullptr );
-	return true;
+	mpTexture = assets->load<Texture>( texture );
+	return ( mpTexture != nullptr );
 }
 
 void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
@@ -35,7 +34,10 @@ void Particle::update( float deltaTime )
 void Particle::draw( Camera* camera, BillboardProgram* billboardProgram )
 {
 	if( mElapsed < mLifetime )
+	{
+		mpTexture->bind();
 		billboardProgram->draw( camera, mPosition, mScale );
+	}
 }
 
 float Particle::getLifetime() const

@@ -31,20 +31,25 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
 	pEmitter = new Emitter( &mCamera, pBillboardShader, 1000 );
-	pEmitter->load( nullptr, " " );
+	pEmitter->load( &mAssets, "Models/Chesterfield_texture.png" );
 
 	createScreenQuad();
-	playerModel.load("Models/box2.obj");
+	/*playerModel.load("Models/box2.obj");
 	terrainModel.load("Models/plane.obj");
 	texture.load("Models/shack.png");
-	texture2.load("Models/Chesterfield_texture.png");
-	texture3.load("Models/particle.png");
-	mPlayer.load(&playerModel);	
-	mGround.load(&terrainModel);
-	mPlayer.loadTex(&texture);
-	mGround.loadTex(&texture);
-	aBox.load(&playerModel);
-	aBox.loadTex(&texture);
+	texture2.load("Models/Chesterfield_texture.png");*/
+
+	tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
+	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
+	Texture* texture = mAssets.load<Texture>( "Models/shack.png" );
+	Texture* texture2 = mAssets.load<Texture>( "Models/Chesterfield_texture.png" );
+
+	mPlayer.load(playerModel);	
+	mGround.load(terrainModel);
+	mPlayer.loadTex(texture);
+	mGround.loadTex(texture);
+	aBox.load(playerModel);
+	aBox.loadTex(texture);
 }
 
 Game::~Game() {
@@ -66,14 +71,7 @@ void Game::render() {
 	mGround.render(pDeferredProgram->getProgramID());
 
 	pBillboardShader->use();
-
-	GLuint texLocation = glGetUniformLocation(pBillboardShader->getProgramID(), "texSampler");
-	glUniform1i(texLocation, 1);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture3.getID());
-
 	pEmitter->draw();
-	glBindTexture(GL_TEXTURE, 0);
 	pBillboardShader->unUse();
 
 	pDeferredProgram->unUse();
