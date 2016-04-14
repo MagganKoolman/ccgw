@@ -30,9 +30,8 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
-	pEmitter = new Emitter( &mCamera, pBillboardShader, 25 );
+	pEmitter = new Emitter( &mCamera, pBillboardShader, 1000 );
 	pEmitter->load( nullptr, " " );
-	pEmitter->setPosition( glm::vec3( 2.0f, 0.0f, 0.0f ) );
 
 	createScreenQuad();
 	playerModel.load("Models/box2.obj");
@@ -80,8 +79,14 @@ void Game::render() {
 
 void Game::update(const Input* inputs) {
 	mPlayer.update(inputs, 0.02f);
+	pEmitter->setPosition( mPlayer.getPosition() );
 	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
 
-	pEmitter->spawn( glm::vec3( 0.0f, 0.1f, 0.0f ), 5.0f, 0.99f );
+	// NOTE: Debug
+	int r = rand() % 1000;
+	float x = ((float)r / 2000.0f) - 0.25f;
+	r = rand() % 1000;
+	float z = ((float)r / 2000.0f) - 0.25f;
+	pEmitter->spawn( glm::vec3( x, 0.1f, z ), 2.0f, 0.1f, glm::vec2( 0.1f ), glm::vec2( 0.5f ) );
 	pEmitter->update( 0.01f );
 }
