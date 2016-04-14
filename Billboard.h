@@ -15,6 +15,9 @@ public:
 	/*Draw a billboard with the specified position and scale.*/
 	void draw( Camera* camera, glm::vec3 position, glm::vec2 size );
 
+	void begin( Camera* camera );
+	void end();
+
 	BillboardProgram& operator=( const BillboardProgram& ref );
 	BillboardProgram( const BillboardProgram& ref );
 	BillboardProgram();
@@ -23,4 +26,5 @@ public:
 
 private:
 	GLuint mVertexArray;
+	GLuint mWorldLocation, mViewLocation, mProjectionLocation, mSizeLocation;
 };
