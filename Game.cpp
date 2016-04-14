@@ -31,7 +31,7 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
 	pEmitter = new Emitter( &mCamera, pBillboardShader, 1000 );
-	pEmitter->load( &mAssets, "Models/Chesterfield_texture.png" );
+	pEmitter->load( &mAssets, "Models/pns.png" );
 
 	createScreenQuad();
 	/*playerModel.load("Models/box2.obj");
@@ -42,7 +42,7 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
 	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
 	Texture* texture = mAssets.load<Texture>( "Models/shack.png" );
-	Texture* texture2 = mAssets.load<Texture>( "Models/Chesterfield_texture.png" );
+	//Texture* texture2 = mAssets.load<Texture>( "Models/Chesterfield_texture.png" );
 
 	mPlayer.load(playerModel);	
 	mGround.load(terrainModel);
@@ -71,7 +71,9 @@ void Game::render() {
 	mGround.render(pDeferredProgram->getProgramID());
 
 	pBillboardShader->use();
+	pBillboardShader->begin( &mCamera );
 	pEmitter->draw();
+	pBillboardShader->end();
 	pBillboardShader->unUse();
 
 	pDeferredProgram->unUse();

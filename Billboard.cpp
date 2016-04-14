@@ -10,26 +10,29 @@ void BillboardProgram::unUse()
 	glUseProgram( 0 );
 }
 
+void BillboardProgram::begin( Camera* camera )
+{
+	glBindVertexArray(mVertexArray);
+	glUniformMatrix4fv( mViewLocation, 1, GL_FALSE, &camera->getView()[0][0]);
+	glUniformMatrix4fv( mProjectionLocation, 1, GL_FALSE, &camera->getPerspective()[0][0]);
+}
+
+void BillboardProgram::end()
+{
+	glBindVertexArray(0);
+}
+
 void BillboardProgram::draw( Camera* camera, glm::vec3 position, glm::vec2 size )
 {
-	glDisable( GL_CULL_FACE );
-
-	glm::mat4 world= glm::translate( glm::mat4(), position );
-	GLuint worldLocation = glGetUniformLocation( mProgramID, "world" );
-	glUniformMatrix4fv( worldLocation, 1, GL_FALSE, &world[0][0] );
-
-	GLuint viewLocation = glGetUniformLocation( mProgramID, "view" );
-	glUniformMatrix4fv( viewLocation, 1, GL_FALSE, &camera->getView()[0][0] );
-
-	GLuint projectionLocation = glGetUniformLocation( mProgramID, "projection" );
-	glUniformMatrix4fv( projectionLocation, 1, GL_FALSE, &camera->getPerspective()[0][0] );
-
-	GLuint sizeLocation = glGetUniformLocation( mProgramID, "size" );
-	glUniform2f( sizeLocation, size.x, size.y );
-
-	glBindVertexArray(mVertexArray);
+	//glm::mat4 world= glm::translate( glm::mat4(), position );
+	glm::mat4 world;
+	world[3][0] = position.x;
+	world[3][1] = position.y;
+	world[3][2] = position.z;
+	glUniformMatrix4fv( mWorldLocation, 1, GL_FALSE, &world[0][0] );
+	glUniform2f( mSizeLocation, size.x, size.y );
+	
 	glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
 }
 
 BillboardProgram& BillboardProgram::operator=( const BillboardProgram& ref )
@@ -50,6 +53,13 @@ BillboardProgram::BillboardProgram()
 BillboardProgram::BillboardProgram( const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath )
 {
 	compileShaders( vertexPath, fragmentPath, geometryPath );
+
+	glUseProgram( mProgramID );
+	mWorldLocation = glGetUniformLocation( mProgramID, "world" );
+	mViewLocation = glGetUniformLocation( mProgramID, "view" );
+	mProjectionLocation = glGetUniformLocation( mProgramID, "projection" );
+	mSizeLocation = glGetUniformLocation( mProgramID, "size" );
+	glUseProgram( 0 );
 	
 	glGenVertexArrays(1, &mVertexArray);
 	glBindVertexArray(mVertexArray);

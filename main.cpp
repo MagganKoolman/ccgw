@@ -44,6 +44,8 @@ int main(int argc, char** argv) {
 
 	Input input(window);
 	Game game;
+	
+	SDL_GL_SetSwapInterval( 1 );
 
 	while (running)
 	{
