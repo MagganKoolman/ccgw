@@ -7,9 +7,13 @@ bool Texture::load(string file)
 	SDL_Surface* img = IMG_Load(file.c_str());
 	if (img)
 	{
+		GLenum format = GL_RGBA;
+		if( img->format->BytesPerPixel == 3 )
+			format = GL_RGB;
+
 		glGenTextures(1, &mID);
 		glBindTexture(GL_TEXTURE_2D, mID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, format, GL_UNSIGNED_BYTE, img->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
