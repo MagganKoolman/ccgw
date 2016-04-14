@@ -38,6 +38,7 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 	terrainModel.load("Models/plane.obj");
 	texture.load("Models/shack.png");
 	texture2.load("Models/Chesterfield_texture.png");
+	texture3.load("Models/particle.png");
 	mPlayer.load(&playerModel);	
 	mGround.load(&terrainModel);
 	mPlayer.loadTex(&texture);
@@ -65,7 +66,14 @@ void Game::render() {
 	mGround.render(pDeferredProgram->getProgramID());
 
 	pBillboardShader->use();
+
+	GLuint texLocation = glGetUniformLocation(pBillboardShader->getProgramID(), "texSampler");
+	glUniform1i(texLocation, 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture3.getID());
+
 	pEmitter->draw();
+	glBindTexture(GL_TEXTURE, 0);
 	pBillboardShader->unUse();
 
 	pDeferredProgram->unUse();
@@ -87,6 +95,6 @@ void Game::update(const Input* inputs) {
 	float x = ((float)r / 2000.0f) - 0.25f;
 	r = rand() % 1000;
 	float z = ((float)r / 2000.0f) - 0.25f;
-	pEmitter->spawn( glm::vec3( x, 0.1f, z ), 2.0f, 0.1f, glm::vec2( 0.1f ), glm::vec2( 0.5f ) );
+	pEmitter->spawn( glm::vec3( x, 0.1f, z ), 2.0f, 0.1f, glm::vec2( 0.1f ), glm::vec2( 0.2f ) );
 	pEmitter->update( 0.01f );
 }

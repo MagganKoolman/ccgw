@@ -30,6 +30,7 @@ private:
 	tempMesh terrainModel;
 	Texture texture;
 	Texture texture2;
+	Texture texture3;
 	Player mPlayer;
 	Terrain aBox;
 	Terrain mGround;
