@@ -3,6 +3,8 @@
 void BillboardProgram::use()
 {
 	glUseProgram( mProgramID );
+
+
 }
 
 void BillboardProgram::unUse()
@@ -28,6 +30,7 @@ void BillboardProgram::draw( Camera* camera, glm::vec3 position, glm::vec2 size 
 	glUniform2f( sizeLocation, size.x, size.y );
 
 	glBindVertexArray(mVertexArray);
+
 	glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
