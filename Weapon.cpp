@@ -30,7 +30,8 @@ void Weapon::draw(const GLuint &programID) {
 Weapon::Weapon(float rt, Assets* assets) 
 {
 	Texture* tex = assets->load<Texture>("Models/pns.png");
-	mMax = 10;
+	mMax = 20;
+	arrows = new Arrow[mMax];
 	for (int i = 0; i < mMax; i++)
 	{
 		this->arrows[i].loadTex(tex);
@@ -42,5 +43,5 @@ Weapon::Weapon(float rt, Assets* assets)
 
 Weapon::~Weapon() 
 {
-
+	delete[] arrows;
 }

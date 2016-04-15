@@ -14,7 +14,7 @@ public:
 	~Weapon();
 
 private:
-	Arrow arrows[10];
+	Arrow *arrows;
 	float mReloadTime;
 	float mTimeSinceLastShot;
 	int mMax;

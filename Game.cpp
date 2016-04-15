@@ -56,6 +56,7 @@ Game::~Game() {
 	delete pBillboardShader;
 	delete pEmitter;
 	delete pActionState; 
+	
 }
 
 bool Game::run(const Input* inputs) {

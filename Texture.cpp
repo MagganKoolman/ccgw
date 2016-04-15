@@ -14,11 +14,6 @@ bool Texture::load(string file)
 		glGenTextures(1, &mID);
 		glBindTexture(GL_TEXTURE_2D, mID);
 
-		GLenum format = GL_RGBA;
-
-		if (img->format->BitsPerPixel == 24)
-			format = GL_RGB;
-
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, format, GL_UNSIGNED_BYTE, img->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
