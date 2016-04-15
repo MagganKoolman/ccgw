@@ -20,24 +20,25 @@ public:
 	~Game();
 private:
 	GameState* pActionState;
-	DeferredProgram* pDeferredProgram;
-	ForwardProgram* pForwardProgram;
-	BillboardProgram* pBillboardShader;
+	//DeferredProgram* pDeferredProgram;
+	//ForwardProgram* pForwardProgram;
+	//BillboardProgram* pBillboardShader;
 	
 	GLuint testScreen;
 
-	Assets mAssets;
+	//Assets mAssets;
 	//tempMesh playerModel;
 	//tempMesh terrainModel;
 	//Texture texture;
 	//Texture texture2;
-	Player mPlayer;
+	//Player mPlayer;
 	Terrain aBox;
 	Terrain mGround;
 
-	Camera mCamera;
+	//Camera mCamera;
 
-	Emitter* pEmitter;
+	//Emitter* pEmitter;
+	GameData data;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

@@ -118,9 +118,9 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 }
 Player::Player() 
 {}
-Player::Player(Assets* assets) : GameObject() 
+Player::Player(GameData* data) : GameObject() 
 {
-	mWeapon = new Weapon(1,assets);
+	mWeapon = new Weapon(1,data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 3;
 	speedY = 0;
