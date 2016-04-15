@@ -27,6 +27,7 @@ void Game::drawOnScreenQuad() {
 }
 
 Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets){
+	pActionState = nullptr;
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
@@ -48,6 +49,8 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets){
 	aBox.load(playerModel);
 	aBox.loadTex(texture);
 
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 }
 
 Game::~Game() {
@@ -55,7 +58,7 @@ Game::~Game() {
 	delete pForwardProgram;
 	delete pBillboardShader;
 	delete pEmitter;
-	delete pActionState; 
+	delete pActionState;
 }
 
 bool Game::run(const Input* inputs) {
