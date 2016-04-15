@@ -51,7 +51,7 @@ bool Input::update()
 		}
 	}
 	int tempx = 0; int tempy = 0; 
-	//SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
+	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
 	SDL_FlushEvent(SDL_MOUSEMOTION);
 
 	SDL_GetWindowPosition(window, &tempx, &tempy);

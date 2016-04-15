@@ -26,7 +26,7 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
+Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets){
 	pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
@@ -41,20 +41,25 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50){
 
 	tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
 	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
-	Texture* texture = mAssets.load<Texture>( "Models/shack.png" );
-	//Texture* texture2 = mAssets.load<Texture>( "Models/Chesterfield_texture.png" );
+	Texture* texture = mAssets.load<Texture>( "Models/ground.png" );
+	Texture* texture2 = mAssets.load<Texture>( "Models/cube.png" );
+
 
 	mPlayer.load(playerModel);	
 	mGround.load(terrainModel);
-	mPlayer.loadTex(texture);
+	mPlayer.loadTex(texture2);
 	mGround.loadTex(texture);
 	aBox.load(playerModel);
 	aBox.loadTex(texture);
+
 }
 
 Game::~Game() {
 	delete pDeferredProgram;
 	delete pForwardProgram;
+	delete pBillboardShader;
+	delete pEmitter;
+	delete pActionState; 
 }
 
 bool Game::run(const Input* inputs) {
@@ -86,7 +91,7 @@ void Game::render() {
 }
 
 void Game::update(const Input* inputs) {
-	mPlayer.update(inputs, 0.02f);
+	mPlayer.update(inputs, 0.08f);
 	pEmitter->setPosition( mPlayer.getPosition() );
 	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
 

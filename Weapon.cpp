@@ -1,23 +1,43 @@
 #include "Weapon.h"
 
-Arrow* Weapon::shoot(glm::vec3 position, glm::quat rotation) 
+void Weapon::shoot(glm::vec3 position, glm::vec3 lookat) 
 {
-	Arrow* projectile = nullptr;
-	if (timeSinceLastShot > reloadTime) {
-		timeSinceLastShot = 0;
-		projectile =  new Arrow(glm::vec3(1,0,0),2, glm::vec3(0,-1,0));
+	if (mTimeSinceLastShot > mReloadTime)
+	{
+		bool shot = false;
+		for (int i = 0; i < mMax && !shot; i++) {
+			if (!arrows[i].isAlive()) {
+				arrows[i].spawn(position, lookat, 5, { 0,-1,0 });
+				shot = true;
+			}
+		}
 	}
-	return projectile;
 }
 void Weapon::update(float dt) {
-	this->timeSinceLastShot += dt;
+	this->mTimeSinceLastShot += dt;
+	for (int i = 0; i < mMax; i++) {
+		arrows[i].update(dt);
+	}
 }
 
+void Weapon::draw(const GLuint &programID) {
+	for (int i = 0; i < mMax; i++) {
+		if (arrows[i].isAlive())
+			arrows[i].render(programID);
+	}
+}
 
-Weapon::Weapon(float rt) 
+Weapon::Weapon(float rt, Assets* assets) 
 {
-	this->reloadTime = rt;
-	this->timeSinceLastShot = 0;
+	Texture* tex = assets->load<Texture>("Models/pns.png");
+	mMax = 10;
+	for (int i = 0; i < mMax; i++)
+	{
+		this->arrows[i].loadTex(tex);
+		this->arrows[i].load(assets, "Models/box2.obj");
+	}
+	this->mReloadTime = rt;
+	this->mTimeSinceLastShot = 0;
 }
 
 Weapon::~Weapon() 

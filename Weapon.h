@@ -6,15 +6,16 @@
 class Weapon 
 {
 public:
-	Arrow* shoot(glm::vec3 position, glm::quat rotation);
-	
+	void shoot(glm::vec3 position, glm::vec3 lookat);
 
+	void draw(const GLuint &programID);
 	void update(float dt);
-	Weapon(float rt);
+	Weapon(float rt, Assets* assets);
 	~Weapon();
 
 private:
-	float reloadTime;
-	float timeSinceLastShot;
-
+	Arrow arrows[10];
+	float mReloadTime;
+	float mTimeSinceLastShot;
+	int mMax;
 };
