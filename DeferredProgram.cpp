@@ -9,6 +9,12 @@ DeferredProgram::DeferredProgram() {
 DeferredProgram::DeferredProgram(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath): ShaderProgram() {
 	compileShaders(vertexPath, fragmentPath, geometryPath);
 
+	// TODO: Do you have to bind before finding uniforms?
+	glUseProgram( mProgramID );
+	mViewPerspectiveLocation = glGetUniformLocation( mProgramID, "viewProjection" );
+	mCameraPositionLocation = glGetUniformLocation( mProgramID, "cameraPos" );
+	glUseProgram( 0 );
+
 	//Initializing framebuffer
 	glGenFramebuffers(1, &mFBOid);
 	glBindFramebuffer(GL_FRAMEBUFFER, mFBOid);
@@ -140,4 +146,12 @@ void DeferredProgram::disableTextures() const {
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+GLuint DeferredProgram::getViewPerspectiveLocation() const {
+	return mViewPerspectiveLocation;
+}
+
+GLuint DeferredProgram::getCameraPositionLocation() const {
+	return mCameraPositionLocation;
 }

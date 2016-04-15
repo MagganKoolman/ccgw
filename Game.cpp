@@ -34,10 +34,6 @@ Game::Game(): mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets){
 	pEmitter->load( &mAssets, "Models/pns.png" );
 
 	createScreenQuad();
-	/*playerModel.load("Models/box2.obj");
-	terrainModel.load("Models/plane.obj");
-	texture.load("Models/shack.png");
-	texture2.load("Models/Chesterfield_texture.png");*/
 
 	tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
 	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
@@ -70,7 +66,8 @@ bool Game::run(const Input* inputs) {
 
 void Game::render() {
 	pDeferredProgram->use();
-	mCamera.update(pDeferredProgram->getProgramID());
+	//mCamera.update(pDeferredProgram->getProgramID());
+	mCamera.updateUniforms( pDeferredProgram->getViewPerspectiveLocation(), pDeferredProgram->getCameraPositionLocation() );
 	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
 	aBox.render(pDeferredProgram->getProgramID());
 	mGround.render(pDeferredProgram->getProgramID());
@@ -84,9 +81,9 @@ void Game::render() {
 	pDeferredProgram->unUse();
 
 	pForwardProgram->use();
-	dynamic_cast<DeferredProgram*> (pDeferredProgram)->enableTextures(pForwardProgram->getProgramID());
+	pDeferredProgram->enableTextures(pForwardProgram->getProgramID());
 	drawOnScreenQuad();
-	dynamic_cast<DeferredProgram*> (pDeferredProgram)->disableTextures();
+	pDeferredProgram->disableTextures();
 	pForwardProgram->unUse();
 }
 
@@ -96,10 +93,9 @@ void Game::update(const Input* inputs) {
 	mCamera.follow(mPlayer.getPosition(), mPlayer.getLookAt(), 5);
 
 	// NOTE: Debug
-	int r = rand() % 1000;
-	float x = ((float)r / 2000.0f) - 0.25f;
-	r = rand() % 1000;
-	float z = ((float)r / 2000.0f) - 0.25f;
-	pEmitter->spawn( glm::vec3( x, 0.1f, z ), 2.0f, 0.1f, glm::vec2( 0.1f ), glm::vec2( 0.2f ) );
+	float x = (float)( rand() % 100 - 50 );
+	float z = (float)( rand() % 100 - 50 );
+	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
+	pEmitter->spawn( v, 2.0f, 0.1f, glm::vec2( 0.5f ), glm::vec2( 0.0f ) );
 	pEmitter->update( 0.01f );
 }

@@ -25,11 +25,16 @@ public:
 	~Emitter();
 
 private:
+	void sort();
+
 	Camera* mpCamera;
 	BillboardProgram* mpBillboardProgram;
 
 	Particle* mpParticles;
+	Particle** mpSorted;
 	int mMax;
+	int mAlive;
+	float* mDistances;
 
 	glm::vec3 mPosition;
 };

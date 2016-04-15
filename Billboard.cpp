@@ -14,7 +14,7 @@ void BillboardProgram::unUse()
 
 void BillboardProgram::begin( Camera* camera )
 {
-	glBindVertexArray(mVertexArray);
+	glBindVertexArray( mVertexArray );
 	glUniformMatrix4fv( mViewLocation, 1, GL_FALSE, &camera->getView()[0][0]);
 	glUniformMatrix4fv( mProjectionLocation, 1, GL_FALSE, &camera->getPerspective()[0][0]);
 }

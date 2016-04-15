@@ -7,6 +7,10 @@ bool Texture::load(string file)
 	SDL_Surface* img = IMG_Load(file.c_str());
 	if (img)
 	{
+		GLenum format = GL_RGBA;
+		if( img->format->BytesPerPixel == 3 )
+			format = GL_RGB;
+
 		glGenTextures(1, &mID);
 		glBindTexture(GL_TEXTURE_2D, mID);
 
@@ -37,7 +41,7 @@ void Texture::unload()
 	mWidth = mHeight = 0;
 }
 
-void Texture::bind( int location )
+void Texture::bind( int location ) const
 {
 	glActiveTexture( location );
 	glBindTexture( GL_TEXTURE_2D, mID );

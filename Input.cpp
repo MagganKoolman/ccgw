@@ -54,7 +54,7 @@ bool Input::update()
 	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
 	SDL_FlushEvent(SDL_MOUSEMOTION);
 
-	SDL_GetWindowPosition(window, &tempx, &tempy);
+	SDL_GetWindowPosition( mpWindow, &tempx, &tempy );
 
 	this->mPrevMouse =glm::vec2(gWidth/2 - tempx, gHeight/2 - tempy);
 
@@ -181,7 +181,8 @@ Input::Input(SDL_Window* w)
 
 	for (int i = 0; i<MAX_BUTTONS; i++)
 		mCurButtons[i] = mPrevButtons[i] = false;
-	this->window = w;
+
+	this->mpWindow = w;
 	// TODO: Initialize mouse position?
 }
 
