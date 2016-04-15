@@ -8,7 +8,7 @@ class Emitter
 {
 public:
 	/*Loads all the particles with the supplied texture.*/
-	bool load( Assets* assets, string texture );
+	bool load( GameData* data, string texture );
 	/*Spawns one of the particles at the emitters position.*/
 	void spawn( glm::vec3 velocity, float lifeftime, float drag = 0.5f, glm::vec2 startScale = glm::vec2(1.0f), glm::vec2 endScale = glm::vec2(1.0f) );
 	/*Updates the position, velocity, scale and lifetime of all particles.*/
@@ -21,7 +21,7 @@ public:
 
 	Emitter& operator=( const Emitter& ref );
 	Emitter( const Emitter& ref );
-	Emitter( Camera* camera, BillboardProgram* billboardProgram, int maxParticles );
+	Emitter( int maxParticles );
 	~Emitter();
 
 private:

@@ -1,8 +1,12 @@
 #include "Arrow.h"
  
-bool Arrow::load(Assets * assets, string mesh)
+bool Arrow::load(GameData* data, string mesh)
 {
-	mpMesh = assets->load<tempMesh>(mesh);
+	mpMesh = data->pAssets->load<tempMesh>(mesh);
+
+	mpEmitter.load( data, "Models/pns.png" );
+	data->mEmitters.push_back( &mpEmitter );
+
 	return (mpTexture != nullptr);
 }
 
@@ -17,8 +21,12 @@ void Arrow::update(float dt)
 	this->mWorld[3][0] = mPosition.x;
 	this->mWorld[3][1] = mPosition.y;
 	this->mWorld[3][2] = mPosition.z;
+
+	mpEmitter.setPosition( mPosition );
+	mpEmitter.spawn( glm::vec3( 0.0f, 0.1f, 0.0f ), 10.0f, 0.1f, glm::vec2( 0.3f ), glm::vec2( 0.1f ) );
+	mpEmitter.update( dt );
 }
-Arrow::Arrow() : GameObject({0,-1,0})
+Arrow::Arrow() : GameObject({0,-1,0}), mpEmitter( 300 )
 {
 	this->mLookat = {1,0,0};
 	this->mSpeed = 1.f;
@@ -35,5 +43,5 @@ void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, gl
 }
 Arrow::~Arrow() 
 {
-
+	
 }

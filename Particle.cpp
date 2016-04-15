@@ -1,8 +1,8 @@
 #include "Particle.h"
 
-bool Particle::load( Assets* assets, string texture )
+bool Particle::load( GameData* data, string texture )
 {
-	mpTexture = assets->load<Texture>( texture );
+	mpTexture = data->pAssets->load<Texture>( texture );
 	return ( mpTexture != nullptr );
 }
 

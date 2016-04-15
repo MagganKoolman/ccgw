@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Weapon.h"
+#include "GameData.h"
 
 class Player : public GameObject{
 public:
@@ -11,7 +12,7 @@ public:
 	void render(const GLuint & programID, const glm::mat4 &viewMat);
 
 	Player();
-	Player(Assets* assets);
+	Player(GameData* data);
 	~Player();
 private: 
 	float speedY;

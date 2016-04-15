@@ -27,14 +27,14 @@ void Weapon::draw(const GLuint &programID) {
 	}
 }
 
-Weapon::Weapon(float rt, Assets* assets) 
+Weapon::Weapon(float rt, GameData* data) 
 {
-	Texture* tex = assets->load<Texture>("Models/pns.png");
+	Texture* tex = data->pAssets->load<Texture>("Models/pns.png");
 	mMax = 10;
 	for (int i = 0; i < mMax; i++)
 	{
 		this->arrows[i].loadTex(tex);
-		this->arrows[i].load(assets, "Models/box2.obj");
+		this->arrows[i].load( data, "Models/box2.obj");
 	}
 	this->mReloadTime = rt;
 	this->mTimeSinceLastShot = 0;

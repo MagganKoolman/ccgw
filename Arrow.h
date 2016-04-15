@@ -1,11 +1,11 @@
 #pragma once
 
 #include "GameObject.h"
-
+#include "Emitter.h"
 
 class Arrow : public GameObject{
 public:
-	bool load(Assets* assets, string mesh);
+	bool load(GameData* data, string mesh);
 
 	bool isAlive();
 	void update(float dt);
@@ -15,4 +15,6 @@ public:
 protected:
 	float mSpeed;
 	glm::vec3 mGravitation;
+
+	Emitter mpEmitter;
 };

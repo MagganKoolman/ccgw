@@ -10,7 +10,7 @@ public:
 
 	void draw(const GLuint &programID);
 	void update(float dt);
-	Weapon(float rt, Assets* assets);
+	Weapon(float rt, GameData* data);
 	~Weapon();
 
 private:

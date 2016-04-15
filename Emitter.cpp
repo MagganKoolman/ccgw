@@ -1,15 +1,18 @@
 #include "Emitter.h"
 
-bool Emitter::load( Assets* assets, string texture )
+bool Emitter::load( GameData* data, string texture )
 {
 	bool result = true;
+
+	mpCamera = data->pCamera;
+	mpBillboardProgram = data->pBillboardProgram;
 
 	mpParticles = new Particle[mMax];
 	mpSorted = new Particle*[mMax];
 	mDistances = new float[mMax];
 
 	for( int i=0; i<mMax; i++ )
-		result = result && mpParticles[i].load( assets, texture );
+		result = result && mpParticles[i].load( data, texture );
 
 	return result;
 }
@@ -129,8 +132,8 @@ Emitter::Emitter( const Emitter& ref )
 		mpSorted[i] = ref.mpSorted[i];
 }
 
-Emitter::Emitter( Camera* camera, BillboardProgram* billboardProgram, int maxParticles )
-	: mpCamera( camera ), mpBillboardProgram( billboardProgram ), mMax( maxParticles ), mpParticles( nullptr ), mPosition( 0.0f, 0.0f, 0.0f ), mAlive( 0 )
+Emitter::Emitter( int maxParticles )
+	: mMax( maxParticles ), mpParticles( nullptr ), mPosition( 0.0f, 0.0f, 0.0f ), mAlive( 0 )
 {
 }
 
