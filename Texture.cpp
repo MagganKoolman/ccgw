@@ -35,7 +35,7 @@ void Texture::unload()
 	mWidth = mHeight = 0;
 }
 
-void Texture::bind( int location )
+void Texture::bind( int location ) const
 {
 	glActiveTexture( location );
 	glBindTexture( GL_TEXTURE_2D, mID );

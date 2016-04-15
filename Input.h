@@ -55,5 +55,5 @@ private:
 	glm::vec2 mCurMouse;
 	glm::vec2 mPrevMouse;
 
-	SDL_Window* window;
+	SDL_Window* mpWindow;
 };

@@ -12,6 +12,10 @@ public:
 
 	void enableTextures(GLuint nextShader) const;
 	void disableTextures() const;
+
+	GLuint getViewPerspectiveLocation() const;
+	GLuint getCameraPositionLocation() const;
+
 private:
 	GLuint mFBOid;
 	GLuint mNormalTex;
@@ -19,4 +23,6 @@ private:
 	GLuint mAmbientTex;
 	GLuint mSpecularTex;
 	GLuint mDepthTex;
+	GLuint mViewPerspectiveLocation;
+	GLuint mCameraPositionLocation;
 };

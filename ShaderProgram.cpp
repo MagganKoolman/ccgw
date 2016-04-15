@@ -59,13 +59,15 @@ string ShaderProgram::readShader(const std::string& filePath) {
 	if (shaderFile.fail()) {
 		std::cout << "Fil fel: " + filePath;
 	}
-	std::string fileContent = "";
+
+	std::stringstream fileContent;
 	std::string line;
 	while (std::getline(shaderFile, line)) {
-		fileContent += line + "\n";
+		fileContent << line << "\n";
 	}
+
 	shaderFile.close();
-	return fileContent;
+	return fileContent.str();
 }
 
 void ShaderProgram::findAttribute(const string &content) {

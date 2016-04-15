@@ -14,8 +14,9 @@ public:
 	void unUse();
 	/*Draw a billboard with the specified position and scale.*/
 	void draw( Camera* camera, glm::vec3 position, glm::vec2 size );
-
+	/*Binds items for the GPU up for rendering billboards.*/
 	void begin( Camera* camera );
+	/*Unbinds items for the GPU when rendering of billboards is no longer required.*/
 	void end();
 
 	BillboardProgram& operator=( const BillboardProgram& ref );

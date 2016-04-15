@@ -12,7 +12,7 @@ public:
 	/*Destroys the texture and frees the memory in the GPU.*/
 	void unload();
 	/*Binds the texture for use when drawing. Location refers to GL_ACTIVE_TEXTURE.*/
-	void bind( int location = GL_TEXTURE0 );
+	void bind( int location = GL_TEXTURE0 ) const;
 
 	GLuint getID() const;
 

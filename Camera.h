@@ -10,8 +10,10 @@ class Camera
 public:
 	/*Makes the camera follow a target offset by the supplied distance.*/
 	void follow( glm::vec3 position, const glm::vec3 &lookAt, float distance );
-	void update(const GLuint &programID);
-	// Getters & Setters are evul!
+	//void update(const GLuint &programID);
+
+	/*Sets the view, projection and camera position of the shader.*/
+	void updateUniforms( GLuint viewPerspective, GLuint cameraPosition );
 
 	void setPerspective( float fov, float aspectRatio, float nearplane = 0.01f, float farplane = 100.0f );
 	void setPosition( glm::vec3 position );

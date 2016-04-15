@@ -27,7 +27,7 @@ void Particle::update( float deltaTime )
 		mVelocity *= 1.0f - mDrag;
 	
 		float a = mElapsed / mLifetime;
-		mScale = ( mStartScale * a ) + ( ( 1-a ) * mEndScale );
+		mScale = ((1 - a) * mStartScale) + ( mEndScale * a );
 
 		mElapsed += deltaTime;
 	}

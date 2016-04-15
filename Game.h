@@ -20,8 +20,8 @@ public:
 	~Game();
 private:
 	GameState* pActionState;
-	ShaderProgram* pDeferredProgram;
-	ShaderProgram* pForwardProgram;
+	DeferredProgram* pDeferredProgram;
+	ForwardProgram* pForwardProgram;
 	BillboardProgram* pBillboardShader;
 	
 	GLuint testScreen;
