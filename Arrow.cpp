@@ -31,6 +31,8 @@ Arrow::Arrow() : GameObject({0,-1,0}), mpEmitter( 300 )
 	this->mLookat = {1,0,0};
 	this->mSpeed = 1.f;
 	this->mGravitation = {0,-1,0};
+	this->mpSpecularMap = nullptr;
+	this->mpNormalMap = nullptr;
 }
 
 

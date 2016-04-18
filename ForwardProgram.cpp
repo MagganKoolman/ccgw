@@ -7,6 +7,8 @@ ForwardProgram::ForwardProgram(){
 
 ForwardProgram::ForwardProgram(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath) : ShaderProgram() {
 	compileShaders(vertexPath, fragmentPath, geometryPath);
+	glUseProgram(mProgramID);
+	glUseProgram(0);
 }
 
 ForwardProgram::~ForwardProgram() {

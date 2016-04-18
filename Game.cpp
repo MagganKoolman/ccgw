@@ -58,18 +58,14 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 
 	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
 	tempMesh* terrainModel = data.pAssets->load<tempMesh>( "Models/plane.obj" );
-	Texture* texture = data.pAssets->load<Texture>( "Models/ground.png" );
-	Texture* texture2 = data.pAssets->load<Texture>( "Models/cube.png" );
+	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
+	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
+	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
+	Texture* normalMap = data.pAssets->load<Texture>("Models/tegelNormal.png");
 
-	data.pPlayer->load( playerModel );
-	data.pPlayer->loadTex( texture2 );
-	mGround.load( terrainModel );
-	mGround.loadTex( texture );
-	aBox.load( playerModel );
-	aBox.loadTex( texture );
-
-	glEnable( GL_BLEND );
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
+	mGround.load( terrainModel, groundTexture, specMap, normalMap);
+	aBox.load( playerModel, groundTexture, specMap, normalMap);
 }
 
 Game::~Game() {
@@ -77,18 +73,15 @@ Game::~Game() {
 	delete data.pForwardProgram;
 	delete data.pBillboardProgram;
 	delete data.pPlayer;
-	delete data.pAssets;
 	delete data.pCamera;
 	//delete pEmitter;
 	delete pActionState;
-	delete data.pCamera;
-	delete data.pPlayer;
 
 	data.pAssets->unload();
 	delete data.pAssets;
 }
 
-bool Game::run(const Input* inputs) {
+bool Game::run(const Input* inputs, const int &dt) {
 	update(inputs);
 	render();
 	return true;
@@ -96,7 +89,6 @@ bool Game::run(const Input* inputs) {
 
 void Game::render() {
 	data.pDeferredProgram->use();
-	//mCamera.update(pDeferredProgram->getProgramID());
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	aBox.render( data.pDeferredProgram->getProgramID() );
@@ -104,7 +96,6 @@ void Game::render() {
 
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
-	//pEmitter->draw();
 
 	for( std::vector<Emitter*>::const_iterator it = data.mEmitters.begin(); it != data.mEmitters.end(); it++ )
 		(*it)->draw();
@@ -116,6 +107,12 @@ void Game::render() {
 
 	data.pForwardProgram->use();
 	data.pDeferredProgram->enableTextures(data.pForwardProgram->getProgramID());
+
+	GLuint cameraPos = glGetUniformLocation(data.pForwardProgram->getProgramID(), "cameraPos");
+	glUniform3fv(cameraPos, 1, &data.pCamera->getPosition()[0]);
+	GLuint inverseViewPerspective = glGetUniformLocation(data.pForwardProgram->getProgramID(), "invViewPerspective");
+	glUniformMatrix4fv(inverseViewPerspective, 1, GL_FALSE, &glm::inverse(data.pCamera->getViewPerspective())[0][0]);
+
 	drawOnScreenQuad();
 	data.pDeferredProgram->disableTextures();
 	data.pForwardProgram->unUse();
@@ -130,6 +127,4 @@ void Game::update(const Input* inputs) {
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
 	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
-	//pEmitter->spawn( v, 2.0f, 0.1f, glm::vec2( 0.5f ), glm::vec2( 0.0f ) );
-	//pEmitter->update( 0.01f );
 }

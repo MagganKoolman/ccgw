@@ -14,7 +14,7 @@
 
 class Game {
 public:
-	bool run(const Input* inputs);
+	bool run(const Input* inputs, const int &dt);
 
 	Game();
 	~Game();
