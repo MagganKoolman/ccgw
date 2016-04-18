@@ -9,6 +9,7 @@ class ForwardProgram;
 class BillboardProgram;
 class Player;
 class Emission;
+class Grid;
 struct GameData
 {
 	Assets* pAssets;
@@ -18,4 +19,5 @@ struct GameData
 	BillboardProgram* pBillboardProgram;
 	Player* pPlayer;
 	Emission* pEmission;
+	Grid* pGrid;
 };

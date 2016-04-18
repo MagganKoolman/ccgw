@@ -3,53 +3,19 @@
 #include "Particle.h"
 #include "Billboard.h"
 
-/*
-//Class for emitting particles.
+//Class for emitting particles. Don't instantiate this directly.
 class Emitter
 {
-public:
-	//Loads all the particles with the supplied texture.
-	bool load( GameData* data, string texture );
-	//Spawns one of the particles at the emitters position.
-	void spawn( glm::vec3 velocity, float lifeftime, float drag = 0.5f, glm::vec2 startScale = glm::vec2(1.0f), glm::vec2 endScale = glm::vec2(1.0f) );
-	//Updates the position, velocity, scale and lifetime of all particles.
-	void update( float deltaTime );
-	//Draws all particles.
-	void draw();
-
-	void setPosition( glm::vec3 position );
-	glm::vec3 getPosition() const;
-
-	Emitter& operator=( const Emitter& ref );
-	Emitter( const Emitter& ref );
-	Emitter( int maxParticles );
-	~Emitter();
-
-private:
-	void sort();
-
-	Camera* mpCamera;
-	BillboardProgram* mpBillboardProgram;
-
-	Particle* mpParticles;
-	Particle** mpSorted;
-	int mMax;
-	int mAlive;
-	float* mDistances;
-
-	glm::vec3 mPosition;
-};*/
-
-class Emitter
-{
+	//Let the Emission-class know about this classes private members.
 	friend class Emission;
 
 public:
+	//Load the specified texture for all the particles in this Emitter.
 	bool load( GameData* data, std::string texture );
+	//Spawn a new particle.
 	void spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag = 0.5f, glm::vec2 startScale = glm::vec2(1.0f), glm::vec2 endScale = glm::vec2(1.0f) );
 
 	Emitter();
-	Emitter( Particle* particles, int maxParticles );
 	~Emitter();
 
 private:
@@ -57,18 +23,22 @@ private:
 	int mMax;
 };
 
+//Class for allocating,updating and rendering particles. Use this class to instantiate Emitters.
 class Emission
 {
 public:
+	//Allocates a specified number of particles. Returns an Emitter that can spawn said particles.
 	bool allocEmitter( Emitter* emitter, int maxParticles );
+	//Update all the particles.
 	void update( float deltaTime );
+	//Draw all the particles.
 	void draw();
 
 	Emission( GameData* data, int maxParticles );
 	~Emission();
 
 private:
-	void spawnCallback( Particle* particle );
+	//Sorts the particles back to front based on the distance to the camera. Particles further back are put at the end of the sorted array.
 	void sort();
 
 	Camera* pCamera;
