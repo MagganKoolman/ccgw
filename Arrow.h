@@ -9,7 +9,7 @@ public:
 
 	bool isAlive();
 	void update(float dt);
-	void spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector);
+	void spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation);
 	Arrow();
 	~Arrow();
 protected:

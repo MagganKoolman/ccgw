@@ -29,7 +29,8 @@ protected: // <-- changed to protected from private. because i wanted to reach t
 	glm::mat4 mWorld;
 	glm::vec3 mPosition;
 	glm::vec3 mLookat;
-	glm::quat mRotation;
+	float rotX;
+	float rotY;
 
 	tempMesh* mpMesh;
 	Texture* mpTexture;

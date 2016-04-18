@@ -50,6 +50,7 @@ void Player::update(const Input* inputs, float dt)
 	}
 
 	this->mPosition += mDirection * mSpeed * dt + glm::vec3(0, speedY * dt, 0);
+
 	if (mPosition.y < 0.5) {
 		mPosition.y = 0.5;
 		speedY = 0;
@@ -58,11 +59,11 @@ void Player::update(const Input* inputs, float dt)
 	double degree = (inputs->mouseDelta().x)/200 *-1;
 	double rad = (inputs->mouseDelta().y) / 400 *-1;
 
-	mRot += degree;
-	if( mRot > glm::pi<float>()*2.0f )
-		mRot -= glm::pi<float>()*2.0f;
-	else if( mRot < 0.0f )
-		mRot += glm::pi<float>()*2.0;
+	rotX += degree;
+	if(rotX > glm::pi<float>()*2.0f )
+		rotX -= glm::pi<float>()*2.0f;
+	else if(rotX < 0.0f )
+		rotX += glm::pi<float>()*2.0;
 
 	glm::mat4 rotatematrix = {	cosf(degree), 0, sinf(degree),0,
 								0,1,0,0,
@@ -90,8 +91,11 @@ void Player::update(const Input* inputs, float dt)
 
 	if (glm::dot(glm::vec3(rotateAroundZ * glm::vec4(mLookat, 1)), tempLookat) > 0) {
 		this->mLookat = glm::vec3(  rotateAroundZ * glm::vec4(mLookat, 1));
-	}
+	} 
 
+	//mLookat = glm::rotate(glm::quat(cosf(mRot),0,sinf(mRot),0), glm::vec3(0,1));
+
+	//this->mRotation.z = 
 	this->mLookat = glm::vec3(rotatematrix * glm::vec4(mLookat, 1));
 	mWorld = rotatematrix * mWorld;
 	
@@ -120,7 +124,7 @@ Player::Player()
 {}
 Player::Player(GameData* data) : GameObject() 
 {
-	mWeapon = new Weapon(1,data);
+	mWeapon = new Weapon(0.2f,data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 3;
 	speedY = 0;

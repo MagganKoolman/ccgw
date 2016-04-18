@@ -7,7 +7,7 @@ void Weapon::shoot(glm::vec3 position, glm::vec3 lookat)
 		bool shot = false;
 		for (int i = 0; i < mMax && !shot; i++) {
 			if (!arrows[i].isAlive()) {
-				arrows[i].spawn(position, lookat, 5, { 0,-1,0 });
+				arrows[i].spawn(position, lookat, 5, { 0,-1,0 }, 0.f);
 				shot = true;
 			}
 		}
@@ -16,8 +16,7 @@ void Weapon::shoot(glm::vec3 position, glm::vec3 lookat)
 void Weapon::update(float dt) {
 	this->mTimeSinceLastShot += dt;
 	for (int i = 0; i < mMax; i++) {
-		if(arrows[i].isAlive())
-			arrows[i].update(dt);
+		arrows[i].update(dt);
 	}
 }
 

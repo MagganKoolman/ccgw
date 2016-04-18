@@ -61,7 +61,7 @@ GameObject::GameObject(glm::vec3 position = { 0, 0, 0 })
 }
 
 GameObject::GameObject()
-	: mRotation(0.0f, 0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
+	: mRotation(0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
 {
 	mPosition = { 0, 0, 0 };
 	mLookat = { 0, 0, -1 };
