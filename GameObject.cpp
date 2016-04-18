@@ -21,6 +21,10 @@ void GameObject::render(const GLuint & programID)
 	GLuint world = glGetUniformLocation(programID, "world");
 	glUniformMatrix4fv(world, 1, GL_FALSE, &this->mWorld[0][0]);
 
+	glm::mat4 normalMatrix = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	GLuint normalMat = glGetUniformLocation(programID, "normalMat");
+	glUniformMatrix4fv(normalMat, 1, GL_FALSE, &normalMatrix[0][0]);
+
 	GLuint texLocation = glGetUniformLocation(programID, "texSampler");
 	glUniform1i(texLocation, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -36,6 +40,8 @@ void GameObject::render(const GLuint & programID, const glm::mat4 &viewMat)
 	glm::mat4 normalMatrix = glm::transpose(glm::inverse(viewMat * mWorld));
 	GLuint normalMat = glGetUniformLocation(programID, "normalMat");
 	glUniformMatrix4fv(normalMat, 1, GL_FALSE, &normalMatrix[0][0]);
+
+	std::cout << mLookat.x << "\t" << mLookat.y << "\t" << mLookat.z << "\t" << std::endl;
 
 	GLuint texLocation = glGetUniformLocation(programID, "texSampler");
 	glUniform1i(texLocation, 0);

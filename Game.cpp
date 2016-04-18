@@ -57,9 +57,9 @@ bool Game::run(const Input* inputs) {
 void Game::render() {
 	pDeferredProgram->use();
 	mCamera.update(pDeferredProgram->getProgramID());
-	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
 	aBox.render(pDeferredProgram->getProgramID());
 	mGround.render(pDeferredProgram->getProgramID());
+	mPlayer.render(pDeferredProgram->getProgramID(), mCamera.getView());
 	pDeferredProgram->unUse();
 
 	pForwardProgram->use();

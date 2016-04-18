@@ -29,6 +29,7 @@ void main()
 			uvOut2 = colorOut[i];
 			vec4 tja = world * vec4(normalOut[i], 0.0);
 			normalOut2 = normalize(vec3(normalMat * tja));
+			//normalOut2 = normalOut[i];
 			EmitVertex();
 		}
 		EndPrimitive();
