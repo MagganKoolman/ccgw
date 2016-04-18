@@ -3,11 +3,19 @@
 bool Arrow::load(GameData* data, string mesh)
 {
 	mpMesh = data->pAssets->load<tempMesh>(mesh);
+	bool result = ( mpMesh != nullptr );
 
-	mpEmitter.load( data, "Models/pns.png" );
-	data->mEmitters.push_back( &mpEmitter );
+	//mpEmitter.load( data, "Models/pns.png" );
+	//data->mEmitters.push_back( &mpEmitter );
+	
+	//pEmitter = data->pEmitter;
 
-	return (mpTexture != nullptr);
+	if( data->pEmission->allocEmitter( &mEmitter, 10 ) )
+		result = result && mEmitter.load( data, "Models/pns.png" );
+	else
+		result = false;
+
+	return result;
 }
 
 bool Arrow::isAlive() 
@@ -22,11 +30,10 @@ void Arrow::update(float dt)
 	this->mWorld[3][1] = mPosition.y;
 	this->mWorld[3][2] = mPosition.z;
 
-	mpEmitter.setPosition(mPosition);
-	mpEmitter.spawn(glm::vec3(0.0f, -0.05f, 0.0f), 10.0f, 0.1f, glm::vec2(0.3f), glm::vec2(0.1f));
-	mpEmitter.update(dt);
+	if( mPosition.y > 0 )
+		mEmitter.spawn( mPosition, glm::vec3( 0.0f, 0.1f, 0.0f ), 10.0f, 0.1f, glm::vec2( 0.3f ), glm::vec2( 0.1f ) );
 }
-Arrow::Arrow() : GameObject({0,-1,0}), mpEmitter( 300 )
+Arrow::Arrow() : GameObject({0,-1,0})
 {
 	this->mLookat = {1,0,0};
 	this->mSpeed = 1.f;

@@ -15,6 +15,7 @@ void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, fl
 	mEndScale = endScale;
 	mDrag = drag;
 	mElapsed = 0.0f;
+	mShouldAdd = true;
 }
 
 void Particle::update( const glm::vec3& cameraPosition, float deltaTime )
@@ -65,6 +66,13 @@ float Particle::getElapsed() const
 	return mElapsed;
 }
 
+bool Particle::getShouldAdd()
+{
+	bool result = mShouldAdd;
+	mShouldAdd = false;
+	return result;
+}
+
 Particle& Particle::operator=( const Particle& ref )
 {
 	mPosition = ref.mPosition;
@@ -77,6 +85,7 @@ Particle& Particle::operator=( const Particle& ref )
 	mLifetime = ref.mLifetime;
 	mElapsed = ref.mElapsed;
 	mDrag = ref.mDrag;
+	mShouldAdd = ref.mShouldAdd;
 
 	mpTexture = ref.mpTexture;
 	return *this;
@@ -85,7 +94,7 @@ Particle& Particle::operator=( const Particle& ref )
 Particle::Particle( const Particle& ref )
 	: mPosition( ref.mPosition ), mVelocity( ref.mVelocity ), mScale( ref.mScale ),
 	mStartScale( ref.mStartScale ), mEndScale( ref.mEndScale ),
-	mLifetime( ref.mLifetime ), mElapsed( ref.mElapsed ), mDrag( ref.mDrag ),
+	mLifetime( ref.mLifetime ), mElapsed( ref.mElapsed ), mDrag( ref.mDrag ), mShouldAdd( ref.mShouldAdd ),
 	mpTexture( ref.mpTexture )
 {
 }
@@ -93,7 +102,7 @@ Particle::Particle( const Particle& ref )
 Particle::Particle()
 	: mPosition( 0.0f ), mVelocity( 0.0f ), mScale( 1.0f ),
 	mStartScale( 1.0f ), mEndScale( 1.0f ),
-	mLifetime( 0.0f ), mElapsed( 0.0f ), mDrag( 0.0f ),
+	mLifetime( 0.0f ), mElapsed( 1.0f ), mDrag( 0.0f ), mShouldAdd( false ),
 	mpTexture( nullptr )
 {
 }
