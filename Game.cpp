@@ -78,6 +78,11 @@ Game::~Game() {
 	delete data.pBillboardProgram;
 	//delete pEmitter;
 	delete pActionState;
+	delete data.pCamera;
+	delete data.pPlayer;
+
+	data.pAssets->unload();
+	delete data.pAssets;
 }
 
 bool Game::run(const Input* inputs) {
