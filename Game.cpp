@@ -54,7 +54,11 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pDeferredProgram = new DeferredProgram("deferred.vertex", "deferred.pixel", "deferred.geometry");
 	data.pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
+	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player( &data );
+
+	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
+		pEmitter.load( &data, "Models/pns.png" );*/
 
 	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
 	tempMesh* terrainModel = data.pAssets->load<tempMesh>( "Models/plane.obj" );
@@ -80,6 +84,7 @@ Game::~Game() {
 	delete pActionState;
 	delete data.pCamera;
 	delete data.pPlayer;
+	delete data.pEmission;
 
 	data.pAssets->unload();
 	delete data.pAssets;
@@ -101,10 +106,9 @@ void Game::render() {
 
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
-	//pEmitter->draw();
 
-	for( std::vector<Emitter*>::const_iterator it = data.mEmitters.begin(); it != data.mEmitters.end(); it++ )
-		(*it)->draw();
+	//data.pEmitter->draw();
+	data.pEmission->draw();
 
 	data.pBillboardProgram->end();
 	data.pBillboardProgram->unUse();
@@ -127,6 +131,8 @@ void Game::update(const Input* inputs) {
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
 	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
-	//pEmitter->spawn( v, 2.0f, 0.1f, glm::vec2( 0.5f ), glm::vec2( 0.0f ) );
+	//pEmitter.spawn( data.pPlayer->getPosition(), v, 2.0f, 0.1f, glm::vec2( 0.5f ), glm::vec2( 0.0f ) );
 	//pEmitter->update( 0.01f );
+
+	data.pEmission->update( 0.01f );
 }

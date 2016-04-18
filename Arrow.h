@@ -16,5 +16,5 @@ protected:
 	float mSpeed;
 	glm::vec3 mGravitation;
 
-	Emitter mpEmitter;
+	Emitter mEmitter;
 };
