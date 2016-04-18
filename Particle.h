@@ -22,6 +22,7 @@ public:
 
 	float getLifetime() const;
 	float getElapsed() const;
+	bool getShouldAdd();
 	
 	Particle& operator=( const Particle& ref );
 	Particle( const Particle& ref );
@@ -37,6 +38,7 @@ private:
 	glm::vec2 mEndScale;
 	float mLifetime, mElapsed;
 	float mDrag;
+	bool mShouldAdd;
 
 	Texture* mpTexture;
 };

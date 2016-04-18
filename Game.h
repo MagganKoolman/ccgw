@@ -14,30 +14,15 @@
 
 class Game {
 public:
-	bool run(const Input* inputs, const int &dt);
+	bool run(const Input* inputs);
 
 	Game();
 	~Game();
 private:
 	GameState* pActionState;
-	//DeferredProgram* pDeferredProgram;
-	//ForwardProgram* pForwardProgram;
-	//BillboardProgram* pBillboardShader;
-	
 	GLuint testScreen;
-
-	//Assets mAssets;
-	//tempMesh playerModel;
-	//tempMesh terrainModel;
-	//Texture texture;
-	//Texture texture2;
-	//Player mPlayer;
 	Terrain aBox;
 	Terrain mGround;
-
-	//Camera mCamera;
-
-	//Emitter* pEmitter;
 	GameData data;
 
 	void createScreenQuad();

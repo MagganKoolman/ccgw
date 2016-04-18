@@ -8,7 +8,8 @@ class DeferredProgram;
 class ForwardProgram;
 class BillboardProgram;
 class Player;
-class Emitter;
+class Emission;
+class Grid;
 struct GameData
 {
 	Assets* pAssets;
@@ -17,6 +18,6 @@ struct GameData
 	ForwardProgram* pForwardProgram;
 	BillboardProgram* pBillboardProgram;
 	Player* pPlayer;
-
-	std::vector<Emitter*> mEmitters;
+	Emission* pEmission;
+	Grid* pGrid;
 };

@@ -1,68 +1,83 @@
 #include "Emitter.h"
 
-bool Emitter::load( GameData* data, string texture )
+bool Emitter::load( GameData* data, std::string texture )
 {
 	bool result = true;
 
-	mpCamera = data->pCamera;
-	mpBillboardProgram = data->pBillboardProgram;
-
-	mpParticles = new Particle[mMax];
-	mpSorted = new Particle*[mMax];
-	mDistances = new float[mMax];
-
-	for( int i=0; i<mMax; i++ )
-		result = result && mpParticles[i].load( data, texture );
+	for( int i=0; i<mMax && result; i++ )
+		result = result && pParticles[i].load( data, texture );
 
 	return result;
 }
 
-void Emitter::spawn( glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
+void Emitter::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
 {
 	for( int i=0; i<mMax; i++ )
 	{
-		if( mpParticles[i].getLifetime() <= mpParticles[i].getElapsed() )
+		// if the current particle is not already alive, we can spawn it
+		if( pParticles[i].getElapsed() >= pParticles[i].getLifetime() )
 		{
-			mpParticles[i].spawn( mPosition, velocity, lifetime, drag, startScale, endScale );
-			mpSorted[mAlive++] = &mpParticles[i];
+			pParticles[i].spawn( position, velocity, lifetime, drag, startScale, endScale );
 			break;
 		}
 	}
 }
 
-void Emitter::update( float deltaTime )
+Emitter::Emitter()
+	: pParticles( nullptr ), mMax( 0 )
 {
-	glm::vec3 cameraPosition = mpCamera->getPosition();
-	for( int i=0; i<mMax; i++ )
-		mpParticles[i].update( cameraPosition, deltaTime );
-
-	sort();
 }
 
-void Emitter::draw()
+Emitter::~Emitter()
 {
-	/*for( int i=0; i<mMax; i++ )
-		mpParticles[i].draw( mpCamera, mpBillboardProgram );*/
+}
+
+bool Emission::allocEmitter( Emitter* emitter, int maxParticles )
+{
+	bool result = false;
+
+	emitter->pParticles = nullptr;
+	emitter->mMax = 0;
+
+	if( mSize < mMax )
+	{
+		// make sure we don't go out of bounds
+		if( maxParticles > mMax - mSize )
+			maxParticles = mMax - mSize;
+
+		emitter->pParticles = mpParticles + mSize;
+		emitter->mMax = maxParticles;
+
+		mSize += maxParticles;
+		result = true;
+	}
+
+	return result;
+}
+
+void Emission::update( float deltaTime )
+{
+	for( int i=0; i<mSize; i++ )
+	{
+		mpParticles[i].update( pCamera->getPosition(), deltaTime );
+		if( mpParticles[i].getShouldAdd() )
+			mpSorted[mAlive++] = &mpParticles[i];
+	}
+}
+
+void Emission::draw()
+{
+	sort();
 
 	for( int i=0; i<mAlive; i++ )
-		mpSorted[i]->draw( mpCamera, mpBillboardProgram );
+		mpSorted[i]->draw( pCamera, pBillboardProgram );
 }
 
-void Emitter::setPosition( glm::vec3 position )
+void Emission::sort()
 {
-	mPosition = position;
-}
+	glm::vec3 cameraPos = pCamera->getPosition();
 
-glm::vec3 Emitter::getPosition() const
-{
-	return mPosition;
-}
-
-void Emitter::sort()
-{
-	glm::vec3 cameraPos = mpCamera->getPosition();
-
-	// start by removing any dead particles
+	// precalculate depth to camera
 	for( int i=0; i<mAlive; i++ )
 	{
 		glm::vec3 pos = mpSorted[i]->getPosition();
@@ -74,13 +89,14 @@ void Emitter::sort()
 		// changing the relative values.
 		mDistances[i] = dif.x*dif.x + dif.y*dif.y + dif.z*dif.z;
 
-		if( mpSorted[i]->getElapsed() >= mpSorted[i]->getLifetime() )
+		if (mpSorted[i]->getElapsed() >= mpSorted[i]->getLifetime())
 		{
 			mpSorted[i] = mpSorted[--mAlive];
 			i--;
 		}
 	}
 
+	// Mwohaha, feel the power of the bubble sort!
 	for( int i=0; i<mAlive; i++ )
 	{
 		bool swapped = false;
@@ -105,44 +121,18 @@ void Emitter::sort()
 	}
 }
 
-Emitter& Emitter::operator=( const Emitter& ref )
+Emission::Emission( GameData* data, int maxParticles )
+	: pCamera( data->pCamera ), pBillboardProgram( data->pBillboardProgram ), 
+	mMax( maxParticles ), mSize( 0 ), mAlive( 0 )
 {
-	if( mpParticles )
-		delete[] mpParticles;
-
-	mMax = ref.mMax;
-	mpParticles = new Particle[mMax];
-	for( int i=0; i<mMax; i++ )
-		mpParticles[i] = ref.mpParticles[i];
-
-	mAlive = ref.mAlive;
-	for( int i=0; i<mAlive; i++ )
-		mpSorted[i] = ref.mpSorted[i];
-
-	return *this;
+	mpParticles = new Particle[maxParticles];
+	mpSorted = new Particle*[maxParticles];
+	mDistances = new float[maxParticles];
 }
 
-Emitter::Emitter( const Emitter& ref )
-	: mMax( ref.mMax ), mAlive( ref.mAlive )
+Emission::~Emission()
 {
-	mpParticles = new Particle[mMax];
-	for( int i=0; i<mMax; i++ )
-		mpParticles[i] = ref.mpParticles[i];
-	for( int i=0; i<mAlive; i++ )
-		mpSorted[i] = ref.mpSorted[i];
-}
-
-Emitter::Emitter( int maxParticles )
-	: mMax( maxParticles ), mpParticles( nullptr ), mPosition( 0.0f, 0.0f, 0.0f ), mAlive( 0 )
-{
-}
-
-Emitter::~Emitter()
-{
-	if( mpParticles )
-	{
-		delete[] mpParticles;
-		delete[] mpSorted;
-		delete[] mDistances;
-	}
+	delete[] mpParticles;
+	delete[] mpSorted;
+	delete[] mDistances;
 }
