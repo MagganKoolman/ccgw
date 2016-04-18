@@ -16,7 +16,8 @@ void Weapon::shoot(glm::vec3 position, glm::vec3 lookat)
 void Weapon::update(float dt) {
 	this->mTimeSinceLastShot += dt;
 	for (int i = 0; i < mMax; i++) {
-		arrows[i].update(dt);
+		if(arrows[i].isAlive())
+			arrows[i].update(dt);
 	}
 }
 
@@ -31,6 +32,7 @@ Weapon::Weapon(float rt, GameData* data)
 {
 	Texture* tex = data->pAssets->load<Texture>("Models/pns.png");
 	mMax = 10;
+	this->arrows = new Arrow[mMax];
 	for (int i = 0; i < mMax; i++)
 	{
 		this->arrows[i].loadTex(tex);
