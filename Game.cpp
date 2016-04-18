@@ -76,6 +76,9 @@ Game::~Game() {
 	delete data.pDeferredProgram;
 	delete data.pForwardProgram;
 	delete data.pBillboardProgram;
+	delete data.pPlayer;
+	delete data.pAssets;
+	delete data.pCamera;
 	//delete pEmitter;
 	delete pActionState;
 }
