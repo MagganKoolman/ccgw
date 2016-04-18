@@ -1,13 +1,12 @@
 #include "Particle.h"
 
-bool Particle::load( Assets* assets, string texture )
+bool Particle::load( GameData* data, string texture )
 {
-	//mpTexture = assets->load<Texture>( texture );
-	//return ( mpTexture != nullptr );
-	return true;
+	mpTexture = data->pAssets->load<Texture>( texture );
+	return ( mpTexture != nullptr );
 }
 
-void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, glm::vec2 startScale, glm::vec2 endScale, float drag )
+void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag, glm::vec2 startScale, glm::vec2 endScale )
 {
 	mPosition = position;
 	mVelocity = velocity;
@@ -18,7 +17,7 @@ void Particle::spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, gl
 	mElapsed = 0.0f;
 }
 
-void Particle::update( float deltaTime )
+void Particle::update( const glm::vec3& cameraPosition, float deltaTime )
 {
 	if( mElapsed < mLifetime )
 	{
@@ -26,7 +25,7 @@ void Particle::update( float deltaTime )
 		mVelocity *= 1.0f - mDrag;
 	
 		float a = mElapsed / mLifetime;
-		mScale = ( mStartScale * a ) + ( ( 1-a ) * mEndScale );
+		mScale = ((1 - a) * mStartScale) + ( mEndScale * a );
 
 		mElapsed += deltaTime;
 	}
@@ -35,7 +34,25 @@ void Particle::update( float deltaTime )
 void Particle::draw( Camera* camera, BillboardProgram* billboardProgram )
 {
 	if( mElapsed < mLifetime )
+	{
+		mpTexture->bind();
 		billboardProgram->draw( camera, mPosition, mScale );
+	}
+}
+
+glm::vec3 Particle::getPosition() const
+{
+	return mPosition;
+}
+
+glm::vec3 Particle::getVelocity() const
+{
+	return mVelocity;
+}
+
+glm::vec2 Particle::getScale() const
+{
+	return mScale;
 }
 
 float Particle::getLifetime() const

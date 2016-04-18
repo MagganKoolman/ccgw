@@ -1,14 +1,20 @@
 #pragma once
 
 #include "GameObject.h"
-
+#include "Emitter.h"
 
 class Arrow : public GameObject{
 public:
-	void update(Input* input);
-	Arrow(int travelSpeed, glm::vec3 downVector);
+	bool load(GameData* data, string mesh);
+
+	bool isAlive();
+	void update(float dt);
+	void spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector);
+	Arrow();
 	~Arrow();
 protected:
-	int mSpeed;
+	float mSpeed;
 	glm::vec3 mGravitation;
+
+	Emitter mpEmitter;
 };

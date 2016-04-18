@@ -17,8 +17,6 @@ int main(int argc, char** argv) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = nullptr;
 
-
-
 	chrono::milliseconds timeStamp = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
 	chrono::milliseconds timeStamp2;
 	long long dt = timeStamp.count();
@@ -44,6 +42,8 @@ int main(int argc, char** argv) {
 
 	Input input(window);
 	Game game;
+	
+	SDL_GL_SetSwapInterval( 1 );
 
 	while (running)
 	{

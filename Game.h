@@ -9,7 +9,8 @@
 #include "global_variables.h"
 #include "Terrain.h"
 #include "Texture.h"
-
+#include "Billboard.h"
+#include "Emitter.h"
 
 class Game {
 public:
@@ -19,20 +20,25 @@ public:
 	~Game();
 private:
 	GameState* pActionState;
-	ShaderProgram* pDeferredProgram;
-	ShaderProgram* pForwardProgram;
+	//DeferredProgram* pDeferredProgram;
+	//ForwardProgram* pForwardProgram;
+	//BillboardProgram* pBillboardShader;
 	
 	GLuint testScreen;
 
-	tempMesh playerModel;
-	tempMesh terrainModel;
-	Texture texture;
-	Texture texture2;
-	Player mPlayer;
+	//Assets mAssets;
+	//tempMesh playerModel;
+	//tempMesh terrainModel;
+	//Texture texture;
+	//Texture texture2;
+	//Player mPlayer;
 	Terrain aBox;
 	Terrain mGround;
 
-	Camera mCamera;
+	//Camera mCamera;
+
+	//Emitter* pEmitter;
+	GameData data;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

@@ -8,13 +8,17 @@ class Particle
 {
 public:
 	/*Loads a texture for the particle.*/
-	bool load( Assets* assets, string texture );
+	bool load( GameData* data, string texture );
 	/*Spawns the particle at the supplied position.*/
-	void spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, glm::vec2 startScale, glm::vec2 endScale, float drag );
+	void spawn( glm::vec3 position, glm::vec3 velocity, float lifetime, float drag = 0.5f, glm::vec2 startScale = glm::vec2( 1.0f ), glm::vec2 endScale = glm::vec2( 1.0f ) );
 	/*Updates the position, velocity, scale and lifetime of the particle.*/
-	void update( float deltaTime );
+	void update( const glm::vec3& cameraPosition, float deltaTime );
 	/*Draws the particle.*/
 	void draw( Camera* camera, BillboardProgram* billboardProgram );
+
+	glm::vec3 getPosition() const;
+	glm::vec3 getVelocity() const;
+	glm::vec2 getScale() const;
 
 	float getLifetime() const;
 	float getElapsed() const;
@@ -31,7 +35,8 @@ private:
 
 	glm::vec2 mStartScale;
 	glm::vec2 mEndScale;
-	float mLifetime, mElapsed, mDrag;
+	float mLifetime, mElapsed;
+	float mDrag;
 
 	Texture* mpTexture;
 };

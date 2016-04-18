@@ -7,9 +7,14 @@ bool Texture::load(string file)
 	SDL_Surface* img = IMG_Load(file.c_str());
 	if (img)
 	{
+		GLenum format = GL_RGBA;
+		if( img->format->BytesPerPixel == 3 )
+			format = GL_RGB;
+
 		glGenTextures(1, &mID);
 		glBindTexture(GL_TEXTURE_2D, mID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, format, GL_UNSIGNED_BYTE, img->pixels);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -18,6 +23,7 @@ bool Texture::load(string file)
 
 		SDL_FreeSurface(img);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		result = true;
 	}
 	
 	return result;
@@ -28,6 +34,12 @@ void Texture::unload()
 	if (mID > 0)
 		glDeleteTextures(1, &mID);
 	mWidth = mHeight = 0;
+}
+
+void Texture::bind( int location ) const
+{
+	glActiveTexture( location );
+	glBindTexture( GL_TEXTURE_2D, mID );
 }
 
 GLuint Texture::getID() const
