@@ -143,5 +143,6 @@ Emitter::~Emitter()
 	{
 		delete[] mpParticles;
 		delete[] mpSorted;
+		delete[] mDistances;
 	}
 }
