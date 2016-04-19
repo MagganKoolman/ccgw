@@ -78,7 +78,7 @@ Game::~Game() {
 	delete data.pBillboardProgram;
 	delete data.pPlayer;
 	delete data.pCamera;
-	//delete pEmitter;
+	delete data.pEmission;
 	delete pActionState;
 
 	data.pAssets->unload();
@@ -101,8 +101,7 @@ void Game::render() {
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
 
-	for( std::vector<Emitter*>::const_iterator it = data.mEmitters.begin(); it != data.mEmitters.end(); it++ )
-		(*it)->draw();
+	data.pEmission->draw();
 
 	data.pBillboardProgram->end();
 	data.pBillboardProgram->unUse();
@@ -126,7 +125,7 @@ void Game::update(const Input* inputs) {
 	data.pPlayer->update(inputs, 0.08f);
 	//pEmitter->setPosition( mPlayer.getPosition() );
 	data.pCamera->follow( data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5);
-
+	data.pEmission->update(1);
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
