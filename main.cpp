@@ -1,6 +1,5 @@
 #include <GL\glew.h>
 #include <iostream>
-#include <chrono>
 #include <Windows.h>
 #include <SDL\SDL.h>
 #include "Game.h"
@@ -17,9 +16,6 @@ int main(int argc, char** argv) {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = nullptr;
 
-	chrono::milliseconds timeStamp = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-	chrono::milliseconds timeStamp2;
-	long long dt = timeStamp.count();
 	bool running = true;
 
 	SDL_DisplayMode dm;
@@ -45,14 +41,15 @@ int main(int argc, char** argv) {
 	
 	SDL_GL_SetSwapInterval( 1 );
 
+	int dt = 0;
+	int timeStamp = 0; int temp;
 	while (running)
 	{
-		timeStamp2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-		dt = timeStamp2.count() - timeStamp.count();
-		timeStamp = timeStamp2;
-
+		temp = SDL_GetTicks();
+		dt = temp - timeStamp;
+		timeStamp = temp;
 		running = input.update();
-		game.run(&input);
+		game.run(&input, dt);
 		if( input.keyPressed( SDLK_ESCAPE ) )
 			running = false;
 		SDL_GL_SwapWindow(window);

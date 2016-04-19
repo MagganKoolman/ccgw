@@ -10,6 +10,8 @@ bool Texture::load(string file)
 		GLenum format = GL_RGBA;
 		if( img->format->BytesPerPixel == 3 )
 			format = GL_RGB;
+		if (img->format->BytesPerPixel == 1)
+			format = GL_RED;
 
 		glGenTextures(1, &mID);
 		glBindTexture(GL_TEXTURE_2D, mID);

@@ -12,7 +12,7 @@ class GameObject
 {
 public:
 	/*Abstract method. Don't call.*/
-	bool load(tempMesh* assets);
+	bool load(tempMesh* assets, Texture* diffuseTex, Texture* specularMap, Texture* normalMap);
 	bool loadTex(Texture* texture);
 	/*Abstract method. Don't call.*/
 	virtual void update(const float &dt);
@@ -34,4 +34,9 @@ protected: // <-- changed to protected from private. because i wanted to reach t
 
 	tempMesh* mpMesh;
 	Texture* mpTexture;
+	Texture* mpSpecularMap;
+	Texture* mpNormalMap;
+
+	void activateTextures(const GLuint &programID);
+	void deactivateTextures();
 };

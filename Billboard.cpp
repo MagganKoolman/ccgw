@@ -3,13 +3,14 @@
 void BillboardProgram::use()
 {
 	glUseProgram( mProgramID );
-
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void BillboardProgram::unUse()
 {
 	glUseProgram( 0 );
+	glDisable(GL_BLEND);
 }
 
 void BillboardProgram::begin( Camera* camera )

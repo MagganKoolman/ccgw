@@ -49,6 +49,8 @@ Arrow::Arrow() : GameObject({0,-1,0})
 	this->mLookat = {1,0,0};
 	this->mSpeed = 1.f;
 	this->mGravitation = {0,-1,0};
+	this->mpSpecularMap = nullptr;
+	this->mpNormalMap = nullptr;
 }
 
 void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)

@@ -152,15 +152,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActionState.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="global_variables.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="tempMesh.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -168,17 +172,22 @@
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionState.h" />
+    <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="global_variables.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="tempMesh.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -187,6 +196,7 @@
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
