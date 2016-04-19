@@ -5,40 +5,36 @@ glm::vec3 Player::getLookAt() const {
 	return this->mLookat;
 }
 
-void Player::shoot()
-{
-	this->mWeapon->shoot(this->mPosition, mLookat);
-}
-
 void Player::update(const Input* inputs, float dt)
 {
-	this->mWeapon->update(dt);
+	this->mWeapon->update(inputs->buttonDown(0), dt);
 	speedY -= 2*dt;
 	mSpeed *= abs(1-3*dt);
 	glm::vec3 tempLookat = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	glm::vec3 dir( 0.0f, 0.0f, 0.0f );
+
 	if( inputs->keyDown( SDLK_w ) )
 	{
 		mSpeed = mMaxSpeed;
-		dir += glm::vec3(cos(mRot), 0.0f, sin(mRot));
+		dir += glm::vec3(cos(rotX), 0.0f, sin(rotX));
 	}
 	if( inputs->keyDown( SDLK_s ) )
 	{
 		mSpeed = mMaxSpeed;
 		float r = glm::pi<float>();
-		dir += glm::vec3(cos(mRot - r), 0.0f, sin(mRot - r));
+		dir += glm::vec3(cos(rotX - r), 0.0f, sin(rotX - r));
 	}
 	if( inputs->keyDown( SDLK_a ) )
 	{
 		mSpeed = mMaxSpeed;
 		float r = glm::pi<float>() * 0.5f;
-		dir += glm::vec3(cos(mRot - r), 0.0f, sin(mRot - r));
+		dir += glm::vec3(cos(rotX - r), 0.0f, sin(rotX - r));
 	}
 	if( inputs->keyDown( SDLK_d ) )
 	{
 		mSpeed = mMaxSpeed;
 		float r = glm::pi<float>() * 1.5f;
-		dir += glm::vec3( cos(mRot-r), 0.0f, sin(mRot-r) );
+		dir += glm::vec3( cos(rotX -r), 0.0f, sin(rotX -r) );
 	}
 	if( inputs->keyPressed( SDLK_SPACE  ) )
 		 speedY += 5;
@@ -104,8 +100,8 @@ void Player::update(const Input* inputs, float dt)
 	mWorld[3][2] = mPosition.z;
 	mWorld[3][3] = 1.f;
 
-	if (inputs->buttonPressed(0))
-		mWeapon->shoot(this->mPosition, mLookat);
+	if (inputs->buttonReleased(0))
+		mWeapon->shoot(this->mPosition, mLookat, rotX);
 }
 
 void Player::render(const GLuint & programID, const glm::mat4 &viewMat)
@@ -124,11 +120,11 @@ Player::Player()
 {}
 Player::Player(GameData* data) : GameObject() 
 {
-	mWeapon = new Weapon(0.2f,data);
+	mWeapon = new Weapon(data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 3;
 	speedY = 0;
-	mRot = glm::pi<float>() * -0.5f;
+	rotX = glm::pi<float>() * -0.5f;
 }
 
 Player::~Player()

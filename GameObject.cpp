@@ -50,7 +50,7 @@ glm::vec3 GameObject::getPosition() const
 }
 
 GameObject::GameObject(const GameObject& ref)
-	: mWorld(ref.mWorld), mRotation(ref.mRotation), mpMesh(ref.mpMesh), mpTexture(ref.mpTexture)
+	: mWorld(ref.mWorld), rotX(0),rotY(0), mpMesh(ref.mpMesh), mpTexture(ref.mpTexture)
 {
 
 }
@@ -61,7 +61,7 @@ GameObject::GameObject(glm::vec3 position = { 0, 0, 0 })
 }
 
 GameObject::GameObject()
-	: mRotation(0.0f, 0.0f, 0.0f), mpMesh(nullptr), mpTexture(nullptr)
+	: rotX(0), rotY(0), mpMesh(nullptr), mpTexture(nullptr)
 {
 	mPosition = { 0, 0, 0 };
 	mLookat = { 0, 0, -1 };

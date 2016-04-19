@@ -1,4 +1,5 @@
 #include "Arrow.h"
+#include "glm\gtx\vector_angle.hpp"
  
 bool Arrow::load(GameData* data, string mesh)
 {
@@ -10,7 +11,7 @@ bool Arrow::load(GameData* data, string mesh)
 	
 	//pEmitter = data->pEmitter;
 
-	if( data->pEmission->allocEmitter( &mEmitter, 10 ) )
+	if( data->pEmission->allocEmitter( &mEmitter, 100 ) )
 		result = result && mEmitter.load( data, "Models/pns.png" );
 	else
 		result = false;
@@ -24,14 +25,24 @@ bool Arrow::isAlive()
 }
 void Arrow::update(float dt)
 {
-	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + mGravitation*dt);
+	glm::vec3 tempVec = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
+	this->rotY = glm::radians(glm::angle(mLookat, tempVec));
+	if (mLookat.y < 0 ) {
+		rotY *= -1;
+	}
+
 	this->mPosition += mSpeed*mLookat*dt;
-	this->mWorld[3][0] = mPosition.x;
-	this->mWorld[3][1] = mPosition.y;
-	this->mWorld[3][2] = mPosition.z;
+
+	this->mWorld = {
+					cosf(rotY)* cosf(rotX),		sinf(rotY),		cosf(rotY) * sinf(rotX),	0,
+					-sinf(rotY) * cosf(rotX),	cosf(rotY),		-sinf(rotY) * sinf(rotX),	0,
+					-sinf(rotX),				0,				cosf(rotX),					0,
+					mPosition.x,				mPosition.y,	mPosition.z,				1
+	};
+	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + mGravitation*dt);
 
 	if( mPosition.y > 0 )
-		mEmitter.spawn( mPosition, glm::vec3( 0.0f, 0.1f, 0.0f ), 10.0f, 0.1f, glm::vec2( 0.3f ), glm::vec2( 0.1f ) );
+		mEmitter.spawn( mPosition, glm::vec3( 0.0f, 0.1f, 0.0f ), 2.f, 0.1f, glm::vec2( 0.3f ), glm::vec2( 0.1f ) );
 }
 Arrow::Arrow() : GameObject({0,-1,0})
 {
@@ -40,10 +51,10 @@ Arrow::Arrow() : GameObject({0,-1,0})
 	this->mGravitation = {0,-1,0};
 }
 
-
 void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
 {
-	//this->mRotation = rotation;
+	this->rotY = 0;
+	this->rotX = rotation;
 	this->mPosition = position;
 	this->mLookat = direction;
 	this->mSpeed = travelSpeed;

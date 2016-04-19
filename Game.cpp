@@ -55,7 +55,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
 	data.pEmission = new Emission(&data, 1000);
-	data.pPlayer = new Player( &data );
+	data.pPlayer = new Player(&data);
 
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
