@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+
+#define NODEAT(x,y) (y*mWidth+x)
+
 enum
 {
 	TILE_EMPTY = 0,
@@ -7,20 +11,31 @@ enum
 	TILE_BALLISTA = 0x2,
 };
 
+struct sNode
+{
+	int x, y, score;
+	sNode* parent;
+};
+
+typedef unsigned char uchar;
+
 //Grid class used to hold information about the gameboard.
 class Grid
 {
 public:
+	//Make sure path is large enough to hold all the targets. A good estimate would be atleast half the size of the map.
+	bool findPath( sNode start, sNode end, sNode* path, int* targets );
+
 	//Determines if a tile has a/several specific flag/flags.
-	bool tileIs( int x, int y, char flags ) const;
+	bool tileIs( int x, int y, uchar flags ) const;
 
 	//Set a tile to a/several specific flag/flags.
-	void setTile( int x, int y, char flags );
+	void setTile( int x, int y, uchar flags );
 	//Returns the flags of a tile.
-	char getTile( int x, int y ) const;
+	uchar getTile( int x, int y ) const;
 
 	//Returns the entire grid.
-	char* getGrid() const;
+	uchar* getGrid() const;
 	//Returns the width of the grid.
 	int getWidth() const;
 	//Returns the height of the grid.
@@ -30,6 +45,10 @@ public:
 	~Grid();
 
 private:
+	uchar heuristic( sNode* start, sNode* end );
+
 	int mWidth, mHeight;
-	char* mpGrid;
+	uchar* mpGrid;
+	int *mGScore, *mFScore;
+	sNode* mPath;
 };
