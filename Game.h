@@ -14,7 +14,7 @@
 
 class Game {
 public:
-	bool run(const Input* inputs);
+	bool run(const Input* inputs, const float &dt);
 
 	Game();
 	~Game();
@@ -28,5 +28,5 @@ private:
 	void createScreenQuad();
 	void drawOnScreenQuad();
 	void render();
-	void update(const Input* inputs);
+	void update(const Input* inputs, float dt);
 };

@@ -5,7 +5,7 @@ void Weapon::shoot(glm::vec3 position, glm::vec3 lookat, float rotation)
 	bool shot = false;
 	for (int i = 0; i < mMax && !shot; i++) {
 		if (!arrows[i].isAlive()) {
-			arrows[i].spawn(position, lookat, mStrength, { 0,-1,0 }, rotation);
+			arrows[i].spawn(position, lookat,15*mStrength, { 0,-1,0 }, rotation);
 			shot = true;
 		}
 	}

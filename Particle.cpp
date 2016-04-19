@@ -22,8 +22,8 @@ void Particle::update( const glm::vec3& cameraPosition, float deltaTime )
 {
 	if( mElapsed < mLifetime )
 	{
-		mPosition += mVelocity;
-		mVelocity *= 1.0f - mDrag;
+		mPosition += mVelocity *deltaTime;
+		mVelocity *= 1.0f - mDrag *deltaTime;
 	
 		float a = mElapsed / mLifetime;
 		mScale = ((1 - a) * mStartScale) + ( mEndScale * a );

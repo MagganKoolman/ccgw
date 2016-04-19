@@ -25,9 +25,11 @@ bool Arrow::isAlive()
 }
 void Arrow::update(float dt)
 {
+	this->mTimeSinceLastEmmit += dt;
+
 	glm::vec3 tempVec = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	this->rotY = glm::radians(glm::angle(mLookat, tempVec));
-	if (mLookat.y < 0 ) {
+	if (mLookat.y < 0) {
 		rotY *= -1;
 	}
 
@@ -39,13 +41,18 @@ void Arrow::update(float dt)
 					-sinf(rotX),				0,				cosf(rotX),					0,
 					mPosition.x,				mPosition.y,	mPosition.z,				1
 	};
-	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + mGravitation*dt);
+	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + 5.f*mGravitation*dt);
 
-	if( mPosition.y > 0 )
-		mEmitter.spawn( mPosition, glm::vec3( 0.0f, 0.1f, 0.0f ), 2.f, 0.1f, glm::vec2( 0.3f ), glm::vec2( 0.1f ) );
+	if (mTimeSinceLastEmmit > mEmmitInterval)
+	{
+		mEmitter.spawn(mPosition, glm::vec3(0.0f, 0.1f, 0.0f), 2.f, 0.1f, glm::vec2(0.3f), glm::vec2(0.1f));
+		mTimeSinceLastEmmit = 0;
+	}
 }
 Arrow::Arrow() : GameObject({0,-1,0})
 {
+	this->mEmmitInterval = 0.1;
+	this->mTimeSinceLastEmmit = 0;
 	this->mLookat = {1,0,0};
 	this->mSpeed = 1.f;
 	this->mGravitation = {0,-1,0};

@@ -22,7 +22,7 @@ void main()
 	vec3 p2 = posOut[2].xyz - posOut[0].xyz;
 	vec3 testNormal = normalize(cross(p1, p2));
 	vec3 aVector = normalize(cameraPos - posOut[1].xyz);
-	if(dot(testNormal, aVector) < 0.0f)
+	if(dot(testNormal, aVector) > 0.0f)
 	{
 		tangent = p1;
 		biTangent = normalize(cross(testNormal, tangent));

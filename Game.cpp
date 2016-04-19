@@ -79,14 +79,15 @@ Game::~Game() {
 	delete data.pPlayer;
 	delete data.pCamera;
 	//delete pEmitter;
+	delete data.pEmission;
 	delete pActionState;
 
 	data.pAssets->unload();
 	delete data.pAssets;
 }
 
-bool Game::run(const Input* inputs, const int &dt) {
-	update(inputs);
+ bool Game::run(const Input* inputs, const float &dt) {
+	update(inputs, dt);
 	render();
 	return true;
 }
@@ -101,8 +102,7 @@ void Game::render() {
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
 
-	for( std::vector<Emitter*>::const_iterator it = data.mEmitters.begin(); it != data.mEmitters.end(); it++ )
-		(*it)->draw();
+	data.pEmission->draw();
 
 	data.pBillboardProgram->end();
 	data.pBillboardProgram->unUse();
@@ -122,9 +122,10 @@ void Game::render() {
 	data.pForwardProgram->unUse();
 }
 
-void Game::update(const Input* inputs) {
-	data.pPlayer->update(inputs, 0.08f);
+void Game::update(const Input* inputs, float dt) {
+	data.pPlayer->update(inputs, dt);
 	//pEmitter->setPosition( mPlayer.getPosition() );
+	data.pEmission->update(dt);
 	data.pCamera->follow( data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5);
 
 	// NOTE: Debug
