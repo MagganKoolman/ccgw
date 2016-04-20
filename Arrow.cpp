@@ -49,7 +49,7 @@ void Arrow::update(float dt)
 		mTimeSinceLastEmmit = 0;
 	}
 }
-Arrow::Arrow() : GameObject({0,-1,0})
+Arrow::Arrow() : GameObject({0,-10,0})
 {
 	this->mEmmitInterval = 0.1;
 	this->mTimeSinceLastEmmit = 0;

@@ -9,7 +9,7 @@ class Camera
 {
 public:
 	/*Makes the camera follow a target offset by the supplied distance.*/
-	void follow( glm::vec3 position, const glm::vec3 &lookAt, float distance );
+	void follow( glm::vec3 position, const glm::vec3 &lookAt, float distance , const glm::vec3 &up);
 	//void update(const GLuint &programID);
 
 	/*Sets the view, projection and camera position of the shader.*/

@@ -30,7 +30,7 @@ void Weapon::draw(const GLuint &programID) {
 Weapon::Weapon(GameData* data) 
 {
 	Texture* tex = data->pAssets->load<Texture>("Models/pns.png");
-	mMax = 10;
+	mMax = 100;
 	this->arrows = new Arrow[mMax];
 	for (int i = 0; i < mMax; i++)
 	{

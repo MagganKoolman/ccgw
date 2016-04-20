@@ -4,10 +4,10 @@
 #include "glm\gtx\transform.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 
-void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance )
+void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance, const glm::vec3 &up )
 {
 	mPosition = position - distance * lookDir + glm::vec3(glm::cross(lookDir, glm::cross(glm::vec3(0,1,0),lookDir)))*(distance/4);// (-lookDir * distance);
-	mView = glm::lookAt(mPosition, position + lookDir*distance, glm::vec3(0, 1, 0));
+	mView = glm::lookAt(mPosition, position + lookDir*distance, up);
 }
 
 /*void Camera::update(const GLuint &programID) {
