@@ -1,10 +1,12 @@
 #include "Game.h"
 
-struct ScreenVertex {
+struct ScreenVertex 
+{
 	float x, y, s, t;
 };
 
-void Game::createScreenQuad() {
+void Game::createScreenQuad() 
+{
 	glGenBuffers(1, &testScreen);
 	ScreenVertex vertexData[6];
 	vertexData[0].x = -1.0; vertexData[0].y = -1.0; vertexData[0].s = 0.0; vertexData[0].t = 0.0;
@@ -18,7 +20,8 @@ void Game::createScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Game::drawOnScreenQuad() {
+void Game::drawOnScreenQuad()
+{
 	glBindBuffer(GL_ARRAY_BUFFER, testScreen);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, x));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, s));
@@ -26,7 +29,8 @@ void Game::drawOnScreenQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/{
+Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/
+{
 	pActionState = nullptr;
 	/*pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
 	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
@@ -85,13 +89,24 @@ Game::~Game() {
 	delete data.pAssets;
 }
 
- bool Game::run(const Input* inputs, const float &dt) {
+ bool Game::run(const Input* inputs, const float &dt) 
+ {
 	update(inputs, dt);
 	render();
 	return true;
 }
 
-void Game::render() {
+ void Game::tacticalRun(const Input* inputs, const float &dt) 
+ {
+	//this->update(inputs, dt);   20 
+	 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0,-1,0))) * (7*dt);
+	this->data.pCamera->follow(data.pCamera->getPosition() + dPosition -glm::vec3(0,1,0), { 0,-1,0 }, 1, {0,0,1});
+	render();
+ }
+
+
+void Game::render()
+{
 	data.pDeferredProgram->use();
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
@@ -121,11 +136,12 @@ void Game::render() {
 	data.pForwardProgram->unUse();
 }
 
-void Game::update(const Input* inputs, float dt) {
+void Game::update(const Input* inputs, float dt) 
+{
 	data.pPlayer->update(inputs, dt);
 	//pEmitter->setPosition( mPlayer.getPosition() );
 	data.pEmission->update(dt);
-	data.pCamera->follow( data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5);
+	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
 
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );

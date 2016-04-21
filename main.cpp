@@ -43,13 +43,23 @@ int main(int argc, char** argv) {
 
 	float dt = 0;
 	int timeStamp = SDL_GetTicks(); int temp;
+	bool actionMode = true;
 	while (running)
 	{
 		temp = SDL_GetTicks();
 		dt = (float)(temp - timeStamp) / 1000.f;
 		timeStamp = temp;
 		running = input.update();
-		game.run(&input, dt);
+
+		if (input.keyPressed(SDLK_t))
+			actionMode = !actionMode;
+
+		if (actionMode)
+			game.run(&input, dt);
+		else
+			game.tacticalRun(&input, dt);
+
+
 		if( input.keyPressed( SDLK_ESCAPE ) )
 			running = false;
 		SDL_GL_SwapWindow(window);

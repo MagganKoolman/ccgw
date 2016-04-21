@@ -50,6 +50,8 @@ bool Input::update()
 			this->mCurMouse = glm::vec2(e.motion.x, e.motion.y);
 		}
 	}
+
+	/* måste flyttas ut till game */
 	int tempx = 0; int tempy = 0; 
 	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
 	SDL_FlushEvent(SDL_MOUSEMOTION);
