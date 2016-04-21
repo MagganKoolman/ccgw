@@ -60,7 +60,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
 	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player(&data);
-	data.pGrid = new Grid(20, 20);
 
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
@@ -72,10 +71,15 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
 	Texture* normalMap = data.pAssets->load<Texture>("Models/tegelNormal.png");
 
+	data.pGrid = new Grid(20, 20, playerModel);
+
 	sNode start = { 0, 0 };
 	sNode end = { 2, 2 };
 	mpPath = new sNode[20*20];
 	mTargets = 0;
+
+	for( int i=0; i<3; i++ )
+		data.pGrid->setTile( i, 1, TILE_BOX );
 
 	data.pGrid->findPath( start, end, mpPath, &mTargets );
 
@@ -130,6 +134,7 @@ void Game::render()
 	aBox.render( data.pDeferredProgram->getProgramID() );
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	mpEnemy->render( data.pDeferredProgram->getProgramID() );
+	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
 
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
