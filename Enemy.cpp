@@ -5,7 +5,7 @@ void Enemy::update()
 	//if( mCurrent < mMax )
 	if( mCurrent >= 0 )
 	{
-		glm::vec3 target( pPath[mCurrent].x, 0, pPath[mCurrent].y );
+		glm::vec3 target( pPath[mCurrent].x*2, 0, pPath[mCurrent].y*2 );
 
 		float dist = glm::distance( mPosition, glm::vec3( target ) );
 		if( dist < 0.5f )
