@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Grid.h"
+#include <iostream>
 
 class Enemy : public GameObject
 {
@@ -18,5 +19,5 @@ public:
 
 private:
 	sNode* pPath;
-	int mMax, mCurrent;
+	int mCurrent;
 };

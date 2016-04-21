@@ -20,7 +20,10 @@ private:
 	float mMaxSpeed;
 	float mSpeed;
 	glm::vec3 mDirection;
+	glm::vec2 mSelectedTile;
 	Weapon* mWeapon;
 
 	float mRot;
+	glm::vec2 mousePicking(const glm::vec2 mousePos, const GameData &gameData);
+
  };

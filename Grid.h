@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "tempMesh.h"
 
-#define NODEAT(x,y) (y*mWidth+x)
+#define NODEAT(x,y) ((y)*mWidth+(x))
 
 enum
 {
@@ -13,15 +14,14 @@ enum
 
 struct sNode
 {
-	int x, y, score;
+	int x, y;
 	sNode* parent;
 };
 
 typedef unsigned char uchar;
 
 //Grid class used to hold information about the gameboard.
-class Grid
-{
+class Grid {
 public:
 	//Make sure path is large enough to hold all the targets. A good estimate would be atleast half the size of the map.
 	bool findPath( sNode start, sNode end, sNode* path, int* targets );
@@ -41,15 +41,19 @@ public:
 	//Returns the height of the grid.
 	int getHeight() const;
 
-	Grid( int width, int height );
+	void debugRender( GLuint programID );
+
+	Grid( int width, int height, tempMesh* debugMesh );
 	Grid();
 	~Grid();
 
 private:
-	uchar heuristic( sNode* start, sNode* end );
+	int heuristic( sNode* start, sNode* end );
 
 	int mWidth, mHeight;
 	uchar* mpGrid;
 	int *mGScore, *mFScore;
 	sNode* mPath;
+
+	tempMesh* DEBUG_mesh;
 };

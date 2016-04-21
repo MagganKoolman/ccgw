@@ -60,7 +60,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
 	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player(&data);
-	data.pGrid = new Grid(20, 20);
 
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
@@ -71,6 +70,22 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
 	Texture* normalMap = data.pAssets->load<Texture>("Models/tegelNormal.png");
+
+	data.pGrid = new Grid(20, 20, playerModel);
+
+	sNode start = { 0, 0 };
+	sNode end = { 2, 2 };
+	mpPath = new sNode[20*20];
+	mTargets = 0;
+
+	for( int i=0; i<3; i++ )
+		data.pGrid->setTile( i, 1, TILE_BOX );
+
+	data.pGrid->findPath( start, end, mpPath, &mTargets );
+
+	mpEnemy = new Enemy( glm::vec3( 0.0f ) );
+	mpEnemy->load( playerModel, playerTexture, specMap, normalMap );
+	mpEnemy->setPath( mpPath, mTargets );
 
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
 	mGround.load( terrainModel, groundTexture, specMap, normalMap);
@@ -86,6 +101,8 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
+	delete mpEnemy;
+	delete[] mpPath;
 
 	data.pAssets->unload();
 	delete data.pAssets;
@@ -100,12 +117,12 @@ Game::~Game() {
 
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
-	//this->update(inputs, dt);   20 
-	glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0,-1,0))) * (5*dt);
-	if (data.pCamera->getPosition().y < 18)
-		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition -glm::vec3(0,1,0), { 0,-1,0 }, 1, {0,0,-1});
-	else {
-		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 30);	
+	 if (data.pCamera->getPosition().y < 18) {
+		 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
+		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });	
+	 }
+	 else {
+		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
 	}
 	render();
  }
@@ -118,6 +135,8 @@ void Game::render()
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	aBox.render( data.pDeferredProgram->getProgramID() );
 	mGround.render( data.pDeferredProgram->getProgramID() );
+	mpEnemy->render( data.pDeferredProgram->getProgramID() );
+	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
 
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
@@ -148,6 +167,7 @@ void Game::update(const Input* inputs, float dt)
 	//pEmitter->setPosition( mPlayer.getPosition() );
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
+	mpEnemy->update();
 
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );

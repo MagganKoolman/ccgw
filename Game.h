@@ -12,6 +12,7 @@
 #include "Billboard.h"
 #include "Emitter.h"
 #include "Grid.h"
+#include "Enemy.h"
 
 class Game {
 public:
@@ -26,6 +27,9 @@ private:
 	Terrain aBox;
 	Terrain mGround;
 	GameData data;
+	sNode* mpPath;
+	int mTargets;
+	Enemy* mpEnemy;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

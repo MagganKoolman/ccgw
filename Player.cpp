@@ -101,11 +101,27 @@ void Player::update(const Input* inputs, const float &dt)
 	mWorld[3][2] = mPosition.z;
 	mWorld[3][3] = 1.f;
 
-	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
-	SDL_FlushEvent(SDL_MOUSEMOTION);
-
 	if (inputs->buttonReleased(0))
 		mWeapon->shoot(this->mPosition, mLookat, rotX);
+}
+
+glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameData) {
+	float x = (2.0f * mousePos.x) / gWidth - 1.0f;
+	float y = 1.0f - (2.0f * mousePos.y) / gHeight;
+	glm::vec3 rayNDC = glm::vec3(x, y, 0);
+	glm::vec4 rayClipSpace = glm::vec4(rayNDC.x, rayNDC.y, -1.0, 0.0);
+	glm::vec4 rayEyeSpace = glm::inverse(gameData.pCamera->getPerspective()) * rayClipSpace;
+	rayEyeSpace = glm::vec4(rayEyeSpace.x, rayEyeSpace.y, -1.0, 0.0);
+	glm::vec4 rayWorldSpace = glm::inverse(gameData.pCamera->getView()) * rayEyeSpace;
+	rayWorldSpace = glm::normalize(rayWorldSpace);
+	float scalar = -(gameData.pCamera->getPosition().y-0.5) / rayWorldSpace.y;
+	rayWorldSpace *= scalar;
+	glm::vec2 pickPos;
+	pickPos.x = (int)(gameData.pCamera->getPosition().x + rayWorldSpace.x);
+	pickPos.y = (int)(gameData.pCamera->getPosition().z + rayWorldSpace.z);
+	//std::cout << pickPos.x << "    " << pickPos.y << "\n";
+	std::cout << pickPos.x << "    " << pickPos.y << "\n";
+	return pickPos;
 }
 
 glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const GameData &gameData)
@@ -113,11 +129,15 @@ glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const Ga
 	glm::vec3 dir(0.0f, 0.0f, 0.0f);
 	if (inputs->buttonDown(0))
 	{
-		
+		mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
+	}
+	if (inputs->keyDown(SDLK_1))
+	{
+		gameData.pGrid->setTile(mSelectedTile.x, mSelectedTile.y, TILE_BOX);
+		mSelectedTile = { -1, -1 };
 	}
 	if (inputs->keyDown(SDLK_w))
 	{
-		//gameData.pGrid->setTile(10, 3, 0);
 		dir += glm::vec3(0.0f, 0.0f, -10.0 * dt);
 	}
 	if (inputs->keyDown(SDLK_s))
@@ -148,11 +168,10 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 	return result;
 }
 Player::Player() 
+{}
+Player::Player(GameData* data) : GameObject()
 {
-
-}
-Player::Player(GameData* data) : GameObject() 
-{
+	mSelectedTile = { -1, -1 };
 	mWeapon = new Weapon(data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 10;
