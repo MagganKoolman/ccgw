@@ -101,6 +101,8 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
+	delete mpEnemy;
+	delete[] mpPath;
 
 	data.pAssets->unload();
 	delete data.pAssets;

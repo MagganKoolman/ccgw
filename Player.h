@@ -20,7 +20,7 @@ private:
 	float mMaxSpeed;
 	float mSpeed;
 	glm::vec3 mDirection;
-	glm::vec2 selectedTile;
+	glm::vec2 mSelectedTile;
 	Weapon* mWeapon;
 
 	float mRot;

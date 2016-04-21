@@ -158,6 +158,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Emitter.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />

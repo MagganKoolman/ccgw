@@ -114,14 +114,12 @@ glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 	rayEyeSpace = glm::vec4(rayEyeSpace.x, rayEyeSpace.y, -1.0, 0.0);
 	glm::vec4 rayWorldSpace = glm::inverse(gameData.pCamera->getView()) * rayEyeSpace;
 	rayWorldSpace = glm::normalize(rayWorldSpace);
-	float scalar = -gameData.pCamera->getPosition().y / rayWorldSpace.y;
+	float scalar = -(gameData.pCamera->getPosition().y-0.5) / rayWorldSpace.y;
 	rayWorldSpace *= scalar;
 	glm::vec2 pickPos;
-	pickPos.x = gameData.pCamera->getPosition().x + rayWorldSpace.x;
-	pickPos.y = gameData.pCamera->getPosition().z + rayWorldSpace.z;
+	pickPos.x = (int)(gameData.pCamera->getPosition().x + rayWorldSpace.x);
+	pickPos.y = (int)(gameData.pCamera->getPosition().z + rayWorldSpace.z);
 	//std::cout << pickPos.x << "    " << pickPos.y << "\n";
-	pickPos.x = (int)(pickPos.x + gameData.pGrid->getWidth() / 2);
-	pickPos.y = (int)(pickPos.y + gameData.pGrid->getHeight() / 2);
 	std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	return pickPos;
 }
@@ -132,6 +130,11 @@ glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const Ga
 	if (inputs->buttonDown(0))
 	{
 		mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
+	}
+	if (inputs->keyDown(SDLK_1))
+	{
+		gameData.pGrid->setTile(mSelectedTile.x, mSelectedTile.y, TILE_BOX);
+		mSelectedTile = { -1, -1 };
 	}
 	if (inputs->keyDown(SDLK_w))
 	{

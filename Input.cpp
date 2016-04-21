@@ -59,6 +59,7 @@ bool Input::update()
 	if( mMouseLock )
 	{
 		SDL_WarpMouseInWindow( mpWindow, gWidth/2, gHeight/2 );
+		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 
 	return result;
@@ -201,6 +202,7 @@ Input::Input(SDL_Window* w)
 		mCurButtons[i] = mPrevButtons[i] = false;
 
 	this->mpWindow = w;
+	mMouseLock = true;
 	// TODO: Initialize mouse position?
 }
 

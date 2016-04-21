@@ -19,8 +19,8 @@ int main(int argc, char** argv) {
 	SDL_GetDesktopDisplayMode(0, &dm);
 	//gWidth = dm.w - 2;
 	//gHeight = dm.h - 60;
-	gWidth = screen_width - 2;
-	gHeight = screen_height - 60;
+	gWidth = 1080 - 2;
+	gHeight = 720 - 60;
 
 	window = SDL_CreateWindow("Try hard!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, gWidth, gHeight, SDL_WINDOW_OPENGL); // can get the border & titlebar sizes to fix a more precise windowed "fullscreen"
 	SDL_GLContext glContext = SDL_GL_CreateContext(window);
@@ -51,11 +51,11 @@ int main(int argc, char** argv) {
 		timeStamp = temp;
 		running = input.update();
 
-		if (input.keyPressed(SDLK_t))
-			actionMode = !actionMode;
-		if(input.keyPressed(SDLK_m))
-			input.toggleMouseLock();
-
+		if (input.keyPressed(SDLK_t)) {
+			actionMode = !actionMode;	
+			input.setMouseLock(actionMode);
+		}
+			
 		if (actionMode)
 			game.run(&input, dt);
 		else
