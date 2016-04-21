@@ -8,7 +8,7 @@ glm::vec3 Player::getLookAt() const {
 void Player::update(const Input* inputs, float dt)
 {
 	this->mWeapon->update(inputs->buttonDown(0), dt);
-	speedY -= 2*dt;
+	speedY -= 15*dt;
 	mSpeed *= abs(1-3*dt);
 	glm::vec3 tempLookat = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	glm::vec3 dir( 0.0f, 0.0f, 0.0f );
@@ -37,7 +37,7 @@ void Player::update(const Input* inputs, float dt)
 		dir += glm::vec3( cos(rotX -r), 0.0f, sin(rotX -r) );
 	}
 	if( inputs->keyPressed( SDLK_SPACE  ) )
-		 speedY += 5;
+		 speedY += 15;
 
 	if( glm::length( dir ) > 0.1f )
 	{
@@ -122,7 +122,7 @@ Player::Player(GameData* data) : GameObject()
 {
 	mWeapon = new Weapon(data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-	mMaxSpeed = 3;
+	mMaxSpeed = 10;
 	speedY = 0;
 	rotX = glm::pi<float>() * -0.5f;
 }

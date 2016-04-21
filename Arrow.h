@@ -15,6 +15,8 @@ public:
 protected:
 	float mSpeed;
 	glm::vec3 mGravitation;
+	float mTimeSinceLastEmmit;
+	float mEmmitInterval;
 
 	Emitter mEmitter;
 };

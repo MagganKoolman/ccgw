@@ -41,12 +41,12 @@ int main(int argc, char** argv) {
 	
 	SDL_GL_SetSwapInterval( 1 );
 
-	int dt = 0;
-	int timeStamp = 0; int temp;
+	float dt = 0;
+	int timeStamp = SDL_GetTicks(); int temp;
 	while (running)
 	{
 		temp = SDL_GetTicks();
-		dt = temp - timeStamp;
+		dt = (float)(temp - timeStamp) / 1000.f;
 		timeStamp = temp;
 		running = input.update();
 		game.run(&input, dt);

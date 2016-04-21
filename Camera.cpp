@@ -10,15 +10,6 @@ void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distanc
 	mView = glm::lookAt(mPosition, position + lookDir*distance, glm::vec3(0, 1, 0));
 }
 
-/*void Camera::update(const GLuint &programID) {
-	glm::mat4 viewPersp = mPerspective * mView;
-	GLuint viewPerspective = glGetUniformLocation(programID, "viewProjection");
-	glUniformMatrix4fv(viewPerspective, 1, GL_FALSE, &viewPersp[0][0]);
-
-	GLuint cameraPos = glGetUniformLocation(programID, "cameraPos");
-	glUniform3fv(cameraPos, 1, &mPosition[0]);
-}*/
-
 void Camera::updateUniforms( GLuint viewPerspective, GLuint cameraPosition )
 {
 	glUniformMatrix4fv(viewPerspective, 1, GL_FALSE, &getViewPerspective()[0][0] );

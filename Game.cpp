@@ -85,8 +85,8 @@ Game::~Game() {
 	delete data.pAssets;
 }
 
-bool Game::run(const Input* inputs, const int &dt) {
-	update(inputs);
+ bool Game::run(const Input* inputs, const float &dt) {
+	update(inputs, dt);
 	render();
 	return true;
 }
@@ -121,11 +121,12 @@ void Game::render() {
 	data.pForwardProgram->unUse();
 }
 
-void Game::update(const Input* inputs) {
-	data.pPlayer->update(inputs, 0.08f);
+void Game::update(const Input* inputs, float dt) {
+	data.pPlayer->update(inputs, dt);
 	//pEmitter->setPosition( mPlayer.getPosition() );
+	data.pEmission->update(dt);
 	data.pCamera->follow( data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5);
-	data.pEmission->update(1);
+
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );

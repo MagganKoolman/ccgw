@@ -28,11 +28,11 @@ void main (){
 
 
 		vec3 eyeDir = normalize(cameraPos - pos.xyz);
-		vec3 vHalfVector = normalize(reflect(normalize(lightPos.xyz - pos.xyz), normal));
-		vec3 specular = vec3(spec) * max(pow((dot(eyeDir,vHalfVector)), spec * 10), 0.0);
+		vec3 vHalfVector = normalize(reflect(lightPos.xyz - pos.xyz, normal));
+		vec3 specular = vec3(spec) * max(pow((dot(eyeDir,vHalfVector)), 20), 0.0);
 	
-		finalColor = 0.3 * color  * max(dot(normalize(lightPos - pos.xyz), normal), 0.0) + specular;
+		finalColor =  0.3 * color  * max(dot(normalize(lightPos - pos.xyz), normal), 0.0) + specular;
 	}
 	else
-		finalColor = color;
+		finalColor = 0.3 * color;
 }
