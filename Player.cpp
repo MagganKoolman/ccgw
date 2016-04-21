@@ -101,9 +101,6 @@ void Player::update(const Input* inputs, const float &dt)
 	mWorld[3][2] = mPosition.z;
 	mWorld[3][3] = 1.f;
 
-	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
-	SDL_FlushEvent(SDL_MOUSEMOTION);
-
 	if (inputs->buttonReleased(0))
 		mWeapon->shoot(this->mPosition, mLookat, rotX);
 }

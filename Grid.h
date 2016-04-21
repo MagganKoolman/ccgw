@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
+#include "tempMesh.h"
 
-#define NODEAT(x,y) (y*mWidth+x)
+#define NODEAT(x,y) ((y)*mWidth+(x))
 
 enum
 {
@@ -13,7 +14,7 @@ enum
 
 struct sNode
 {
-	int x, y, score;
+	int x, y;
 	sNode* parent;
 };
 
@@ -41,15 +42,19 @@ public:
 	//Returns the height of the grid.
 	int getHeight() const;
 
-	Grid( int width, int height );
+	void debugRender( GLuint programID );
+
+	Grid( int width, int height, tempMesh* debugMesh );
 	Grid();
 	~Grid();
 
 private:
-	uchar heuristic( sNode* start, sNode* end );
+	int heuristic( sNode* start, sNode* end );
 
 	int mWidth, mHeight;
 	uchar* mpGrid;
 	int *mGScore, *mFScore;
 	sNode* mPath;
+
+	tempMesh* DEBUG_mesh;
 };

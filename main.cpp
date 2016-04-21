@@ -8,9 +8,6 @@
 
 using namespace std;
 
-int screen_width = 1080;
-int screen_height = 720;
-
 int main(int argc, char** argv) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -34,6 +31,7 @@ int main(int argc, char** argv) {
 		std::cout << "GlewFel!";
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+	//SDL_SetWindowPosition( window, 0, 0 );
 
 	glClearColor(0.7f, 0.7f, 1.0f, 1.0);
 	glEnable(GL_DEPTH_TEST);
@@ -55,6 +53,8 @@ int main(int argc, char** argv) {
 
 		if (input.keyPressed(SDLK_t))
 			actionMode = !actionMode;
+		if(input.keyPressed(SDLK_m))
+			input.toggleMouseLock();
 
 		if (actionMode)
 			game.run(&input, dt);
