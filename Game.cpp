@@ -100,12 +100,12 @@ Game::~Game() {
 
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
-	//this->update(inputs, dt);   20 
-	glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0,-1,0))) * (5*dt);
-	if (data.pCamera->getPosition().y < 18)
-		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition -glm::vec3(0,1,0), { 0,-1,0 }, 1, {0,0,-1});
-	else {
-		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 30);	
+	 if (data.pCamera->getPosition().y < 18) {
+		 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
+		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });	
+	 }
+	 else {
+		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
 	}
 	render();
  }
