@@ -7,7 +7,18 @@
 void Camera::follow( glm::vec3 position, const glm::vec3 &lookDir, float distance, const glm::vec3 &up )
 {
 	mPosition = position - distance * lookDir + glm::vec3(glm::cross(lookDir, glm::cross(glm::vec3(0,1,0),lookDir)))*(distance/4);// (-lookDir * distance);
-	mView = glm::lookAt(mPosition, position + lookDir*distance, up);
+	glm::vec3 lookingPoint = position + lookDir * distance;
+	mView = glm::lookAt(mPosition, lookingPoint, up);
+	//std::cout << lookingPoint.x << "   " << lookingPoint.y << "   " << lookingPoint.z << "\n";
+}
+
+void Camera::tacticalMovement(glm::vec3 moveDir, const float &height)
+{
+	mPosition += moveDir;
+	mPosition.y = height;
+	glm::vec3 lookingPoint = moveDir;
+	lookingPoint.y = -height;
+	mView = glm::lookAt(mPosition, lookingPoint + mPosition, { 0, 0, -1 });
 }
 
 void Camera::updateUniforms( GLuint viewPerspective, GLuint cameraPosition )

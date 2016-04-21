@@ -11,7 +11,7 @@ public:
 	/*Makes the camera follow a target offset by the supplied distance.*/
 	void follow( glm::vec3 position, const glm::vec3 &lookAt, float distance , const glm::vec3 &up);
 	//void update(const GLuint &programID);
-
+	void tacticalMovement(glm::vec3 moveDir, const float &height);
 	/*Sets the view, projection and camera position of the shader.*/
 	void updateUniforms( GLuint viewPerspective, GLuint cameraPosition );
 

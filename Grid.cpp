@@ -145,6 +145,11 @@ Grid::Grid( int width, int height )
 	mPath = new sNode[width*height];
 }
 
+Grid::Grid()
+{
+
+}
+
 Grid::~Grid()
 {
 	delete[] mpGrid;

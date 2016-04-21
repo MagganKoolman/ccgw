@@ -1,11 +1,12 @@
 #include "Player.h"
 #include <iostream>
+#include "global_variables.h"
 
 glm::vec3 Player::getLookAt() const {
 	return this->mLookat;
 }
 
-void Player::update(const Input* inputs, float dt)
+void Player::update(const Input* inputs, const float &dt)
 {
 	this->mWeapon->update(inputs->buttonDown(0), dt);
 	speedY -= 15*dt;
@@ -100,8 +101,38 @@ void Player::update(const Input* inputs, float dt)
 	mWorld[3][2] = mPosition.z;
 	mWorld[3][3] = 1.f;
 
+	SDL_WarpMouseGlobal(gWidth / 2, gHeight / 2);
+	SDL_FlushEvent(SDL_MOUSEMOTION);
+
 	if (inputs->buttonReleased(0))
 		mWeapon->shoot(this->mPosition, mLookat, rotX);
+}
+
+glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const GameData &gameData)
+{
+	glm::vec3 dir(0.0f, 0.0f, 0.0f);
+	if (inputs->buttonDown(0))
+	{
+		
+	}
+	if (inputs->keyDown(SDLK_w))
+	{
+		//gameData.pGrid->setTile(10, 3, 0);
+		dir += glm::vec3(0.0f, 0.0f, -10.0 * dt);
+	}
+	if (inputs->keyDown(SDLK_s))
+	{
+		dir += glm::vec3(0.0f, 0.0f, 10.0 * dt);
+	}
+	if (inputs->keyDown(SDLK_a))
+	{
+		dir += glm::vec3(-10.0 * dt, 0.0f, 0.0f);
+	}
+	if (inputs->keyDown(SDLK_d))
+	{
+		dir += glm::vec3(10.0 * dt, 0.0f, 0.0f);
+	}
+	return dir;
 }
 
 void Player::render(const GLuint & programID, const glm::mat4 &viewMat)

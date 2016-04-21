@@ -11,6 +11,7 @@
 #include "Texture.h"
 #include "Billboard.h"
 #include "Emitter.h"
+#include "Grid.h"
 
 class Game {
 public:

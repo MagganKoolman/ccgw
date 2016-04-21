@@ -42,6 +42,7 @@ public:
 	int getHeight() const;
 
 	Grid( int width, int height );
+	Grid();
 	~Grid();
 
 private:

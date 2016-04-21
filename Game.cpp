@@ -60,6 +60,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
 	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player(&data);
+	data.pGrid = new Grid(20, 20);
 
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
@@ -83,6 +84,7 @@ Game::~Game() {
 	delete data.pPlayer;
 	delete data.pCamera;
 	delete data.pEmission;
+	delete data.pGrid;
 	delete pActionState;
 
 	data.pAssets->unload();
@@ -99,8 +101,12 @@ Game::~Game() {
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
 	//this->update(inputs, dt);   20 
-	 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0,-1,0))) * (7*dt);
-	this->data.pCamera->follow(data.pCamera->getPosition() + dPosition -glm::vec3(0,1,0), { 0,-1,0 }, 1, {0,0,1});
+	glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0,-1,0))) * (5*dt);
+	if (data.pCamera->getPosition().y < 18)
+		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition -glm::vec3(0,1,0), { 0,-1,0 }, 1, {0,0,-1});
+	else {
+		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 30);	
+	}
 	render();
  }
 
