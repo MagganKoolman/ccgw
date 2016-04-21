@@ -24,6 +24,7 @@
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Emitter.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="FbxCamera.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -67,6 +68,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FbxCamera.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
