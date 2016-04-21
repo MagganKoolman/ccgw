@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#define NODEAT(x,y) (y*mWidth+x)
+#define NODEAT(x,y) ((y)*mWidth+(x))
 
 enum
 {
@@ -13,7 +13,7 @@ enum
 
 struct sNode
 {
-	int x, y, score;
+	int x, y;
 	sNode* parent;
 };
 

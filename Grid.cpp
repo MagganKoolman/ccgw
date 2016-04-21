@@ -6,6 +6,7 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 
 	std::vector<sNode*> openList;
 	std::vector<sNode*> closedList;
+	std::vector<sNode*> accessList;
 
 	for( int i=0; i<mWidth*mHeight; i++ )
 	{
@@ -14,7 +15,6 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 		mPath[i].x = i%mWidth;
 		mPath[i].y = i/mWidth;
 		mPath[i].parent = nullptr;
-		mPath[i].score = 0;
 	}
 	
 	mGScore[NODEAT(start.x,start.y)] = 0;
@@ -42,8 +42,8 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 
 		if( (*currentIT)->x == end.x && (*currentIT)->y == end.y )
 		{
-			// DONE
-			sNode* parent = mPath[NODEAT((*currentIT)->x,(*currentIT)->y)].parent;
+			// found a path
+			sNode* parent = *currentIT;
 			int cur = 0;
 			while( parent != nullptr )
 			{
@@ -60,11 +60,10 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 			openList.erase( currentIT );
 			currentIT = closedList.end()-1;
 
-			if( (*currentIT)->x > 0 )
+			// TODO: Factor out into nicer code
+			if( (*currentIT)->x > 0 ) // left
 			{
 				sNode* left = &mPath[NODEAT((*currentIT)->x-1, (*currentIT)->y)];
-				left->score = heuristic( left, &end );
-				left->parent = *currentIT;
 
 				bool found = false;
 				for( std::vector<sNode*>::iterator it = closedList.begin(); it != closedList.end() && !found; it++ )
@@ -86,10 +85,107 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 
 					if( !found || tscore < mGScore[NODEAT(left->x, left->y)])
 					{
+						left->parent = *currentIT;
 						openList.push_back( left );
 
 						mGScore[NODEAT(left->x,left->y)] = tscore;
-						mFScore[NODEAT(left->x,left->y)] = mGScore[NODEAT(left->x,left->y)] + heuristic( left, &end );
+						mFScore[NODEAT(left->x,left->y)] = tscore + heuristic( left, &end );
+					}
+				}
+			}
+			if( (*currentIT)->x < mWidth-1 ) // right
+			{
+				sNode* right = &mPath[NODEAT((*currentIT)->x+1, (*currentIT)->y)];
+
+				bool found = false;
+				for( std::vector<sNode*>::iterator it = closedList.begin(); it != closedList.end() && !found; it++ )
+				{
+					if( (*it)->x == right->x && (*it)->y == right->y )
+						 found = true;
+				}
+
+				if( !found )
+				{
+					int tscore = mGScore[NODEAT((*currentIT)->x, (*currentIT)->y)] + 1;
+
+					found = false;
+					for( std::vector<sNode*>::iterator it = openList.begin(); it != openList.end() && !found; it++ )
+					{
+						if( (*it)->x == right->x && (*it)->y == right->y )
+							found = true;
+					}
+
+					if( !found || tscore < mGScore[NODEAT(right->x, right->y)] )
+					{
+						right->parent = *currentIT;
+						openList.push_back( right );
+
+						mGScore[NODEAT(right->x, right->y)] = tscore;
+						mFScore[NODEAT(right->x, right->y)] = tscore + heuristic( right, &end );
+					}
+				}
+			}
+			if( (*currentIT)->y > 0 ) // up
+			{
+				sNode* up = &mPath[NODEAT((*currentIT)->x, (*currentIT)->y-1)];
+
+				bool found = false;
+				for( std::vector<sNode*>::iterator it = closedList.begin(); it != closedList.end() && !found; it++ )
+				{
+					if( (*it)->x == up->x && (*it)->y == up->y )
+						found = true;
+				}
+
+				if( !found )
+				{
+					int tscore = mGScore[NODEAT((*currentIT)->x, (*currentIT)->y)] + 1;
+
+					found = false;
+					for( std::vector<sNode*>::iterator it = openList.begin(); it != openList.end() && !found; it++ )
+					{
+						if( (*it)->x == up->x && (*it)->y == up->y )
+							found = true;
+					}
+
+					if( !found  || tscore < mGScore[NODEAT(up->x, up->y)] )
+					{
+						up->parent = *currentIT;
+						openList.push_back( up );
+
+						mGScore[NODEAT( up->x, up->y )] = tscore;
+						mFScore[NODEAT( up->x, up->y )] = tscore + heuristic( up, &end );
+					}
+				}
+			}
+			if( (*currentIT)->y < mHeight-1 ) // down
+			{
+				sNode* down = &mPath[NODEAT((*currentIT)->x, (*currentIT)->y + 1)];
+
+				bool found = false;
+				for (std::vector<sNode*>::iterator it = closedList.begin(); it != closedList.end() && !found; it++)
+				{
+					if ((*it)->x == down->x && (*it)->y == down->y)
+						found = true;
+				}
+
+				if (!found)
+				{
+					int tscore = mGScore[NODEAT((*currentIT)->x, (*currentIT)->y)] + 1;
+
+					found = false;
+					for (std::vector<sNode*>::iterator it = openList.begin(); it != openList.end() && !found; it++)
+					{
+						if ((*it)->x == down->x && (*it)->y == down->y)
+							found = true;
+					}
+
+					if (!found || tscore < mGScore[NODEAT(down->x, down->y)])
+					{
+						down->parent = *currentIT;
+						openList.push_back(down);
+
+						mGScore[NODEAT(down->x, down->y)] = tscore;
+						mFScore[NODEAT(down->x, down->y)] = tscore + heuristic(down, &end);
 					}
 				}
 			}

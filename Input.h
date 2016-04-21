@@ -42,6 +42,10 @@ public:
 	/* Returns the difference in mouse position from the last frame.*/
 	glm::vec2 mouseDelta() const;
 
+	bool toggleMouseLock();
+	void setMouseLock( bool enabled );
+	bool getMouseLock() const;
+
 	Input& operator=(const Input& ref);
 	Input(const Input& ref);
 	Input(SDL_Window* w);
@@ -52,6 +56,7 @@ private:
 	bool mPrevKeys[MAX_KEYS];
 	bool mCurButtons[MAX_BUTTONS];
 	bool mPrevButtons[MAX_BUTTONS];
+	bool mMouseLock;
 	glm::vec2 mCurMouse;
 	glm::vec2 mPrevMouse;
 

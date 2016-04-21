@@ -53,11 +53,13 @@ bool Input::update()
 
 	/* måste flyttas ut till game */
 	int tempx = 0; int tempy = 0; 
-	
-
 	SDL_GetWindowPosition( mpWindow, &tempx, &tempy );
+	this->mPrevMouse =glm::vec2(gWidth/2, gHeight/2);
 
-	this->mPrevMouse =glm::vec2(gWidth/2 - tempx, gHeight/2 - tempy);
+	if( mMouseLock )
+	{
+		SDL_WarpMouseInWindow( mpWindow, gWidth/2, gHeight/2 );
+	}
 
 	return result;
 }
@@ -134,6 +136,21 @@ glm::vec2 Input::mousePosition()const
 glm::vec2 Input::mouseDelta()const
 {
 	return (mPrevMouse - mCurMouse);
+}
+
+bool Input::toggleMouseLock()
+{
+	return ( mMouseLock = !mMouseLock );
+}
+
+void Input::setMouseLock( bool enabled )
+{
+	mMouseLock = enabled;
+}
+
+bool Input::getMouseLock() const
+{
+	return mMouseLock;
 }
 
 Input& Input::operator=(const Input& ref)

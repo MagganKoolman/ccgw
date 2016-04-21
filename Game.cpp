@@ -72,6 +72,17 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
 	Texture* normalMap = data.pAssets->load<Texture>("Models/tegelNormal.png");
 
+	sNode start = { 0, 0 };
+	sNode end = { 2, 2 };
+	mpPath = new sNode[20*20];
+	mTargets = 0;
+
+	data.pGrid->findPath( start, end, mpPath, &mTargets );
+
+	mpEnemy = new Enemy( glm::vec3( 0.0f ) );
+	mpEnemy->load( playerModel, playerTexture, specMap, normalMap );
+	mpEnemy->setPath( mpPath, mTargets );
+
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
 	mGround.load( terrainModel, groundTexture, specMap, normalMap);
 	aBox.load( playerModel, groundTexture, specMap, normalMap);
@@ -118,6 +129,7 @@ void Game::render()
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	aBox.render( data.pDeferredProgram->getProgramID() );
 	mGround.render( data.pDeferredProgram->getProgramID() );
+	mpEnemy->render( data.pDeferredProgram->getProgramID() );
 
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
@@ -148,6 +160,7 @@ void Game::update(const Input* inputs, float dt)
 	//pEmitter->setPosition( mPlayer.getPosition() );
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
+	mpEnemy->update();
 
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
