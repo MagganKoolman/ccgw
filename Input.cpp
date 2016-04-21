@@ -51,7 +51,6 @@ bool Input::update()
 		}
 	}
 
-	/* måste flyttas ut till game */
 	int tempx = 0; int tempy = 0; 
 	SDL_GetWindowPosition( mpWindow, &tempx, &tempy );
 	this->mPrevMouse =glm::vec2(gWidth/2, gHeight/2);
