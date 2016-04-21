@@ -21,8 +21,7 @@ struct sNode
 typedef unsigned char uchar;
 
 //Grid class used to hold information about the gameboard.
-class Grid
-{
+class Grid {
 public:
 	//Make sure path is large enough to hold all the targets. A good estimate would be atleast half the size of the map.
 	bool findPath( sNode start, sNode end, sNode* path, int* targets );

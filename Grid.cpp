@@ -171,7 +171,7 @@ void Grid::debugRender( GLuint programID )
 				GLuint worldLocation = glGetUniformLocation( programID, "world" );
 				glm::mat4 world;
 				world[3][0] = x;
-				world[3][1] = 0;
+				world[3][1] = 0.5f;
 				world[3][2] = z;
 
 				glUniformMatrix4fv( worldLocation, 1, GL_FALSE, &world[0][0] );
