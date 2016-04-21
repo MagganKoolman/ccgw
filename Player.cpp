@@ -148,7 +148,9 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 	return result;
 }
 Player::Player() 
-{}
+{
+
+}
 Player::Player(GameData* data) : GameObject() 
 {
 	mWeapon = new Weapon(data);
