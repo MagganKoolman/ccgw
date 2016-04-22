@@ -65,7 +65,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 		pEmitter.load( &data, "Models/pns.png" );*/
 
 	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
-	tempMesh* terrainModel = data.pAssets->load<tempMesh>( "Models/plane.obj" );
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
@@ -88,8 +87,9 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mpEnemy->setPath( mpPath, mTargets );
 
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
-	mGround.load( terrainModel, groundTexture, specMap, normalMap);
-	aBox.load( playerModel, groundTexture, specMap, normalMap);
+	mGround.load(data.pAssets->load<tempMesh>("Models/plane.obj"), groundTexture, specMap, nullptr);
+	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), groundTexture, specMap, nullptr);
+	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
 }
 
 Game::~Game() {
@@ -123,6 +123,7 @@ Game::~Game() {
 	 }
 	 else {
 		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
+		mTacticalMarker.update(data.pPlayer->getSelectedTile(), data.pCamera->getPosition());
 	}
 	render();
  }
@@ -133,11 +134,17 @@ void Game::render()
 	data.pDeferredProgram->use();
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
-	aBox.render( data.pDeferredProgram->getProgramID() );
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	mpEnemy->render( data.pDeferredProgram->getProgramID() );
 	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
-
+	if(data.pCamera->getPosition().y < 15)
+		mActionMarker.render(data.pDeferredProgram->getProgramID());
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		mTacticalMarker.render(data.pDeferredProgram->getProgramID());
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
 
@@ -164,11 +171,10 @@ void Game::render()
 void Game::update(const Input* inputs, float dt) 
 {
 	data.pPlayer->update(inputs, dt);
-	//pEmitter->setPosition( mPlayer.getPosition() );
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
 	mpEnemy->update();
-
+	mActionMarker.update(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), data.pPlayer->getRot());
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );

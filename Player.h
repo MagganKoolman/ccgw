@@ -10,6 +10,8 @@ public:
 	glm::vec3 tacticalUpdate(const Input* inputs, const float &dt, const GameData &gameData);
 	glm::vec3 getMovingDirection(glm::vec3 v1, glm::vec3 v2);
 	glm::vec3 getLookAt() const;
+	float getRot() const;
+	glm::vec2 getSelectedTile() const;
 	void render(const GLuint & programID, const glm::mat4 &viewMat);
 
 	Player();

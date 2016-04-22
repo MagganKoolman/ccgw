@@ -13,6 +13,7 @@
 #include "Emitter.h"
 #include "Grid.h"
 #include "Enemy.h"
+#include "Marker.h"
 
 class Game {
 public:
@@ -24,8 +25,9 @@ public:
 private:
 	GameState* pActionState;
 	GLuint testScreen;
-	Terrain aBox;
 	Terrain mGround;
+	Marker mActionMarker;
+	Marker mTacticalMarker;
 	GameData data;
 	sNode* mpPath;
 	int mTargets;

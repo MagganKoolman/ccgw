@@ -6,6 +6,11 @@ glm::vec3 Player::getLookAt() const {
 	return this->mLookat;
 }
 
+float Player::getRot() const
+{
+	return rotX;
+}
+
 void Player::update(const Input* inputs, const float &dt)
 {
 	this->mWeapon->update(inputs->buttonDown(0), dt);
@@ -106,8 +111,8 @@ void Player::update(const Input* inputs, const float &dt)
 }
 
 glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameData) {
-	float x = (2.0f * mousePos.x) / gWidth - 1.0f;
-	float y = 1.0f - (2.0f * mousePos.y) / gHeight;
+	float x = (2.0f * mousePos.x + 40) / gWidth - 1.0f;
+	float y = 1.0f - (2.0f * mousePos.y + 60) / gHeight;
 	glm::vec3 rayNDC = glm::vec3(x, y, 0);
 	glm::vec4 rayClipSpace = glm::vec4(rayNDC.x, rayNDC.y, -1.0, 0.0);
 	glm::vec4 rayEyeSpace = glm::inverse(gameData.pCamera->getPerspective()) * rayClipSpace;
@@ -119,7 +124,6 @@ glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 	glm::vec2 pickPos;
 	pickPos.x = (int)(gameData.pCamera->getPosition().x + rayWorldSpace.x);
 	pickPos.y = (int)(gameData.pCamera->getPosition().z + rayWorldSpace.z);
-	//std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	return pickPos;
 }
@@ -127,9 +131,10 @@ glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const GameData &gameData)
 {
 	glm::vec3 dir(0.0f, 0.0f, 0.0f);
+	mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
 	if (inputs->buttonDown(0))
 	{
-		mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
+		
 	}
 	if (inputs->keyDown(SDLK_1))
 	{
@@ -167,8 +172,13 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
  		result = glm::vec3(0,0,0);
 	return result;
 }
+glm::vec2 Player::getSelectedTile()const {
+	return mSelectedTile;
+}
+
 Player::Player() 
 {}
+
 Player::Player(GameData* data) : GameObject()
 {
 	mSelectedTile = { -1, -1 };
