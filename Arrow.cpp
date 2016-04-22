@@ -72,9 +72,9 @@ void Arrow::update(float dt)
 		mPosition.x,			mPosition.y,				mPosition.z,			1
 	};*/
 	
-
+	float p = glm::pi<float>() * 0.5f;
 	this->mWorld = {
-					cosf(rotY)* cosf(rotX),		sinf(rotY),		cosf(rotY) * sinf(rotX),	0,
+					cosf(rotY)* cosf(rotX),		sinf(rotY),		cosf(rotY ) * sinf(rotX),	0,
 					-sinf(rotY) * cosf(rotX),	cosf(rotY),		-sinf(rotY) * sinf(rotX),	0,
 					-sinf(rotX),				0,				cosf(rotX),					0,
 					mPosition.x,				mPosition.y,	mPosition.z,				1

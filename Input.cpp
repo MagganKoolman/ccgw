@@ -24,7 +24,13 @@ bool Input::update()
 			int key = e.key.keysym.sym;
 			if (key >= 0 && key < MAX_KEYS)
 				mCurKeys[key] = true;
-		} 
+		}
+		else if (e.type == SDL_KEYUP) // user pressed a key
+		{
+			int key = e.key.keysym.sym;
+			if (key >= 0 && key < MAX_KEYS)
+				mCurKeys[key] = false;
+		}
 		else if (e.type == SDL_MOUSEBUTTONDOWN) // user pressed a mouse button
 		{
 			int button = e.button.button - 1; // SDL_BUTTON_LEFT is 1, we want it to be 0

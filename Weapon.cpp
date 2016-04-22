@@ -35,7 +35,7 @@ Weapon::Weapon(GameData* data)
 	for (int i = 0; i < mMax; i++)
 	{
  		this->arrows[i].loadTex(tex);
-		this->arrows[i].load( data, "Models/arrow_liten4_one.obj");
+		this->arrows[i].load( data, "Models/arrow_best3.obj"); // arrow_liten4_one
 	}
 	this->mStrength = 0;
 }
