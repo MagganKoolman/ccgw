@@ -143,14 +143,31 @@ bool Input::toggleMouseLock()
 	return ( mMouseLock = !mMouseLock );
 }
 
+bool Input::toggleMouseVisibility()
+{
+	setMouseVisible( !mMouseVisible );
+	return mMouseVisible;
+}
+
 void Input::setMouseLock( bool enabled )
 {
 	mMouseLock = enabled;
 }
 
+void Input::setMouseVisible( bool visible )
+{
+	mMouseVisible = visible;
+	SDL_ShowCursor( ( visible ? 1 : 0 ) );
+}
+
 bool Input::getMouseLock() const
 {
 	return mMouseLock;
+}
+
+bool Input::getMouseVisible() const
+{
+	return mMouseVisible;
 }
 
 Input& Input::operator=(const Input& ref)
@@ -171,11 +188,14 @@ Input& Input::operator=(const Input& ref)
 	mCurMouse = ref.mCurMouse;
 	mPrevMouse = ref.mPrevMouse;
 
+	mMouseLock = ref.mMouseLock;
+	mMouseVisible = ref.mMouseVisible;
+
 	return *this;
 }
 
 Input::Input(const Input& ref)
-	: mCurMouse(ref.mCurMouse), mPrevMouse(ref.mPrevMouse)
+	: mCurMouse(ref.mCurMouse), mPrevMouse(ref.mPrevMouse), mMouseLock( ref.mMouseLock ), mMouseVisible( ref.mMouseVisible )
 {
 	// copy values from reference
 	for (int i = 0; i<MAX_KEYS; i++)
@@ -192,6 +212,7 @@ Input::Input(const Input& ref)
 }
 
 Input::Input(SDL_Window* w)
+	: mCurMouse( 0.0f ), mPrevMouse( 0.0f ), mMouseLock( true ), mMouseVisible( true )
 {
 	// initialize all values to false
 	for (int i = 0; i<MAX_KEYS; i++)
@@ -201,8 +222,6 @@ Input::Input(SDL_Window* w)
 		mCurButtons[i] = mPrevButtons[i] = false;
 
 	this->mpWindow = w;
-	mMouseLock = true;
-	// TODO: Initialize mouse position?
 }
 
 Input::~Input()
