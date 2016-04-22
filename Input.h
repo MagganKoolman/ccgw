@@ -43,8 +43,13 @@ public:
 	glm::vec2 mouseDelta() const;
 
 	bool toggleMouseLock();
+	bool toggleMouseVisibility();
+
 	void setMouseLock( bool enabled );
+	void setMouseVisible( bool visible );
+
 	bool getMouseLock() const;
+	bool getMouseVisible() const;
 
 	Input& operator=(const Input& ref);
 	Input(const Input& ref);
@@ -56,7 +61,7 @@ private:
 	bool mPrevKeys[MAX_KEYS];
 	bool mCurButtons[MAX_BUTTONS];
 	bool mPrevButtons[MAX_BUTTONS];
-	bool mMouseLock;
+	bool mMouseLock, mMouseVisible;
 	glm::vec2 mCurMouse;
 	glm::vec2 mPrevMouse;
 

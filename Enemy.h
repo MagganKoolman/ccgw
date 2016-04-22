@@ -8,6 +8,7 @@ class Enemy : public GameObject
 {
 public:
 	void update();
+	void render( GLuint programID );
 
 	void setPath( sNode* path, int max );
 
