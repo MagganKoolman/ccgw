@@ -1,4 +1,5 @@
 
+#include <GL\glew.h>
 #include <fstream>
 #include <vector>
 #include <iostream>
@@ -7,7 +8,7 @@
 
 using namespace std;
 
-void BinaryReader::readFromBinary()
+void BinaryReader::readFromBinary(GLuint &vao)
 {
 
 	//Read from binary
@@ -90,7 +91,22 @@ void BinaryReader::readFromBinary()
 																											//cout << "SkelAnimVert vector: NULL" << endl;
 
 																											//cout << "Joint vector: NULL" << endl;
+		GLuint vertexBuff;
 
+
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		// It wörks
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
+		glEnableVertexAttribArray(4);
+
+		glGenBuffers(1, &vertexBuff);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBuff);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(read_sVertex) * read_mList[i].vList.size(), read_mList[i].vList.data(), GL_STATIC_DRAW);
 		cout << "______________________" << endl;
 	}
 
@@ -112,7 +128,9 @@ void BinaryReader::readFromBinary()
 
 		cout << "______________________" << endl;
 	}
-
-
 	infile.close();
+
+
+
+
 }

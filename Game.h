@@ -19,7 +19,7 @@ class Game {
 public:
 	bool run(const Input* inputs, const float &dt);
 	void tacticalRun(const Input* inputs, const float &dt);
-	void setTransition(bool state);
+	//void setTransition(bool state);
 
 	Game();
 	~Game();
