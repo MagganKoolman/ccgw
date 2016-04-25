@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Input.h"
 #include "GameData.h"
+#include "global_variables.h"
 
 class GameObject
 {

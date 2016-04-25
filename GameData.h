@@ -10,6 +10,7 @@ class BillboardProgram;
 class Player;
 class Emission;
 class Grid;
+class Molebat;
 struct GameData
 {
 	Assets* pAssets;
@@ -20,4 +21,7 @@ struct GameData
 	Player* pPlayer;
 	Emission* pEmission;
 	Grid* pGrid;
+	Molebat* pMolebats;
+	int boxScale;
+	int mMolebats;
 };
