@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <random>
 
 struct ScreenVertex 
 {
@@ -32,26 +33,8 @@ void Game::drawOnScreenQuad()
 Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/
 {
 	pActionState = nullptr;
-	/*pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
-	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
-	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
-	pEmitter = new Emitter( &mCamera, pBillboardShader, 1000 );
-	pEmitter->load( &mAssets, "Models/pns.png" );*/
-
+	mStateTransition = false;
 	createScreenQuad();
-
-	/*tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
-	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
-	Texture* texture = mAssets.load<Texture>( "Models/ground.png" );
-	Texture* texture2 = mAssets.load<Texture>( "Models/cube.png" );
-
-
-	mPlayer.load(playerModel);	
-	mGround.load(terrainModel);
-	mPlayer.loadTex(texture2);
-	mGround.loadTex(texture);
-	aBox.load(playerModel);
-	aBox.loadTex(texture);*/
 
 	data.pAssets = new Assets();
 	data.pCamera = new Camera( 45.0f, (float)gWidth/gHeight, 0.5f, 50.0f );
@@ -77,19 +60,13 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mpPath = new sNode[20*20];
 	mTargets = 0;
 
-	for( int i=0; i<3; i++ )
-		data.pGrid->setTile( i, 1, TILE_BOX );
-
 	data.pGrid->findPath( start, end, mpPath, &mTargets );
-
-	mpEnemy = new Enemy( glm::vec3( 0.0f ) );
-	mpEnemy->load( playerModel, playerTexture, specMap, normalMap );
-	mpEnemy->setPath( mpPath, mTargets );
 
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
 	mGround.load(data.pAssets->load<tempMesh>("Models/plane.obj"), groundTexture, specMap, nullptr);
 	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), groundTexture, specMap, nullptr);
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
+	mTacticalMarker.setScale(data.boxScale);
 }
 
 Game::~Game() {
@@ -101,7 +78,6 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
-	delete mpEnemy;
 	delete[] mpPath;
 
 	data.pAssets->unload();
@@ -117,9 +93,11 @@ Game::~Game() {
 
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
-	 if (data.pCamera->getPosition().y < 18) {
+	 if (mStateTransition) {
 		 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
-		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });	
+		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });
+		 if (data.pCamera->getPosition().y > 15)
+			 mStateTransition = false;
 	 }
 	 else {
 		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
@@ -128,14 +106,19 @@ Game::~Game() {
 	render();
  }
 
+ void Game::setTransition(bool state)
+ {
+	 mStateTransition = state;
+ }
+
 
 void Game::render()
 {
 	data.pDeferredProgram->use();
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
+	
 	mGround.render( data.pDeferredProgram->getProgramID() );
-	mpEnemy->render( data.pDeferredProgram->getProgramID() );
 	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
 	if(data.pCamera->getPosition().y < 15)
 		mActionMarker.render(data.pDeferredProgram->getProgramID());
@@ -145,14 +128,13 @@ void Game::render()
 		mTacticalMarker.render(data.pDeferredProgram->getProgramID());
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
+	
 	data.pBillboardProgram->use();
 	data.pBillboardProgram->begin( data.pCamera );
 
 	data.pEmission->draw();
-
 	data.pBillboardProgram->end();
 	data.pBillboardProgram->unUse();
-
 	data.pDeferredProgram->unUse();
 
 	data.pForwardProgram->use();
@@ -173,10 +155,9 @@ void Game::update(const Input* inputs, float dt)
 	data.pPlayer->update(inputs, dt);
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
-	mpEnemy->update();
-	mActionMarker.update(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), data.pPlayer->getRot());
-	// NOTE: Debug
-	float x = (float)( rand() % 100 - 50 );
-	float z = (float)( rand() % 100 - 50 );
-	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
+	mActionMarker.update(data.pPlayer);
+}
+
+void Game::createWave() {
+	
 }

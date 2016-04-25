@@ -21,6 +21,7 @@ public:
 	virtual void render(const GLuint &programID);
 	virtual void render(const GLuint &programID, const glm::mat4 &viewMat);
 	glm::vec3 getPosition() const;
+	void setScale(int scale);
 
 	GameObject(const GameObject& ref);
 	GameObject(glm::vec3 position, float scale);

@@ -4,7 +4,7 @@
 
 class Marker : public GameObject {
 public:
-	void update(const glm::vec3 &playerPos, const glm::vec3 &lookAt, const float &rot);
+	void update(const Player* gameData);
 	void update(const Input * inputs, const GameData &gameData);
 	virtual void render(const GLuint &programID);
 	Marker();
