@@ -22,5 +22,6 @@ struct GameData
 	Emission* pEmission;
 	Grid* pGrid;
 	Molebat* pMolebats;
+	int boxScale;
 	int mMolebats;
 };
