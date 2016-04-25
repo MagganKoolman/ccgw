@@ -23,6 +23,7 @@ private:
 	float mSpeed;
 	glm::vec3 mDirection;
 	glm::vec2 mSelectedTile;
+	bool mPicked;
 	Weapon* mWeapon;
 
 	float mRot;

@@ -131,15 +131,20 @@ glm::vec2 Player::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 glm::vec3 Player::tacticalUpdate(const Input * inputs, const float &dt, const GameData &gameData)
 {
 	glm::vec3 dir(0.0f, 0.0f, 0.0f);
-	mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
 	if (inputs->buttonDown(0))
 	{
-		
+		mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
+		mPicked = true;
 	}
-	if (inputs->keyDown(SDLK_1))
+	if (mPicked == false)
+	{
+		mSelectedTile = mousePicking(inputs->mousePosition(), gameData);
+	}
+	if (inputs->keyDown(SDLK_1) && mPicked)
 	{
 		gameData.pGrid->setTile(mSelectedTile.x, mSelectedTile.y, TILE_BOX);
 		mSelectedTile = { -1, -1 };
+		mPicked = false;
 	}
 	if (inputs->keyDown(SDLK_w))
 	{
@@ -187,6 +192,7 @@ Player::Player(GameData* data) : GameObject()
 	mMaxSpeed = 10;
 	speedY = 0;
 	rotX = glm::pi<float>() * -0.5f;
+	mPicked = false;
 }
 
 Player::~Player()

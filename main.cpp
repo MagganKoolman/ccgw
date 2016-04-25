@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
 	float dt = 0;
 	int timeStamp = SDL_GetTicks(); int temp;
 	bool actionMode = true;
+	input.setMouseVisible(false);
 	while (running)
 	{
 		temp = SDL_GetTicks();
