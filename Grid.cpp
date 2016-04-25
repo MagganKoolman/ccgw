@@ -170,6 +170,7 @@ void Grid::debugRender( GLuint programID )
 			{
 				GLuint worldLocation = glGetUniformLocation( programID, "world" );
 				glm::mat4 world;
+				world *= glm::vec4(2, 2, 2, 1);
 				world[3][0] = x;
 				world[3][1] = 0.5f;
 				world[3][2] = z;
@@ -193,7 +194,6 @@ Grid::Grid( int width, int height, tempMesh* debugMesh)
 	{
 		mpGrid[i] = TILE_EMPTY;
 	}
-
 	DEBUG_mesh = debugMesh;
 }
 

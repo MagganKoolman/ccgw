@@ -10,6 +10,7 @@ public:
 
 	void draw(const GLuint &programID);
 	void update(bool hold, float dt);
+	float getStrength() const;
 	Weapon(GameData* data);
 	~Weapon();
 

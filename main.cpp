@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
 		if (input.keyPressed(SDLK_t)) {
 			actionMode = !actionMode;	
 			input.setMouseLock(actionMode);
+			game.setTransition(true);
 		}
 			
 		if (actionMode)

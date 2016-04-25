@@ -1,13 +1,15 @@
 #include "Marker.h"
 #include "Player.h"
 
-void Marker::update(const glm::vec3 &playerPos, const glm::vec3 &lookAt, const float &rot) {
-	float aRot = rot + glm::pi<float>() * 0.5f;
+void Marker::update(const Player* player) {
+	float aRot = player->getRot() + glm::pi<float>() * 0.5f;
+	glm::vec3 playerPos = player->getPosition();
+	glm::vec3 lookAt = player->getLookAt();
 	this->mWorld = {
 		cosf(aRot), 0.0f, sinf(aRot), 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
 		-sinf(aRot), 0.0f, cosf(aRot), 0.0f,
-		playerPos.x + lookAt.x * 8,			playerPos.y + lookAt.y * 8,	playerPos.z + lookAt.z * 8,	1
+		playerPos.x + lookAt.x * 8,			playerPos.y + lookAt.y * 8,	playerPos.z + lookAt.z * 8,	1.0
 	};
 }
 

@@ -76,6 +76,11 @@ glm::vec3 GameObject::getPosition() const
 	return mPosition;
 }
 
+void GameObject::setScale(int scale)
+{
+	mWorld = { scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1 };
+}
+
 GameObject::GameObject(const GameObject& ref)
 	: mWorld(ref.mWorld), rotX(0),rotY(0), mpMesh(ref.mpMesh), mpTexture(ref.mpTexture)
 {
