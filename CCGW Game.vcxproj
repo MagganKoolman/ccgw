@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)deps/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)deps/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps/include;C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps/lib;C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\lib\vs2015\x86\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -151,42 +151,76 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionState.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
+    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FbxCamera.cpp" />
     <ClCompile Include="FbxImport.cpp" />
+    <ClCompile Include="FbxLight.cpp" />
     <ClCompile Include="FbxMesh.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="global_variables.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Joint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Molebat.cpp" />
+    <ClCompile Include="Moleratman.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="tempMesh.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActionState.h" />
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Emitter.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FbxCamera.h" />
     <ClInclude Include="FbxImport.h" />
+    <ClInclude Include="FbxLight.h" />
     <ClInclude Include="FbxMesh.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameData.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="global_variables.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="Joint.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Molebat.h" />
+    <ClInclude Include="Moleratman.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="ReadHeaderData.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="tempMesh.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\deferred.geometry" />

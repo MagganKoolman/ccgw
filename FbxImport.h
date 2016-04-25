@@ -37,6 +37,8 @@ public:
 	void processLight(FbxLight* inputLight);
 	void processCamera(FbxCamera* inputCamera);
 
+	void readFromBinary();
+
 	std::vector<MeshFbx> mMeshList;
 	std::vector<LightFbx> mLightList;
 	std::vector<CameraFbx> mCameraList;
