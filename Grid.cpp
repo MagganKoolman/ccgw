@@ -129,12 +129,17 @@ bool Grid::tileIs( int x, int y, uchar flags ) const
 
 void Grid::setTile( int x, int y, uchar flags )
 {
+	x = 1/mScale.x* x;
+	y = 1/mScale.z* y;
+	if (x < 0 || x >= mWidth || y < 0 || y >= mHeight)
+		return;
+
 	mpGrid[y*mWidth+x] = flags;
 }
 
 uchar Grid::getTile( int x, int y ) const
 {
-	return mpGrid[y*mWidth+x];
+	return mpGrid[y/2*mWidth+x/2];
 }
 
 uchar* Grid::getGrid() const
@@ -170,9 +175,11 @@ void Grid::debugRender( GLuint programID )
 			{
 				GLuint worldLocation = glGetUniformLocation( programID, "world" );
 				glm::mat4 world;
-				world[3][0] = x;
-				world[3][1] = 0.5f;
-				world[3][2] = z;
+				
+				world *= glm::vec4(mScale.x,mScale.y,mScale.z, 1);
+				world[3][0] = mScale.x*x;
+				world[3][1] = mScale.y/2;
+				world[3][2] = mScale.z*z;
 
 				glUniformMatrix4fv( worldLocation, 1, GL_FALSE, &world[0][0] );
 
@@ -185,6 +192,7 @@ void Grid::debugRender( GLuint programID )
 Grid::Grid( int width, int height, tempMesh* debugMesh )
 	: mWidth( width ), mHeight( height )
 {
+	mScale = glm::vec3(2, 1.5f, 2);
 	mpGrid = new uchar[width*height];
 	mGScore = new int[width*height];
 	mFScore = new int[width*height];

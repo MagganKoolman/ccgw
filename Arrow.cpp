@@ -28,7 +28,7 @@ void Arrow::update(float dt)
 	this->mTimeSinceLastEmmit += dt;
 
 	glm::vec3 tempVec = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
-	this->rotY = glm::radians(glm::angle(mLookat, tempVec));
+	this->rotY = glm::angle(mLookat, tempVec);
 	if (mLookat.y < 0) {
 		rotY *= -1;
 	}
@@ -76,7 +76,7 @@ void Arrow::update(float dt)
 	this->mWorld = {
 					cosf(rotY)* cosf(rotX),		sinf(rotY),		cosf(rotY ) * sinf(rotX),	0,
 					-sinf(rotY) * cosf(rotX),	cosf(rotY),		-sinf(rotY) * sinf(rotX),	0,
-					-sinf(rotX),				0,				cosf(rotX),					0,
+					-sinf(rotX),				0,				cosf(rotX),				0,
 					mPosition.x,				mPosition.y,	mPosition.z,				1
 	};
 
@@ -88,7 +88,7 @@ void Arrow::update(float dt)
 		mTimeSinceLastEmmit = 0;
 	}
 }
-Arrow::Arrow() : GameObject({0,-10,0})
+Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 {
 	this->rotX = 0;
 	this->mEmmitInterval = 0.1;

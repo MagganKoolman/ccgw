@@ -31,7 +31,7 @@ private:
 	GameData data;
 	sNode* mpPath;
 	int mTargets;
-	Enemy* mpEnemy;
+	std::vector<Enemy*> mpEnemy;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

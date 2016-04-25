@@ -23,7 +23,7 @@ public:
 	glm::vec3 getPosition() const;
 
 	GameObject(const GameObject& ref);
-	GameObject(glm::vec3 position);
+	GameObject(glm::vec3 position, float scale);
 	GameObject();
 	virtual ~GameObject();
 protected: // <-- changed to protected from private. because i wanted to reach these from subclasses.
@@ -32,6 +32,7 @@ protected: // <-- changed to protected from private. because i wanted to reach t
 	glm::vec3 mLookat;
 	float rotX;
 	float rotY;
+	float scale;
 
 	tempMesh* mpMesh;
 	Texture* mpTexture;

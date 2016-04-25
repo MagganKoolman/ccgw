@@ -15,7 +15,7 @@ public:
 	/*Sets the view, projection and camera position of the shader.*/
 	void updateUniforms( GLuint viewPerspective, GLuint cameraPosition );
 
-	void setPerspective( float fov, float aspectRatio, float nearplane = 0.01f, float farplane = 100.0f );
+	void setPerspective( float fov, float aspectRatio, float nearplane = 0.01f, float farplane = 1000.0f );
 	void setPosition( glm::vec3 position );
 	glm::vec3 getPosition() const;
 	const glm::mat4& getView() const;

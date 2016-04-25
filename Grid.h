@@ -33,7 +33,7 @@ public:
 	void setTile( int x, int y, uchar flags );
 	//Returns the flags of a tile.
 	uchar getTile( int x, int y ) const;
-
+	float getHeight();
 	//Returns the entire grid.
 	uchar* getGrid() const;
 	//Returns the width of the grid.
@@ -50,6 +50,7 @@ public:
 private:
 	int heuristic( sNode* start, sNode* end );
 
+	glm::vec3 mScale;
 	int mWidth, mHeight;
 	uchar* mpGrid;
 	int *mGScore, *mFScore;
