@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "global_variables.h"
+#include "FbxImport.h"
 
 using namespace std;
 
@@ -38,6 +39,10 @@ int main(int argc, char** argv) {
 
 	Input input(window);
 	Game game;
+
+	FbxImport fbxobj;
+	
+	fbxobj.readFromBinary();
 	
 	SDL_GL_SetSwapInterval( 1 );
 

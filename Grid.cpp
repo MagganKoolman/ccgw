@@ -171,7 +171,7 @@ void Grid::debugRender( GLuint programID )
 		for( int x=0; x<mWidth; x++, i++ )
 		{
 			uchar tile = mpGrid[i];
-			if( tile & TILE_BOX )
+			if( tile == TILE_BOX )
 			{
 				GLuint worldLocation = glGetUniformLocation( programID, "world" );
 				glm::mat4 world;
@@ -189,7 +189,7 @@ void Grid::debugRender( GLuint programID )
 	}
 }
 
-Grid::Grid( int width, int height, tempMesh* debugMesh )
+Grid::Grid( int width, int height, tempMesh* debugMesh)
 	: mWidth( width ), mHeight( height )
 {
 	mScale = glm::vec3(2, 1.5f, 2);
@@ -197,7 +197,6 @@ Grid::Grid( int width, int height, tempMesh* debugMesh )
 	mGScore = new int[width*height];
 	mFScore = new int[width*height];
 	mPath = new sNode[width*height];
-
 	for( int i=0; i<width*height; i++ )
 	{
 		mpGrid[i] = TILE_EMPTY;

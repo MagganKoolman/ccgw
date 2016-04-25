@@ -60,7 +60,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
 	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player(&data);
-
+	data.boxScale = 2;
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
 
@@ -123,7 +123,7 @@ Game::~Game() {
 	 }
 	 else {
 		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
-		mTacticalMarker.update(data.pPlayer->getSelectedTile(), data.pCamera->getPosition());
+		mTacticalMarker.update(inputs, data);
 	}
 	render();
  }
