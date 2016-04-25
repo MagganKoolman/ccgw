@@ -129,8 +129,8 @@ bool Grid::tileIs( int x, int y, uchar flags ) const
 
 void Grid::setTile( int x, int y, uchar flags )
 {
-	x = 1/mScale.x* x;
-	y = 1/mScale.z* y;
+	x = 1/mScale* x;
+	y = 1/mScale* y;
 	if (x < 0 || x >= mWidth || y < 0 || y >= mHeight)
 		return;
 
@@ -176,10 +176,10 @@ void Grid::debugRender( GLuint programID )
 				GLuint worldLocation = glGetUniformLocation( programID, "world" );
 				glm::mat4 world;
 				
-				world *= glm::vec4(mScale.x,mScale.y,mScale.z, 1);
-				world[3][0] = mScale.x*x;
-				world[3][1] = mScale.y/2;
-				world[3][2] = mScale.z*z;
+				world *= glm::vec4(mScale, mScale, mScale, 1);
+				world[3][0] = mScale*x;
+				world[3][1] = mScale /2;
+				world[3][2] = mScale*z;
 
 				glUniformMatrix4fv( worldLocation, 1, GL_FALSE, &world[0][0] );
 
@@ -192,7 +192,7 @@ void Grid::debugRender( GLuint programID )
 Grid::Grid( int width, int height, tempMesh* debugMesh)
 	: mWidth( width ), mHeight( height )
 {
-	mScale = glm::vec3(2, 1.5f, 2);
+	mScale = 2;
 	mpGrid = new uchar[width*height];
 	mGScore = new int[width*height];
 	mFScore = new int[width*height];

@@ -51,8 +51,6 @@ public:
 private:
 	int heuristic( sNode* start, sNode* end );
 	int mScale;
-
-	glm::vec3 mScale;
 	int mWidth, mHeight;
 	uchar* mpGrid;
 	int *mGScore, *mFScore;

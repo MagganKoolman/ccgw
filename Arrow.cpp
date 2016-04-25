@@ -1,4 +1,5 @@
 #include "Arrow.h"
+#define GLM_FORCE_RADIANS
 #include "glm\gtx\vector_angle.hpp"
  
 bool Arrow::load(GameData* data, string mesh)
