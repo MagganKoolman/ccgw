@@ -150,6 +150,7 @@ Player::Player()
 
 Player::Player(GameData* data) : GameObject()
 {
+	this->mGameData = data;
 	mWeapon = new Weapon(data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 10;

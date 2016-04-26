@@ -32,9 +32,6 @@ void Game::drawOnScreenQuad()
 
 Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/
 {
-	GLuint playerVao;
-
-	BinaryReader::readFromBinary(playerVao);
 
 	pActionState = nullptr;
 	/*pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
@@ -138,7 +135,7 @@ void Game::render()
 {
 	data.pDeferredProgram->use();
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
-	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
+	data.pPlayer->render(data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	//mpEnemy->render( data.pDeferredProgram->getProgramID() );
 	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );

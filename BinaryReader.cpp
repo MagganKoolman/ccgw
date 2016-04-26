@@ -107,7 +107,7 @@ void BinaryReader::readFromBinary(GLuint &vao)
 		glGenBuffers(1, &vertexBuff);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuff);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(read_sVertex) * read_mList[i].vList.size(), read_mList[i].vList.data(), GL_STATIC_DRAW);
-		cout << "______________________" << endl;
+	
 	}
 
 	read_materialList.resize(read_mainHeader.materialCount);

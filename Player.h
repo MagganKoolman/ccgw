@@ -22,6 +22,7 @@ private:
 	float mSpeed;
 	glm::vec3 mDirection;
 	Weapon* mWeapon;
+	GameData* mGameData;
 
 	float mRot;
  };
