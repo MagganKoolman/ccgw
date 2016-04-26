@@ -7,10 +7,8 @@ in vec4 posOut[];
 in vec3 normalOut[];
 in vec2 colorOut[];
 
-out vec2 uvOut2;
 out vec3 normalOut2;
-out vec3 tangent;
-out vec3 biTangent;
+out vec2 uvOut2;
 
 uniform mat4 viewProjection;
 uniform mat4 world;
@@ -24,8 +22,6 @@ void main()
 	vec3 aVector = normalize(cameraPos - posOut[1].xyz);
 	if(dot(testNormal, aVector) > 0.0f)
 	{
-		tangent = p1;
-		biTangent = normalize(cross(testNormal, tangent));
 		for (int i = 0; i < 3; i++)
 		{
 			gl_Position = viewProjection * vec4(posOut[i]);

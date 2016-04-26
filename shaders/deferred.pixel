@@ -5,10 +5,9 @@ layout(location = 1) out vec3 normalTex;
 layout(location = 2) out float specularTex;
 layout(location = 3) out vec3 diffuseTex;
 
-in vec2 uvOut2;
+
 in vec3 normalOut2;
-in vec3 tangent;
-in vec3 biTangent;
+in vec2 uvOut2;
 
 uniform sampler2D texSampler;
 uniform sampler2D specularSampler;
