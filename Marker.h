@@ -5,7 +5,7 @@
 class Marker : public GameObject {
 public:
 	void update(const Player* gameData);
-	void update(const Input * inputs, const GameData &gameData);
+	void update(const Input * inputs, GameData &gameData);
 	virtual void render(const GLuint &programID);
 	Marker();
 	~Marker();

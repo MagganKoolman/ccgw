@@ -1,5 +1,6 @@
 #include "Marker.h"
 #include "Player.h"
+#include "Tower.h"
 
 void Marker::update(const Player* player) {
 	float aRot = player->getRot() + glm::pi<float>() * 0.5f;
@@ -13,7 +14,7 @@ void Marker::update(const Player* player) {
 	};
 }
 
-void Marker::update(const Input * inputs, const GameData &gameData)
+void Marker::update(const Input * inputs, GameData &gameData)
 {
 	selectedTile = mousePicking(inputs->mousePosition(), gameData) * (float)gameData.boxScale;
 	uchar currrentTile = gameData.pGrid->getTile(selectedTile.x, selectedTile.y);
@@ -34,6 +35,7 @@ void Marker::update(const Input * inputs, const GameData &gameData)
 	{
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
 			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, TILE_BOX);
+			//gameData.pTowers.push_back(new Tower(glm::vec3(mMarkedIndex[i].x, 0.0f, mMarkedIndex[i].y)));
 		}	
 		mMarkedIndex.clear();
 	}

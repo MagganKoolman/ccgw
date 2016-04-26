@@ -67,6 +67,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), groundTexture, specMap, nullptr);
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
 	mTacticalMarker.setScale(data.boxScale);
+	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
 }
 
 Game::~Game() {
@@ -118,6 +119,8 @@ void Game::render()
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	
+	for (int i = 0; i < data.pTowers.size(); i++)
+		data.pTowers[i]->render(data.pDeferredProgram->getProgramID());
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
 	if(data.pCamera->getPosition().y < 15)
