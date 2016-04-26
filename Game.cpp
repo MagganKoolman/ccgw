@@ -74,6 +74,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
 	mTacticalMarker.setScale(data.boxScale);
 	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
+	mTowerModel.setScale(data.boxScale);
 }
 
 Game::~Game() {
@@ -85,6 +86,9 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
+	for (int i = 0; i < mpTowers.size(); i++) {
+		delete mpTowers[i];
+	}
 	//delete mpEnemy;
 	delete[] mpPath;
 
@@ -92,8 +96,8 @@ Game::~Game() {
 	delete data.pAssets;
 }
 
- bool Game::run(const Input* inputs, const float &dt) 
- {
+bool Game::run(const Input* inputs, const float &dt) 
+{
 	update(inputs, dt);
 	render();
 	return true;
@@ -101,17 +105,24 @@ Game::~Game() {
 
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
-	 if (data.pCamera->getPosition().y < 18) {
-		 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
-		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });	
-	 }
-	 else {
-		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
-		mTacticalMarker.update(inputs, data);
+	if (data.pCamera->getPosition().y < 18) {
+		glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
+		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });
 	}
+	else {
+		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);
+		if (mTacticalMarker.update(inputs, data)) {
+			std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
+			uchar towerType = mTacticalMarker.towerType();
+			for (int i = 0; i < tempVec.size(); i++) {
+				mpTowers.push_back(new Tower(glm::vec3(tempVec[i].x, 0, tempVec[i].y), mTowerModel, data.boxScale));
+			}
+			mTacticalMarker.resetMarkedTiles();
+		}
+	}
+	
 	render();
  }
-
 
 void Game::render()
 {
@@ -120,7 +131,9 @@ void Game::render()
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	//mpEnemy->render( data.pDeferredProgram->getProgramID() );
-	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
+	for (int i = 0; i < mpTowers.size(); i++) {
+		mpTowers[i]->render(data.pDeferredProgram->getProgramID());
+	}
 	if(data.pCamera->getPosition().y < 15)
 		mActionMarker.render(data.pDeferredProgram->getProgramID());
 	else

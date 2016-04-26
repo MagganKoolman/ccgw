@@ -94,7 +94,7 @@ GameObject::GameObject(glm::vec3 position = { 0, 0, 0 }, float scale = 1.0f)
 				scale,			0,				0,				0,
 				0,				scale,			0,				0,
 				0,				0,				scale,			0,
-				position.x,		position.y,		position.z,		scale 
+				position.x,		position.y,		position.z,		1.0 
 	};
 
 }

@@ -14,10 +14,11 @@ void Marker::update(const Player* player) {
 	};
 }
 
-void Marker::update(const Input * inputs, GameData &gameData)
+bool Marker::update(const Input * inputs, GameData &gameData)
 {
 	selectedTile = mousePicking(inputs->mousePosition(), gameData) * (float)gameData.boxScale;
 	uchar currrentTile = gameData.pGrid->getTile(selectedTile.x, selectedTile.y);
+	bool buildTowers = false;
 	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY)
 	{		
 		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_HOLD);
@@ -33,15 +34,23 @@ void Marker::update(const Input * inputs, GameData &gameData)
 	}
 	if (inputs->keyDown(SDLK_1))
 	{
+		mTypeOfTower = TILE_BOX;
+		buildTowers = true;
+	}
+	if (inputs->keyDown(SDLK_2))
+	{
+		mTypeOfTower = TILE_BALLISTA;
+		buildTowers = true;
+	}
+	if (buildTowers) {
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
-			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, TILE_BOX);
-			//gameData.pTowers.push_back(new Tower(glm::vec3(mMarkedIndex[i].x, 0.0f, mMarkedIndex[i].y)));
-		}	
-		mMarkedIndex.clear();
+			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, mTypeOfTower);
+		}
 	}
 	mWorld[3][0] = selectedTile.x;
 	mWorld[3][1] = 1.0f;
 	mWorld[3][2] = selectedTile.y;
+	return buildTowers;
 }
 
 void Marker::render(const GLuint & programID)
@@ -60,6 +69,22 @@ void Marker::render(const GLuint & programID)
 	deactivateTextures();
 }
 
+std::vector<glm::vec2> Marker::getMarkedTiles()
+{
+	return mMarkedIndex;
+}
+
+void Marker::resetMarkedTiles()
+{
+	mMarkedIndex.clear();
+	mTypeOfTower = TILE_EMPTY;
+}
+
+uchar Marker::towerType() const
+{
+	return mTypeOfTower;
+}
+
 glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameData) {
 	float x = (2.0f * mousePos.x + 40) / gWidth - 1.0f;
 	float y = 1.0f - (2.0f * mousePos.y + 60) / gHeight;
@@ -72,8 +97,8 @@ glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 	float scalar = -(gameData.pCamera->getPosition().y - 0.5) / rayWorldSpace.y;
 	rayWorldSpace *= scalar;
 	glm::vec2 pickPos;
-	pickPos.x = (int)(gameData.pCamera->getPosition().x + rayWorldSpace.x);
-	pickPos.y = (int)(gameData.pCamera->getPosition().z + rayWorldSpace.z);
+	pickPos.x = (int)(gameData.pCamera->getPosition().x / gameData.boxScale + rayWorldSpace.x);
+	pickPos.y = (int)(gameData.pCamera->getPosition().z / gameData.boxScale + rayWorldSpace.z);
 	std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	return pickPos;
 }

@@ -19,7 +19,6 @@ class Game {
 public:
 	bool run(const Input* inputs, const float &dt);
 	void tacticalRun(const Input* inputs, const float &dt);
-	//void setTransition(bool state);
 
 	Game();
 	~Game();
@@ -34,11 +33,10 @@ private:
 	sNode* mpPath;
 	int mTargets;
 	std::vector<Enemy*> mpEnemy;
-	bool mStateTransition;
+	std::vector<Tower*> mpTowers;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();
-	void createWave();
 	void render();
 	void update(const Input* inputs, float dt);
 };

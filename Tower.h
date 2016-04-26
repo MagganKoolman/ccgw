@@ -6,7 +6,8 @@ class Tower : public GameObject
 {
 public:
 
-	Tower(glm::vec3 position);
+	
+	Tower(glm::vec3 position, const Tower &towerRef, float scale);
 	Tower();
 	~Tower();
 private:
