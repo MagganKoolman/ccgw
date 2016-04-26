@@ -78,7 +78,7 @@ void Arrow::update(float dt)
 	this->mWorld = {
 					cosf(rotY)* cosf(rotX),		sinf(rotY),		cosf(rotY ) * sinf(rotX),	0,
 					-sinf(rotY) * cosf(rotX),	cosf(rotY),		-sinf(rotY) * sinf(rotX),	0,
-					-sinf(rotX),				0,				cosf(rotX),					0,
+					-sinf(rotX),				0,				cosf(rotX),				0,
 					mPosition.x,				mPosition.y,	mPosition.z,				1
 	};
 
@@ -90,7 +90,7 @@ void Arrow::update(float dt)
 		mTimeSinceLastEmmit = 0;
 	}
 }
-Arrow::Arrow() : GameObject({0,-10,0})
+Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 {
 	this->rotX = 0;
 	this->mEmmitInterval = 0.1;

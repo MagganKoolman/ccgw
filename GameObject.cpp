@@ -87,13 +87,20 @@ GameObject::GameObject(const GameObject& ref)
 
 }
 
-GameObject::GameObject(glm::vec3 position = { 0, 0, 0 })
+GameObject::GameObject(glm::vec3 position = { 0, 0, 0 }, float scale = 1.0f)
 {
 	mPosition = position;
+	mWorld = {
+				scale,			0,				0,				0,
+				0,				scale,			0,				0,
+				0,				0,				scale,			0,
+				position.x,		position.y,		position.z,		scale 
+	};
+
 }
 
 GameObject::GameObject()
-	: rotX(0), rotY(0), mpMesh(nullptr), mpTexture(nullptr)
+	:scale(1.0f), rotX(0), rotY(0), mpMesh(nullptr), mpTexture(nullptr)
 {
 	mPosition = { 0, 0, 0 };
 	mLookat = { 0, 0, -1 };

@@ -19,6 +19,7 @@ public:
 	~Enemy();
 
 private:
+	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;
 };

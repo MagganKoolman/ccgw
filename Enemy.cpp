@@ -62,13 +62,15 @@ Enemy::Enemy( const Enemy& ref )
 }
 
 Enemy::Enemy( glm::vec3 position )
-	: GameObject( position ), mCurrent( 0 ), pPath( nullptr )
+	: GameObject( position, 1.0f ), mCurrent( 0 ), pPath( nullptr )
 {
+	this->mBoundRadius = 1.0f;
 }
 
 Enemy::Enemy()
 	: mCurrent( 0 ), pPath( nullptr )
 {
+	this->mBoundRadius = 1.0f;
 }
 
 Enemy::~Enemy()
