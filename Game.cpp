@@ -34,26 +34,8 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 {
 
 	pActionState = nullptr;
-	/*pDeferredProgram = new DeferredProgram("deferred.vertex","deferred.pixel","deferred.geometry");
-	pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
-	pBillboardShader = new BillboardProgram( "billboard.vertex", "billboard.pixel", "billboard.geometry" );
-	pEmitter = new Emitter( &mCamera, pBillboardShader, 1000 );
-	pEmitter->load( &mAssets, "Models/pns.png" );*/
-
+	
 	createScreenQuad();
-
-	/*tempMesh* playerModel = mAssets.load<tempMesh>( "Models/box2.obj" );
-	tempMesh* terrainModel = mAssets.load<tempMesh>( "Models/plane.obj" );
-	Texture* texture = mAssets.load<Texture>( "Models/ground.png" );
-	Texture* texture2 = mAssets.load<Texture>( "Models/cube.png" );
-
-
-	mPlayer.load(playerModel);	
-	mGround.load(terrainModel);
-	mPlayer.loadTex(texture2);
-	mGround.loadTex(texture);
-	aBox.load(playerModel);
-	aBox.loadTex(texture);*/
 
 	data.pAssets = new Assets();
 	data.pCamera = new Camera( 45.0f, (float)gWidth/gHeight, 0.5f, 50.0f );
@@ -63,8 +45,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pEmission = new Emission(&data, 1000);
 	data.pPlayer = new Player(&data);
 	data.boxScale = 2;
-	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
-		pEmitter.load( &data, "Models/pns.png" );*/
 
 	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
@@ -79,9 +59,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mpPath = new sNode[20*20];
 	mTargets = 0;
 
-	for( int i=0; i<3; i++ )
-		data.pGrid->setTile( i, 1, TILE_BOX );
-
 	data.pGrid->findPath( start, end, mpPath, &mTargets );
 
 	/*mpEnemy = new Enemy( glm::vec3( 0.0f ) );
@@ -92,6 +69,8 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mGround.load(data.pAssets->load<tempMesh>("Models/plane.obj"), groundTexture, specMap, nullptr);
 	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), groundTexture, specMap, nullptr);
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
+	mTacticalMarker.setScale(data.boxScale);
+	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
 }
 
 Game::~Game() {

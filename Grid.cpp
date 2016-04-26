@@ -129,17 +129,12 @@ bool Grid::tileIs( int x, int y, uchar flags ) const
 
 void Grid::setTile( int x, int y, uchar flags )
 {
-	x = 1/mScale* x;
-	y = 1/mScale* y;
-	if (x < 0 || x >= mWidth || y < 0 || y >= mHeight)
-		return;
-
 	mpGrid[y*mWidth+x] = flags;
 }
 
 uchar Grid::getTile( int x, int y ) const
 {
-	return mpGrid[y/2*mWidth+x/2];
+	return mpGrid[y*mWidth+x];
 }
 
 uchar* Grid::getGrid() const
@@ -191,7 +186,6 @@ void Grid::debugRender( GLuint programID )
 Grid::Grid( int width, int height, tempMesh* debugMesh)
 	: mWidth( width ), mHeight( height )
 {
-	mScale = 2;
 	mpGrid = new uchar[width*height];
 	mGScore = new int[width*height];
 	mFScore = new int[width*height];

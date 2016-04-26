@@ -14,7 +14,7 @@
 #include "Grid.h"
 #include "Enemy.h"
 #include "Marker.h"
-
+#include "Tower.h"
 class Game {
 public:
 	bool run(const Input* inputs, const float &dt);
@@ -29,6 +29,7 @@ private:
 	Terrain mGround;
 	Marker mActionMarker;
 	Marker mTacticalMarker;
+	Tower mTowerModel;
 	GameData data;
 	sNode* mpPath;
 	int mTargets;
