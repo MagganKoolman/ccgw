@@ -43,7 +43,7 @@ void Player::update(const Input* inputs, const float &dt)
 		dir += glm::vec3( cos(rotX -r), 0.0f, sin(rotX -r) );
 	}
 	if( inputs->keyPressed( SDLK_SPACE  ) )
-		 speedY += 15;
+		 speedY += 10;
 
 	if( glm::length( dir ) > 0.1f )
 	{

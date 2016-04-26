@@ -1,8 +1,10 @@
 #version 420 core
 
 in vec3 pos ;
-in vec2 texPos ;
 in vec3 normal ;
+in vec2 texPos ;
+in vec3 tangent ;
+in vec3 bitangent ;
 
 out vec4 posOut;
 out vec2 colorOut;

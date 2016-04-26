@@ -1,5 +1,5 @@
 #pragma once
 class BinaryReader {
 public :
-	static void readFromBinary();
+	static void readFromBinary(GLuint &vao);
 };
