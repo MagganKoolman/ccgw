@@ -91,12 +91,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)deps/include </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;C:\Program Files\Autodesk\FBX\FBX SDK\2016.1.2\lib\vs2015\x86\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -155,14 +155,12 @@
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FbxCamera.cpp" />
-    <ClCompile Include="FbxImport.cpp" />
-    <ClCompile Include="FbxLight.cpp" />
-    <ClCompile Include="FbxMesh.cpp" />
     <ClCompile Include="ForwardProgram.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -171,6 +169,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Joint.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Marker.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Molebat.cpp" />
     <ClCompile Include="Moleratman.cpp" />
@@ -189,6 +188,7 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Billboard.h" />
+    <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -196,9 +196,6 @@
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FbxCamera.h" />
-    <ClInclude Include="FbxImport.h" />
-    <ClInclude Include="FbxLight.h" />
-    <ClInclude Include="FbxMesh.h" />
     <ClInclude Include="ForwardProgram.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />
@@ -208,6 +205,7 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Joint.h" />
+    <ClInclude Include="Marker.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Molebat.h" />
     <ClInclude Include="Moleratman.h" />

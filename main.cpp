@@ -47,26 +47,26 @@ int main(int argc, char** argv) {
 	input.setMouseVisible(false);
 	while (running)
 	{
-		temp = SDL_GetTicks();
-		dt = (float)(temp - timeStamp) / 1000.f;
-		timeStamp = temp;
-		running = input.update();
+		//temp = SDL_GetTicks();
+		//dt = (float)(temp - timeStamp) / 1000.f;
+		//timeStamp = temp;
+		//running = input.update();
 
-		if (input.keyPressed(SDLK_t)) {
-			actionMode = !actionMode;	
-			input.setMouseLock(actionMode);
-			//game.setTransition(true);
-		}
-			
-		if (actionMode)
-			game.run(&input, dt);
-		else
-			game.tacticalRun(&input, dt);
+		//if (input.keyPressed(SDLK_t)) {
+		//	actionMode = !actionMode;	
+		//	input.setMouseLock(actionMode);
+		//	//game.setTransition(true);
+		//}
+		//	
+		//if (actionMode)
+		//	game.run(&input, dt);
+		//else
+		//	game.tacticalRun(&input, dt);
 
 
-		if( input.keyPressed( SDLK_ESCAPE ) )
-			running = false;
-		SDL_GL_SwapWindow(window);
+		//if( input.keyPressed( SDLK_ESCAPE ) )
+		//	running = false;
+		//SDL_GL_SwapWindow(window);
 	}
 	SDL_Quit();
 	return 0;

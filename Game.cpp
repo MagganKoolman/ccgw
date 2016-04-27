@@ -69,7 +69,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	/*if( data.pEmission->allocEmitter( &pEmitter, 10 ) )
 		pEmitter.load( &data, "Models/pns.png" );*/
 
-	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
+	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/arrow_best3.obj" );
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");

@@ -20,11 +20,16 @@ struct  read_sVertex
 
 struct  read_sMesh
 {
+	char meshName[256];
+
 	unsigned int materialID;
 
 	float translate[3];
 	float rotation[3];
 	float scale[3];
+
+	bool isBoundingBox;
+	bool isAnimated;
 
 	unsigned int vertexCount;
 	//unsigned int skelAnimVertexCount;
@@ -34,14 +39,12 @@ struct  read_sMesh
 
 static std::vector< read_sMesh>  read_meshList;
 
-
 struct  read_m
 {
 std::vector< read_sVertex> vList;
 };
 
 static std::vector< read_m>  read_mList;
-
 
 
 struct  read_sSkelAnimVertex
@@ -57,7 +60,7 @@ struct  read_sSkelAnimVertex
 
 struct  read_sMaterial
 {
-	const char* materialName;
+	char materialName[256];
 
 	float ambientColor[3];
 	float diffuseColor[3];
@@ -65,22 +68,17 @@ struct  read_sMaterial
 
 	float shinyFactor;
 
-	wchar_t* diffuseTexture;
-	wchar_t* specularTexture;
-	wchar_t* normalTexture;
+	char diffuseTexture[256];
+	char specularTexture[256];
+	char normalTexture[256];
 };
 
-static std::vector< read_sMaterial>  read_materialList;
+static std::vector< read_sMaterial>  read_mMaterialList;
 
 struct  read_sLight
 {
-	unsigned int directionalPointCount;
-	unsigned int spotlightCount;
-};
+	int lightID;
 
-
-struct  read_sDirectionalPoint
-{
 	float lightPos[3];
 	float lightRot[3];
 	float lightScale[3];
@@ -89,21 +87,7 @@ struct  read_sDirectionalPoint
 	float intensity;
 };
 
-struct  read_sSpotLight
-{
-	float lightPos[3];
-	float lightRot[3];
-	float lightScale[3];
-
-	float color[3];
-	float intensity;
-
-	float innerAngle;
-	float outerAngle;
-};
-
-static std::vector< read_sDirectionalPoint>  read_mDirPointList;
-static std::vector< read_sSpotLight>  read_mSpotList;
+static std::vector<read_sLight> read_mLightList;
 
 struct  read_sCamera
 {
@@ -117,13 +101,11 @@ struct  read_sCamera
 
 static std::vector<read_sCamera>  read_mCameraList;
 
-//Struct objects
 
+//Struct objects
 read_sMainHeader read_mainHeader;
 read_sVertex read_vertex;
 read_sMaterial read_materialData;
 read_sLight read_lightData;
-read_sDirectionalPoint read_dirPointData;
-read_sSpotLight read_spotData;
 read_sCamera read_camData;
 
