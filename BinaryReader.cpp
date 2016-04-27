@@ -22,20 +22,20 @@ void BinaryReader::readFromBinary(GLuint &vao)
 	information about how much of each node type we have from a imported scene and
 	how memory they will take up in the binary file.*/
 
-	infile.read((char*)&read_mainHeader, sizeof(read_sMainHeader));
+	infile.read((char*)&read_gMainHeader, sizeof(read_sMainHeader));
 
 	cout << "______________________" << endl;
 	cout << "Main Header" << endl;
-	cout << "meshCount: " << read_mainHeader.meshCount << endl;
-	cout << "materialCount: " << read_mainHeader.materialCount << endl;
-	cout << "lightCount: " << read_mainHeader.lightCount << endl;
-	cout << "cameraCount: " << read_mainHeader.cameraCount << endl;
+	cout << "meshCount: " << read_gMainHeader.meshCount << endl;
+	cout << "materialCount: " << read_gMainHeader.materialCount << endl;
+	cout << "lightCount: " << read_gMainHeader.lightCount << endl;
+	cout << "cameraCount: " << read_gMainHeader.cameraCount << endl;
 	cout << "______________________" << endl;
 
 
-	read_meshList.resize(read_mainHeader.meshCount);
+	read_meshList.resize(read_gMainHeader.meshCount);
 
-	for (int i = 0; i < read_mainHeader.meshCount; i++)
+	for (int i = 0; i < read_gMainHeader.meshCount; i++)
 	{
 		cout << "Mesh: " << i << endl;
 
@@ -84,7 +84,7 @@ void BinaryReader::readFromBinary(GLuint &vao)
 		cout << "\n";
 		cout << "Vertex vector: " << endl;
 
-		read_mList.resize(read_mainHeader.meshCount);
+		read_mList.resize(read_gMainHeader.meshCount);
 		cout << "mlist: " << endl;
 		read_mList[i].vList.resize(read_meshList[i].vertexCount);
 		cout << "\t";
@@ -103,9 +103,9 @@ void BinaryReader::readFromBinary(GLuint &vao)
 		cout << "______________________" << endl;
 	}
 
-	read_mMaterialList.resize(read_mainHeader.materialCount);
+	read_mMaterialList.resize(read_gMainHeader.materialCount);
 
-	for (int i = 0; i < read_mainHeader.materialCount; i++)
+	for (int i = 0; i < read_gMainHeader.materialCount; i++)
 	{
 		cout << "Material: " << i << endl;
 
@@ -115,16 +115,17 @@ void BinaryReader::readFromBinary(GLuint &vao)
 		cout << &read_mMaterialList[i] << endl;
 
 		cout << "\t";
-		cout << "Allocated memory for " << read_mainHeader.materialCount << " materials" << endl;
-
+		cout << "Allocated memory for " << read_gMainHeader.materialCount << " materials" << endl;
+		
+		/*Reading all the materials from the list with the size in bytes in mind.*/
 		infile.read((char*)&read_mMaterialList[i], sizeof(read_sMaterial));
 
 		cout << "______________________" << endl;
 	}
 
-	read_mLightList.resize(read_mainHeader.lightCount);
+	read_mLightList.resize(read_gMainHeader.lightCount);
 
-	for (int i = 0; i < read_mainHeader.lightCount; i++)
+	for (int i = 0; i < read_gMainHeader.lightCount; i++)
 	{
 		cout << "Light: " << i << endl;
 
@@ -134,24 +135,26 @@ void BinaryReader::readFromBinary(GLuint &vao)
 		cout << &read_mLightList[i] << endl;
 
 		cout << "\t";
-		cout << "Allocated memory for " << read_mainHeader.lightCount << " lights" << endl;
+		cout << "Allocated memory for " << read_gMainHeader.lightCount << " lights" << endl;
 
+		/*Reading all the lights from the list with the size in bytes in mind.*/
 		infile.read((char*)&read_mLightList[i], sizeof(read_sLight));
 
 		cout << "______________________" << endl;
 	}
 
-	read_mCameraList.resize(read_mainHeader.cameraCount);
+	read_mCameraList.resize(read_gMainHeader.cameraCount);
 
-	for (int i = 0; i < read_mainHeader.cameraCount; i++)
+	for (int i = 0; i < read_gMainHeader.cameraCount; i++)
 	{
 		cout << "Camera: " << i << endl;
 
 		cout << "Camera vector: " << endl;
 
 		cout << "\t";
-		cout << "Allocated memory for " << read_mainHeader.cameraCount << " cameras" << endl;
+		cout << "Allocated memory for " << read_gMainHeader.cameraCount << " cameras" << endl;
 
+		/*Reading all the cameras from the list with the size in bytes in mind.*/
 		infile.read((char*)&read_mCameraList[i], sizeof(read_sCamera));
 
 		cout << "______________________" << endl;
