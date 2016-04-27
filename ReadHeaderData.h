@@ -103,9 +103,9 @@ static std::vector<read_sCamera>  read_mCameraList;
 
 
 //Struct objects
-read_sMainHeader read_mainHeader;
-read_sVertex read_vertex;
-read_sMaterial read_materialData;
-read_sLight read_lightData;
-read_sCamera read_camData;
+read_sMainHeader read_gMainHeader;
+read_sVertex read_gVertex;
+read_sMaterial read_gMaterialData;
+read_sLight read_gLightData;
+read_sCamera read_gCamData;
 
