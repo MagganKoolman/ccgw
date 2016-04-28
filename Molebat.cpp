@@ -44,7 +44,8 @@ void Molebat::update()
 
 	newPos += evade;
 
-	// face the direction of flight
+	// face the player
+	dir = glm::normalize( pGameData->pPlayer->getPosition() - mPosition );
 	mLookat = glm::normalize( glm::vec3( dir.x, 0.0f, dir.z ) );
 	float rotY = -glm::angle( mLookat, glm::vec3( 1.0f, 0.0f, 0.0f ) );
 	if( mLookat.z < 0.0f )

@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Grid.h"
-#include <iostream>
+#include "glm\gtx\vector_angle.hpp"
 
 class Enemy : public GameObject
 {
@@ -21,7 +21,7 @@ public:
 	Enemy();
 	~Enemy();
 
-private:
+protected:
 	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;

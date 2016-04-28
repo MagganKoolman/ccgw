@@ -28,6 +28,8 @@ void Enemy::render( GLuint programID )
 {
 	GameObject::render( programID );
 
+	// change to 1 to draw the path
+#if 0
 	GLuint worldLocation = glGetUniformLocation( programID, "world" );
 	for( int i=0; i<mCurrent; i++ )
 	{
@@ -40,6 +42,7 @@ void Enemy::render( GLuint programID )
 
 		mpMesh->draw();
 	}
+#endif
 }
 
 void Enemy::setPath( sNode* path, int max )

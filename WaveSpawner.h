@@ -3,7 +3,7 @@
 #include "Moleratman.h"
 #include "Molebat.h"
 
-#define WAVESPAWNER_DELAY 1.0f
+#define WAVESPAWNER_DELAY 2.0f
 
 class WaveSpawner
 {
@@ -32,4 +32,8 @@ private:
 
 	int mCurMoleratmen, mSpawnMoleratmen;
 	int mCurMolebats, mSpawnMolebats;
+	int mMoleratmanIndex, mMolebatIndex;
+
+	sNode* mpPath;
+	int mTargets;
 };
