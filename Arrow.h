@@ -18,5 +18,7 @@ protected:
 	float mTimeSinceLastEmmit;
 	float mEmmitInterval;
 
+	glm::vec3 mVelocity;
+
 	Emitter mEmitter;
 };
