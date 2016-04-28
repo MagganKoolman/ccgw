@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <SDL\SDL.h>
+#include <SDL\SDL_mixer.h>
 #include "Game.h"
 #include "Input.h"
 #include "global_variables.h"
@@ -11,6 +12,7 @@ using namespace std;
 int main(int argc, char** argv) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	SDL_Init(SDL_INIT_EVERYTHING);
+	Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
 	SDL_Window* window = nullptr;
 
 	bool running = true;
@@ -70,6 +72,7 @@ int main(int argc, char** argv) {
 			running = false;
 		SDL_GL_SwapWindow(window);
 	}
+	Mix_CloseAudio();
 	SDL_Quit();
 	return 0;
 }

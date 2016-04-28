@@ -6,8 +6,10 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 
 	std::vector<sNode*> openList;
 	std::vector<sNode*> closedList;
-	std::vector<sNode*> accessList;
 
+	// Initialize paths to default values.
+	// All scores should be above any reasonable value to ensure that the
+	// default value is never shorter than a found path.
 	for( int i=0; i<mWidth*mHeight; i++ )
 	{
 		mGScore[i] = 999999;
@@ -17,14 +19,18 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 		mPath[i].parent = nullptr;
 	}
 	
+	// Set scores for the inital node
 	mGScore[NODEAT(start.x,start.y)] = 0;
 	mFScore[NODEAT(start.x,start.y)] = heuristic( &start, &end );
 	
+	// Add inital node to the open list
 	sNode* first = &mPath[NODEAT(start.x,start.y)];
 	openList.push_back(first);
 
+	// Keep looping until the open list is empty and there are no more candidates for movement
 	while( openList.size() > 0 )
 	{
+		// Find the node in the open list that has the shortest approximated distance to the target
 		std::vector<sNode*>::iterator currentIT = openList.end();
 		int currentScore = 999999;
 		for( std::vector<sNode*>::iterator it = openList.begin(); it != openList.end(); it++ )
@@ -37,12 +43,14 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 			}
 		}
 
+		// If no node was found, something has gone horribly wrong
 		if( currentIT == openList.end() )
 			throw -1;
 
+		// If the best candidate is the goal, we have found a path
 		if( (*currentIT)->x == end.x && (*currentIT)->y == end.y )
 		{
-			// found a path
+			// Go through each nodes parent to compile a path
 			sNode* parent = *currentIT;
 			int cur = 0;
 			while( parent != nullptr )
@@ -56,10 +64,12 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 		}
 		else
 		{
+			// Move candidate from open list to closed list, showing that we have visited it
 			closedList.push_back(*currentIT);
 			openList.erase( currentIT );
 			currentIT = closedList.end()-1;
 
+			// Make sure we don't go out of bounds
 			int minx = (*currentIT)->x-1;
 			int miny = (*currentIT)->y-1;
 			int maxx = minx+2;
@@ -76,15 +86,20 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 			if( maxy > mHeight-1 )
 				maxy = mHeight-1;
 
+			// Loop over the 3x3 square centered on the current node
 			for( int x=minx; x <=maxx; x++ )
 			{
 				for( int y=miny; y<=maxy; y++ )
 				{
+					// If this is the current node, we don't need to process it
 					if( x == curx && y == cury )
 						continue;
 
+					// Make sure that we're not accessing diagonal nodes
+					// and make sure the tile is empty
 					if( ( x == curx || y == cury ) && mpGrid[NODEAT(x,y)] == TILE_EMPTY )
 					{
+						// Make sure the node has not already been visited
 						sNode* dir = &mPath[NODEAT(x,y)];
 						bool found = false;
 						for( std::vector<sNode*>::iterator it = closedList.begin(); it != closedList.end() && !found; it++ )
@@ -93,22 +108,26 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 								found = true;
 						}
 
+						// Make sure the node is not already a candidate for visit
+						for (std::vector<sNode*>::iterator it = openList.begin(); it != openList.end() && !found; it++)
+						{
+							if ((*it)->x == dir->x && (*it)->y == dir->y)
+								found = true;
+						}
+
 						if( !found )
 						{
+							// The cost for traversing this node is the cost of all the previous nodes + 1
 							int tscore = mGScore[NODEAT(curx,cury)] + 1;
 
-							found = false;
-							for( std::vector<sNode*>::iterator it = openList.begin(); it != openList.end() && !found; it++ )
+							// Only consider node if it's score is lower than the current node
+							if( tscore < mGScore[NODEAT(x,y)] )
 							{
-								if( (*it)->x == dir->x && (*it)->y == dir->y )
-									found = true;
-							}
-
-							if( !found || tscore < mGScore[NODEAT(x,y)] )
-							{
+								// Add node to open list
 								dir->parent = *currentIT;
 								openList.push_back( dir );
 
+								// Set score of node
 								mGScore[NODEAT(x,y)] = tscore;
 								mFScore[NODEAT(x,y)] = tscore + heuristic( dir, &end );
 							}
@@ -129,7 +148,8 @@ bool Grid::tileIs( int x, int y, uchar flags ) const
 
 void Grid::setTile( int x, int y, uchar flags )
 {
-	mpGrid[y*mWidth+x] = flags;
+	if( x >= 0 && x < mWidth && y >= 0 && y < mHeight )
+		mpGrid[y*mWidth+x] = flags;
 }
 
 uchar Grid::getTile( int x, int y ) const

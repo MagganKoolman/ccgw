@@ -14,9 +14,12 @@ class Molebat : public Enemy
 public:
 	void update();
 
+	void setGameData( GameData* data );
+
 	Molebat& operator=( const Molebat& ref );
 	Molebat( const Molebat& ref );
-	Molebat( GameData* data, glm::vec3 position );
+	//Molebat( GameData* data, glm::vec3 position );
+	Molebat();
 	~Molebat();
 
 private:
