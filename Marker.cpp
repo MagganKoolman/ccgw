@@ -14,18 +14,19 @@ void Marker::update(const Player* player) {
 	};
 }
 
-void Marker::update(const Input * inputs, GameData &gameData)
+bool Marker::update(const Input * inputs, GameData &gameData)
 {
 	selectedTile = mousePicking(inputs->mousePosition(), gameData) * (float)gameData.boxScale;
 	uchar currrentTile = gameData.pGrid->getTile(selectedTile.x, selectedTile.y);
+	bool buildTowers = false;
 	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY)
 	{		
-		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_HOLD);
+		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_HOLD);
 		mMarkedIndex.push_back(selectedTile);
 	}
 	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
 	{
-		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_EMPTY);
+		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
 			if (mMarkedIndex[i] == selectedTile)
 				mMarkedIndex.erase(mMarkedIndex.begin() + i);
@@ -33,15 +34,15 @@ void Marker::update(const Input * inputs, GameData &gameData)
 	}
 	if (inputs->keyDown(SDLK_1))
 	{
+		buildTowers = true;
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
-			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, TILE_BOX);
-			//gameData.pTowers.push_back(new Tower(glm::vec3(mMarkedIndex[i].x, 0.0f, mMarkedIndex[i].y)));
-		}	
-		mMarkedIndex.clear();
+			gameData.pGrid->setTile(mMarkedIndex[i].x / gameData.boxScale, mMarkedIndex[i].y / gameData.boxScale, TILE_BOX);
+		}
 	}
 	mWorld[3][0] = selectedTile.x;
 	mWorld[3][1] = 1.0f;
 	mWorld[3][2] = selectedTile.y;
+	return buildTowers;
 }
 
 void Marker::render(const GLuint & programID)
@@ -60,6 +61,16 @@ void Marker::render(const GLuint & programID)
 	deactivateTextures();
 }
 
+std::vector<glm::vec2> Marker::getMarkedTiles()
+{
+	return mMarkedIndex;
+}
+
+void Marker::resetMarkedTiles()
+{
+	mMarkedIndex.clear();
+}
+
 glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameData) {
 	float x = (2.0f * mousePos.x + 40) / gWidth - 1.0f;
 	float y = 1.0f - (2.0f * mousePos.y + 60) / gHeight;
@@ -72,8 +83,8 @@ glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 	float scalar = -(gameData.pCamera->getPosition().y - 0.5) / rayWorldSpace.y;
 	rayWorldSpace *= scalar;
 	glm::vec2 pickPos;
-	pickPos.x = (int)(gameData.pCamera->getPosition().x/gameData.boxScale + rayWorldSpace.x);
-	pickPos.y = (int)(gameData.pCamera->getPosition().z/gameData.boxScale + rayWorldSpace.z);
+	pickPos.x = (int)(gameData.pCamera->getPosition().x / gameData.boxScale + rayWorldSpace.x);
+	pickPos.y = (int)(gameData.pCamera->getPosition().z / gameData.boxScale + rayWorldSpace.z);
 	//std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	return pickPos;
 }

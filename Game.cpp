@@ -42,7 +42,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pDeferredProgram = new DeferredProgram("deferred.vertex", "deferred.pixel", "deferred.geometry");
 	data.pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
-	data.pEmission = new Emission(&data, 1000);
+	data.pEmission = new Emission(&data, 10000);
 	data.pPlayer = new Player(&data);
 	data.boxScale = 2;
 
@@ -71,6 +71,31 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
 	mTacticalMarker.setScale(data.boxScale);
 	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
+	mTowerModel.setScale(data.boxScale);
+
+	data.mMolebats = 10;
+	data.pMolebats = new Molebat[data.mMolebats];
+	for( int i=0; i<data.mMolebats; i++ )
+	{
+		data.pMolebats[i].load( playerModel, playerTexture, specMap, normalMap );
+		data.pMolebats[i].setGameData( &data );
+	}
+
+	data.mMoleratmen = 5;
+	data.pMoleratmen = new Moleratman[data.mMoleratmen];
+	for( int i=0; i<data.mMoleratmen; i++ )
+		data.pMoleratmen[i].load( playerModel, playerTexture, specMap, normalMap );
+
+	pWaveSpawner = new WaveSpawner( &data );
+
+	Sound* sound = data.pAssets->load<Sound>( "Sounds/chant.wav" );
+	if( !sound )
+	{
+		const char* error = Mix_GetError();
+		std::cout << "Mixer error: " << error << std::endl;
+	}
+	else
+ 		sound->play();
 }
 
 Game::~Game() {
@@ -82,15 +107,20 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
-	//delete mpEnemy;
+	for (int i = 0; i < mpTowers.size(); i++) {
+		delete mpTowers[i];
+	}
 	delete[] mpPath;
+	delete pWaveSpawner;
+	delete[] data.pMoleratmen;
+	delete[] data.pMolebats;
 
 	data.pAssets->unload();
 	delete data.pAssets;
 }
 
- bool Game::run(const Input* inputs, const float &dt) 
- {
+bool Game::run(const Input* inputs, const float &dt) 
+{
 	update(inputs, dt);
 	render();
 	return true;
@@ -98,17 +128,17 @@ Game::~Game() {
 
  void Game::tacticalRun(const Input* inputs, const float &dt) 
  {
-	 if (data.pCamera->getPosition().y < 18) {
-		 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
-		 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });	
-	 }
-	 else {
-		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);	
-		mTacticalMarker.update(inputs, data);
+	if (data.pCamera->getPosition().y < 18) {
+		glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
+		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });
+	}
+	else {
+		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);
+		if (mTacticalMarker.update(inputs, data))
+			buildTowers();
 	}
 	render();
  }
-
 
 void Game::render()
 {
@@ -117,7 +147,18 @@ void Game::render()
 	data.pPlayer->render(data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	//mpEnemy->render( data.pDeferredProgram->getProgramID() );
-	data.pGrid->debugRender( data.pDeferredProgram->getProgramID() );
+
+	for( int i=0; i<data.mMoleratmen; i++ )
+		if( data.pMoleratmen[i].getAlive() )
+			data.pMoleratmen[i].render( data.pDeferredProgram->getProgramID() );
+
+	for( int i=0; i<data.mMolebats; i++ )
+		if( data.pMolebats[i].getAlive() )
+			data.pMolebats[i].render( data.pDeferredProgram->getProgramID() );
+
+	for (int i = 0; i < mpTowers.size(); i++) {
+		mpTowers[i]->render(data.pDeferredProgram->getProgramID());
+	}
 	if(data.pCamera->getPosition().y < 15)
 		mActionMarker.render(data.pDeferredProgram->getProgramID());
 	else
@@ -155,9 +196,38 @@ void Game::update(const Input* inputs, float dt)
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
 	//mpEnemy->update();
+
+	for( int i=0; i<data.mMoleratmen; i++ )
+		if( data.pMoleratmen[i].getAlive() )
+			data.pMoleratmen[i].update();
+
+	for (int i = 0; i<data.mMolebats; i++)
+		if (data.pMolebats[i].getAlive())
+			data.pMolebats[i].update();
+
+	for (int i = 0; i < mpTowers.size(); i++)
+	{
+		mpTowers[i]->update(data.pPlayer, dt);
+	}
+
 	mActionMarker.update(data.pPlayer);
+	
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
 	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
+
+	pWaveSpawner->update( dt );
+
+	if( inputs->keyPressed( SDLK_k ) )
+		pWaveSpawner->spawn();
+}
+
+
+void Game::buildTowers() {
+	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
+	for (int i = 0; i < tempVec.size(); i++) {
+		mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
+	}
+	mTacticalMarker.resetMarkedTiles();
 }
