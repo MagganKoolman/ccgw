@@ -72,9 +72,9 @@ glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameDat
 	float scalar = -(gameData.pCamera->getPosition().y - 0.5) / rayWorldSpace.y;
 	rayWorldSpace *= scalar;
 	glm::vec2 pickPos;
-	pickPos.x = (int)(gameData.pCamera->getPosition().x + rayWorldSpace.x);
-	pickPos.y = (int)(gameData.pCamera->getPosition().z + rayWorldSpace.z);
-	std::cout << pickPos.x << "    " << pickPos.y << "\n";
+	pickPos.x = (int)(gameData.pCamera->getPosition().x/gameData.boxScale + rayWorldSpace.x);
+	pickPos.y = (int)(gameData.pCamera->getPosition().z/gameData.boxScale + rayWorldSpace.z);
+	//std::cout << pickPos.x << "    " << pickPos.y << "\n";
 	return pickPos;
 }
 

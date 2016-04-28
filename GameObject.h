@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "GameData.h"
 #include "global_variables.h"
+#include "BoundingBox.h"
 
 class GameObject
 {
@@ -34,6 +35,8 @@ protected: // <-- changed to protected from private. because i wanted to reach t
 	float rotX;
 	float rotY;
 	float scale;
+
+	BoundingBox mBB;
 
 	tempMesh* mpMesh;
 	Texture* mpTexture;

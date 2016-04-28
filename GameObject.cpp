@@ -90,6 +90,7 @@ GameObject::GameObject(const GameObject& ref)
 GameObject::GameObject(glm::vec3 position = { 0, 0, 0 }, float scale = 1.0f)
 {
 	mPosition = position;
+	this->mBB = BoundingBox(mPosition, scale);
 	mWorld = {
 				scale,			0,				0,				0,
 				0,				scale,			0,				0,
@@ -105,6 +106,7 @@ GameObject::GameObject()
 	mPosition = { 0, 0, 0 };
 	mLookat = { 0, 0, -1 };
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	this->mBB = BoundingBox(mPosition, scale);
 }
 
 GameObject::~GameObject()

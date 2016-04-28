@@ -24,6 +24,7 @@
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DeferredProgram.h" />
     <ClInclude Include="Emitter.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeferredProgram.cpp" />
     <ClCompile Include="Emitter.cpp" />
@@ -80,6 +82,7 @@
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
