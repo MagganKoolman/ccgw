@@ -13,7 +13,7 @@ float Player::getRot() const
 
 void Player::update(const Input* inputs, const float &dt)
 {
-	if (inputs->buttonDown(0), dt)
+	if (inputs->buttonDown(0))
 		this->mStrength += dt;
 	mWeapon->update(dt);
 	speedY -= 15 * dt;
