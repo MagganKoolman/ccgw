@@ -113,9 +113,10 @@ Game::~Game() {
 	for (int i = 0; i < mpTowers.size(); i++) {
 		delete mpTowers[i];
 	}
-	//delete mpEnemy;
 	delete[] mpPath;
 	delete pWaveSpawner;
+	delete[] data.pMoleratmen;
+	delete[] data.pMolebats;
 
 	data.pAssets->unload();
 	delete data.pAssets;
@@ -218,7 +219,7 @@ void Game::update(const Input* inputs, float dt)
 	if( inputs->keyPressed( SDLK_k ) )
 		pWaveSpawner->spawn();
 }
-}
+
 
 void Game::buildTowers() {
 	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();

@@ -15,8 +15,10 @@
 #include "Enemy.h"
 #include "Marker.h"
 #include "Tower.h"
-#include "Sound.h"
 #include "WaveSpawner.h"
+#include "Molebat.h"
+#include "Moleratman.h"
+#include "Sound.h"
 class Game {
 public:
 	bool run(const Input* inputs, const float &dt);

@@ -12,6 +12,7 @@ class Emission;
 class Grid;
 class Molebat;
 class Moleratman;
+class Tower;
 struct GameData
 {
 	Assets* pAssets;
@@ -23,6 +24,7 @@ struct GameData
 	Emission* pEmission;
 	Grid* pGrid;
 	Molebat* pMolebats;
+	Tower* pTowers;
 	int boxScale;
 	int mMolebats;
 	Moleratman* pMoleratmen;
