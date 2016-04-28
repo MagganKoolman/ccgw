@@ -45,7 +45,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pDeferredProgram = new DeferredProgram("deferred.vertex", "deferred.pixel", "deferred.geometry");
 	data.pForwardProgram = new ForwardProgram("forward.vertex", "forward.pixel", " ");
 	data.pBillboardProgram = new BillboardProgram("billboard.vertex", "billboard.pixel", "billboard.geometry");
-	data.pEmission = new Emission(&data, 1000);
+	data.pEmission = new Emission(&data, 10000);
 	data.pPlayer = new Player(&data);
 	data.boxScale = 2;
 
@@ -208,7 +208,13 @@ void Game::update(const Input* inputs, float dt)
 		if (data.pMolebats[i].getAlive())
 			data.pMolebats[i].update();
 
+	for (int i = 0; i < mpTowers.size(); i++)
+	{
+		mpTowers[i]->update(data.pPlayer, dt);
+	}
+
 	mActionMarker.update(data.pPlayer);
+	
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
@@ -224,7 +230,7 @@ void Game::update(const Input* inputs, float dt)
 void Game::buildTowers() {
 	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
 	for (int i = 0; i < tempVec.size(); i++) {
-		mpTowers.push_back(new Tower(glm::vec3(tempVec[i].x, 0, tempVec[i].y), mTowerModel, data.boxScale));
+		mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
 	}
 	mTacticalMarker.resetMarkedTiles();
 }

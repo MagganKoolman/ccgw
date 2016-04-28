@@ -9,11 +9,20 @@ void Weapon::shoot(glm::vec3 position, glm::vec3 lookat, float rotation)
 			shot = true;
 		}
 	}
-	this->mStrength = 0;
+	this->mStrength = 5;
 }
-void Weapon::update(bool hold, float dt) {
-	if (hold)
-		this->mStrength += dt;
+void Weapon::shoot(glm::vec3 position, glm::vec3 lookat, float rotation, float strength)
+{
+	bool shot = false;
+	for (int i = 0; i < mMax && !shot; i++) {
+		if (!arrows[i].isAlive()) {
+			arrows[i].spawn(position, lookat, 15 * strength, { 0,-1,0 }, rotation);
+			shot = true;
+		}
+	}
+	mStrength = strength;
+}
+void Weapon::update(float dt) {
 	for (int i = 0; i < mMax; i++) {
 		if(arrows[i].isAlive())
 			arrows[i].update(dt);
@@ -32,6 +41,11 @@ float Weapon::getRange() const
 	return mRange;
 }
 
+float Weapon::getStrength() const
+{
+	return mStrength;
+}
+
 Weapon::Weapon(GameData* data)
 {
 	Texture* tex = data->pAssets->load<Texture>("Models/pns.png");
@@ -42,7 +56,7 @@ Weapon::Weapon(GameData* data)
  		this->arrows[i].loadTex(tex);
 		this->arrows[i].load( data, "Models/arrow_best3.obj"); // arrow_liten4_one
 	}
-	this->mStrength = 0;
+	this->mStrength = 5;
 }
 
 Weapon::~Weapon() 

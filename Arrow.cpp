@@ -13,7 +13,7 @@ bool Arrow::load(GameData* data, string mesh)
 	
 	//pEmitter = data->pEmitter;
 
-	if( data->pEmission->allocEmitter( &mEmitter, 100 ) )
+	if( data->pEmission->allocEmitter( &mEmitter, 50 ) )
 		result = result && mEmitter.load( data, "Models/pns.png" );
 	else
 		result = false;

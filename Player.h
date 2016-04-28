@@ -20,6 +20,7 @@ private:
 	float speedY;
 	float mMaxSpeed;
 	float mSpeed;
+	float mStrength;
 	glm::vec3 mDirection;
 	Weapon* mWeapon;
 

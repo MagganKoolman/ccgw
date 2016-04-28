@@ -21,12 +21,12 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	bool buildTowers = false;
 	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY)
 	{		
-		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_HOLD);
+		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_HOLD);
 		mMarkedIndex.push_back(selectedTile);
 	}
 	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
 	{
-		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_EMPTY);
+		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
 			if (mMarkedIndex[i] == selectedTile)
 				mMarkedIndex.erase(mMarkedIndex.begin() + i);
@@ -36,7 +36,7 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	{
 		buildTowers = true;
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
-			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, TILE_BOX);
+			gameData.pGrid->setTile(mMarkedIndex[i].x / gameData.boxScale, mMarkedIndex[i].y / gameData.boxScale, TILE_BOX);
 		}
 	}
 	mWorld[3][0] = selectedTile.x;

@@ -7,9 +7,9 @@ class Weapon
 {
 public:
 	void shoot(glm::vec3 position, glm::vec3 lookat, float rotation);
-
+	void shoot(glm::vec3 position, glm::vec3 lookat, float rotation, float strength);
 	void draw(const GLuint &programID);
-	void update(bool hold, float dt);
+	void update(float dt);
 	float getStrength() const;
 	float getRange() const;
 	Weapon(GameData* data);
