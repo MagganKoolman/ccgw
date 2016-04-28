@@ -78,11 +78,6 @@ Molebat::Molebat( const Molebat& ref )
 {
 }
 
-/*Molebat::Molebat( GameData* data, glm::vec3 position )
-	: Enemy( position ), pGameData( data ), mSin( rand() % 1000 )
-{
-}*/
-
 Molebat::Molebat()
 	: Enemy( glm::vec3( 0.0f ) ), mSin( rand() % 1000 )
 {
