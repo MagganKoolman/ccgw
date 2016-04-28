@@ -3,13 +3,14 @@
 #include "Enemy.h"
 #include "Weapon.h"
 #include "Player.h"
+#include "Moleratman.h"
 
 
 class Tower : public GameObject
 {
 public:
 	void update(Player* enemies, const float &dt);
-	void update(std::vector<Enemy*> enemies, const float &dt);
+	void update(GameData* gameData, const float &dt);
 	void render(const GLuint &programID);
 	Tower(GameData* gameData, glm::vec3 position, const Tower &towerRef, float scale);
 	Tower();
@@ -23,6 +24,7 @@ private:
 	bool mShooting;
 	float mDistanceToTarget;
 	float mStrength;
+	Moleratman* targetEnemy;
 	
 	bool arrowShot(const float &dt);
 };

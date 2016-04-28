@@ -14,6 +14,7 @@ public:
 	//Set the path that this enemy should follow.
 	void setPath( sNode* path, int max );
 
+	void imHit(float strength);
 	void setAlive( bool alive );
 	bool getAlive() const;
 
@@ -27,5 +28,6 @@ protected:
 	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;
+	float mLife;
 	bool mAlive;
 };

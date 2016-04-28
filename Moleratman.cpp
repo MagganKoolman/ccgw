@@ -35,7 +35,10 @@ void Moleratman::update()
 			0,				1,		0,				0,
 			sinf(rotY),		0,		cosf(rotY),		0,
 			mPosition.x,	mPosition.y,	mPosition.z, 1
-		};
+		};	
+	}
+	if (mLife <= 0) {
+		mAlive = false;
 	}
 }
 
