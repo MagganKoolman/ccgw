@@ -38,5 +38,6 @@ private:
 	void createScreenQuad();
 	void drawOnScreenQuad();
 	void render();
+	void buildTowers();
 	void update(const Input* inputs, float dt);
 };

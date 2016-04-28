@@ -9,13 +9,11 @@ public:
 	virtual void render(const GLuint &programID);
 	std::vector<glm::vec2> getMarkedTiles();
 	void resetMarkedTiles();
-	uchar towerType() const;
 	Marker();
 	~Marker();
 private:
 	std::vector<glm::vec2> mMarkedIndex;
 	glm::vec2 selectedTile;
 	bool mPicked;
-	uchar mTypeOfTower;
 	glm::vec2 mousePicking(const glm::vec2 mousePos, const GameData &gameData);
 };

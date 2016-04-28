@@ -111,16 +111,9 @@ bool Game::run(const Input* inputs, const float &dt)
 	}
 	else {
 		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);
-		if (mTacticalMarker.update(inputs, data)) {
-			std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
-			uchar towerType = mTacticalMarker.towerType();
-			for (int i = 0; i < tempVec.size(); i++) {
-				mpTowers.push_back(new Tower(glm::vec3(tempVec[i].x, 0, tempVec[i].y), mTowerModel, data.boxScale));
-			}
-			mTacticalMarker.resetMarkedTiles();
-		}
+		if (mTacticalMarker.update(inputs, data))
+			buildTowers();
 	}
-	
 	render();
  }
 
@@ -176,4 +169,12 @@ void Game::update(const Input* inputs, float dt)
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
 	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
+}
+
+void Game::buildTowers() {
+	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
+	for (int i = 0; i < tempVec.size(); i++) {
+		mpTowers.push_back(new Tower(glm::vec3(tempVec[i].x, 0, tempVec[i].y), mTowerModel, data.boxScale));
+	}
+	mTacticalMarker.resetMarkedTiles();
 }

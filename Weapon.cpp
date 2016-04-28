@@ -27,7 +27,12 @@ void Weapon::draw(const GLuint &programID) {
 	}
 }
 
-Weapon::Weapon(GameData* data) 
+float Weapon::getRange() const
+{
+	return mRange;
+}
+
+Weapon::Weapon(GameData* data)
 {
 	Texture* tex = data->pAssets->load<Texture>("Models/pns.png");
 	mMax = 100;

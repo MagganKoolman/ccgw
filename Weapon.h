@@ -11,6 +11,7 @@ public:
 	void draw(const GLuint &programID);
 	void update(bool hold, float dt);
 	float getStrength() const;
+	float getRange() const;
 	Weapon(GameData* data);
 	~Weapon();
 
@@ -18,4 +19,5 @@ private:
 	Arrow *arrows;
 	float mStrength;
 	int mMax;
+	float mRange;
 };

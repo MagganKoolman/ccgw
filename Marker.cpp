@@ -34,17 +34,9 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	}
 	if (inputs->keyDown(SDLK_1))
 	{
-		mTypeOfTower = TILE_BOX;
 		buildTowers = true;
-	}
-	if (inputs->keyDown(SDLK_2))
-	{
-		mTypeOfTower = TILE_BALLISTA;
-		buildTowers = true;
-	}
-	if (buildTowers) {
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
-			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, mTypeOfTower);
+			gameData.pGrid->setTile(mMarkedIndex[i].x, mMarkedIndex[i].y, TILE_BOX);
 		}
 	}
 	mWorld[3][0] = selectedTile.x;
@@ -77,12 +69,6 @@ std::vector<glm::vec2> Marker::getMarkedTiles()
 void Marker::resetMarkedTiles()
 {
 	mMarkedIndex.clear();
-	mTypeOfTower = TILE_EMPTY;
-}
-
-uchar Marker::towerType() const
-{
-	return mTypeOfTower;
 }
 
 glm::vec2 Marker::mousePicking(const glm::vec2 mousePos, const GameData &gameData) {
