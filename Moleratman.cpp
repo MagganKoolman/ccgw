@@ -2,13 +2,28 @@
 
 void Moleratman::update()
 {
-	Enemy::update();
-
-	if( mCurrent >= 0 )
+	if (mCurrent >= 0)
 	{
-		sNode target = pPath[mCurrent];
-		glm::vec3 pos( target.x, 0.5f, target.y );
-		glm::vec3 dir = glm::normalize( pos - mPosition );
+		glm::vec3 target(pPath[mCurrent].x, 0, pPath[mCurrent].y);
+
+		float dist = glm::distance(mPosition, glm::vec3(target));
+		if (dist < MOLERATMAN_SPEED)
+		{
+			mCurrent--;
+			mPosition = target;
+		}
+		else
+		{
+			glm::vec3 dir = glm::normalize(target - mPosition);
+			mPosition += dir * MOLERATMAN_SPEED;
+		}
+
+		mWorld[3][0] = mPosition.x;
+		mWorld[3][1] = mPosition.y;
+		mWorld[3][2] = mPosition.z;
+
+		// face the direction of movement
+		glm::vec3 dir = glm::normalize( target - mPosition );
 
 		mLookat = glm::normalize(glm::vec3(dir.x, 0.0f, dir.z));
 		float rotY = -glm::angle(mLookat, glm::vec3(1.0f, 0.0f, 0.0f));

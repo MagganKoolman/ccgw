@@ -3,7 +3,7 @@
 #include "Moleratman.h"
 #include "Molebat.h"
 
-#define WAVESPAWNER_DELAY 2.0f
+#define WAVESPAWNER_DELAY 1.0f
 
 class WaveSpawner
 {

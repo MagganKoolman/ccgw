@@ -29,6 +29,8 @@ void WaveSpawner::spawn()
 	sNode start = { 0, 0 }, end = { 10, 10 };
 	if( pGameData->pGrid->findPath( start, end, mpPath, &mTargets ) )
 	{
+		incrementWave();
+
 		mCurMoleratmen = 0;
 		mCurMolebats = 0;
 
@@ -37,6 +39,13 @@ void WaveSpawner::spawn()
 		// TODO: Do something useful here
 		mSpawnMoleratmen = mWave % pGameData->mMoleratmen;
 		mSpawnMolebats = mWave % pGameData->mMolebats;
+
+		// DEBUG: Remove this
+		for( int i=0; i<pGameData->mMoleratmen; i++ )
+			pGameData->pMoleratmen[i].setAlive( false );
+
+		for (int i = 0; i<pGameData->mMolebats; i++)
+			pGameData->pMolebats[i].setAlive(false);
 	}
 }
 

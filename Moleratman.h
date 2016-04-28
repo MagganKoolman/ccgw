@@ -2,6 +2,8 @@
 
 #include "Enemy.h"
 
+#define MOLERATMAN_SPEED 0.05f
+
 class Moleratman : public Enemy
 {
 public:
