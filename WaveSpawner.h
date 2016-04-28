@@ -5,11 +5,16 @@
 
 #define WAVESPAWNER_DELAY 1.0f
 
+//Class for spawining waves of enemy.
+//It keeps track of how many enemies to spawn and the delay between each enemy.
 class WaveSpawner
 {
 public:
+	//Spawns new enemies when enough time has passed.
 	void update( float deltaTime );
+	//Starts spawning new enemies.
 	void spawn();
+	//Adds 1 to the wave counter.
 	void incrementWave();
 
 	void setPosition( glm::vec3 position );
@@ -32,4 +37,8 @@ private:
 
 	int mCurMoleratmen, mSpawnMoleratmen;
 	int mCurMolebats, mSpawnMolebats;
+	int mMoleratmanIndex, mMolebatIndex;
+
+	sNode* mpPath;
+	int mTargets;
 };

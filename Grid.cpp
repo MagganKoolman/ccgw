@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include <iostream>
 
 bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 {
@@ -28,7 +29,7 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 	openList.push_back(first);
 
 	// Keep looping until the open list is empty and there are no more candidates for movement
-	while( openList.size() > 0 )
+	while( openList.size() > 0 && !result )
 	{
 		// Find the node in the open list that has the shortest approximated distance to the target
 		std::vector<sNode*>::iterator currentIT = openList.end();
@@ -60,7 +61,7 @@ bool Grid::findPath( sNode start, sNode end, sNode* path, int* targets )
 			}
 
 			*targets = cur;
-			break;
+			result = true;
 		}
 		else
 		{

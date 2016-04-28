@@ -44,7 +44,8 @@ void Molebat::update()
 
 	newPos += evade;
 
-	// face the direction of flight
+	// face the player
+	dir = glm::normalize( pGameData->pPlayer->getPosition() - mPosition );
 	mLookat = glm::normalize( glm::vec3( dir.x, 0.0f, dir.z ) );
 	float rotY = -glm::angle( mLookat, glm::vec3( 1.0f, 0.0f, 0.0f ) );
 	if( mLookat.z < 0.0f )
@@ -76,11 +77,6 @@ Molebat::Molebat( const Molebat& ref )
 	: Enemy( ref ), pGameData( ref.pGameData ), mSin( ref.mSin )
 {
 }
-
-/*Molebat::Molebat( GameData* data, glm::vec3 position )
-	: Enemy( position ), pGameData( data ), mSin( rand() % 1000 )
-{
-}*/
 
 Molebat::Molebat()
 	: Enemy( glm::vec3( 0.0f ) ), mSin( rand() % 1000 )

@@ -1,33 +1,11 @@
 #include "Enemy.h"
 
-void Enemy::update()
-{
-	if( mCurrent >= 0 )
-	{
-		glm::vec3 target( pPath[mCurrent].x, 0, pPath[mCurrent].y );
-
-		float dist = glm::distance( mPosition, glm::vec3( target ) );
-		if( dist < 0.01f )
-		{
-			mCurrent--;
-			mPosition = target;
-		}
-		else
-		{
-			glm::vec3 dir = glm::normalize( target - mPosition );
-			mPosition += dir * 0.01f;
-		}
-
-		mWorld[3][0] = mPosition.x;
-		mWorld[3][1] = mPosition.y;
-		mWorld[3][2] = mPosition.z;
-	}
-}
-
 void Enemy::render( GLuint programID )
 {
 	GameObject::render( programID );
 
+	// change to 1 to draw the path
+#if 0
 	GLuint worldLocation = glGetUniformLocation( programID, "world" );
 	for( int i=0; i<mCurrent; i++ )
 	{
@@ -40,6 +18,7 @@ void Enemy::render( GLuint programID )
 
 		mpMesh->draw();
 	}
+#endif
 }
 
 void Enemy::setPath( sNode* path, int max )

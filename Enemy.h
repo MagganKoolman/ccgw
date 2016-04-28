@@ -2,17 +2,19 @@
 
 #include "GameObject.h"
 #include "Grid.h"
-#include <iostream>
+#include "glm\gtx\vector_angle.hpp"
 
+//Abstract class for enemies.
 class Enemy : public GameObject
 {
 public:
-	void update();
+	//Render the enemy.
 	void render( GLuint programID );
 
+	//Set the path that this enemy should follow.
 	void setPath( sNode* path, int max );
-	void setAlive( bool alive );
 
+	void setAlive( bool alive );
 	bool getAlive() const;
 
 	Enemy& operator=( const Enemy& ref );
@@ -21,7 +23,7 @@ public:
 	Enemy();
 	~Enemy();
 
-private:
+protected:
 	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;

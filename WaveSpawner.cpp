@@ -6,13 +6,16 @@ void WaveSpawner::update( float deltaTime )
 
 	if( mDelay <= 0.0f )
 	{
+		// TODO: Should we always spawn moleratmen before spawning molebats?
+		// Maybe every other? Maybe random?
 		if( mCurMoleratmen < mSpawnMoleratmen )
 		{
+			mCurMoleratmen++;
 			spawnMoleratman();
 		}
-
-		if( mCurMolebats < mSpawnMolebats )
+		else if( mCurMolebats < mSpawnMolebats )
 		{
+			mCurMolebats++;
 			spawnMolebat();
 		}
 
@@ -22,14 +25,28 @@ void WaveSpawner::update( float deltaTime )
 
 void WaveSpawner::spawn()
 {
-	mCurMoleratmen = 0;
-	mCurMolebats = 0;
+	// start by getting the path for the moleratmen
+	sNode start = { 0, 0 }, end = { 10, 10 };
+	if( pGameData->pGrid->findPath( start, end, mpPath, &mTargets ) )
+	{
+		incrementWave();
 
-	mDelay = 0.0f;
+		mCurMoleratmen = 0;
+		mCurMolebats = 0;
 
-	// TODO: Do something useful here
-	mSpawnMoleratmen = 0;
-	mSpawnMolebats = pGameData->mMolebats;
+		mDelay = 0.0f;
+
+		// TODO: Do something useful here
+		mSpawnMoleratmen = mWave % pGameData->mMoleratmen;
+		mSpawnMolebats = mWave % pGameData->mMolebats;
+
+		// DEBUG: Remove this
+		for( int i=0; i<pGameData->mMoleratmen; i++ )
+			pGameData->pMoleratmen[i].setAlive( false );
+
+		for (int i = 0; i<pGameData->mMolebats; i++)
+			pGameData->pMolebats[i].setAlive(false);
+	}
 }
 
 void WaveSpawner::incrementWave()
@@ -51,14 +68,23 @@ void WaveSpawner::spawnMoleratman()
 {
 	Moleratman* m = nullptr;
 
-	for( int i=0; i<pGameData->mMoleratmen && m == nullptr; i++ )
-		if( !pGameData->pMoleratmen[i].getAlive() )
-			m = &pGameData->pMoleratmen[i];
+	// NOTE: Avoid linear congestion. If we always check from the start of the array
+	// then we will be wasting more time for every moleratman we spawn.
+	// By remembering the last index we checked, the next index is less likely to be in use.
+	for( int i=0; i<pGameData->mMoleratmen && m == nullptr; i++, mMoleratmanIndex++ )
+	{
+		if( mMoleratmanIndex >= pGameData->mMoleratmen )
+			mMoleratmanIndex = 0;
+
+		if( !pGameData->pMoleratmen[mMoleratmanIndex].getAlive() )
+			m = &pGameData->pMoleratmen[mMoleratmanIndex];
+	}
 
 	if( m )
 	{
 		m->setPosition( mPosition );
 		m->setAlive( true );
+		m->setPath( mpPath, mTargets );
 	}
 }
 
@@ -66,9 +92,14 @@ void WaveSpawner::spawnMolebat()
 {
 	Molebat* m = nullptr;
 
-	for( int i=0; i<pGameData->mMolebats && m == nullptr; i++ )
-		if( !pGameData->pMolebats[i].getAlive() )
-			m = &pGameData->pMolebats[i];
+	for( int i=0; i<pGameData->mMolebats && m == nullptr; i++, mMolebatIndex++ )
+	{
+		if( mMolebatIndex > pGameData->mMolebats )
+			mMolebatIndex = 0;
+
+		if( !pGameData->pMolebats[mMolebatIndex].getAlive() )
+			m = &pGameData->pMolebats[mMolebatIndex];
+	}
 
 	if( m )
 	{
@@ -100,18 +131,25 @@ WaveSpawner::WaveSpawner( const WaveSpawner& ref )
 	: pGameData( ref.pGameData ),
 	mWave( ref.mWave ), mDelay( ref.mDelay ), mPosition( ref.mPosition ),
 	mCurMoleratmen( ref.mCurMoleratmen ), mSpawnMoleratmen( ref.mSpawnMoleratmen ),
-	mCurMolebats( ref.mCurMolebats ), mSpawnMolebats( ref.mSpawnMolebats )
+	mCurMolebats( ref.mCurMolebats ), mSpawnMolebats( ref.mSpawnMolebats ),
+	mMoleratmanIndex( ref.mMoleratmanIndex ), mMolebatIndex( ref.mMolebatIndex ),
+	mTargets( ref.mTargets )
 {
+	mpPath = new sNode[20*20];
 }
 
 WaveSpawner::WaveSpawner( GameData* data )
 	: pGameData( data ),
-	mWave( 1 ), mDelay( 0.0f ), mPosition( 0.0f ),
+	mWave( 0 ), mDelay( 0.0f ), mPosition( 0.0f ),
 	mCurMoleratmen( 0 ), mSpawnMoleratmen( 0 ),
-	mCurMolebats( 0 ), mSpawnMolebats( 0 )
+	mCurMolebats( 0 ), mSpawnMolebats( 0 ),
+	mMoleratmanIndex( 0 ), mMolebatIndex( 0 ),
+	mTargets( 0 )
 {
+	mpPath = new sNode[20*20];
 }
 
 WaveSpawner::~WaveSpawner()
 {
+	delete[] mpPath;
 }
