@@ -48,27 +48,38 @@ void Enemy::setPath( sNode* path, int max )
 	mCurrent = max-1;
 }
 
+void Enemy::setAlive( bool alive )
+{
+	mAlive = alive;
+}
+
+bool Enemy::getAlive() const
+{
+	return mAlive;
+}
+
 Enemy& Enemy::operator=( const Enemy& ref )
 {
 	GameObject::operator=( ref );
 	mCurrent = ref.mCurrent;
 	pPath = ref.pPath;
+	mAlive = ref.mAlive;
 	return *this;
 }
 
 Enemy::Enemy( const Enemy& ref )
-	: GameObject( ref ), mCurrent( ref.mCurrent ), pPath( ref.pPath )
+	: GameObject( ref ), mCurrent( ref.mCurrent ), pPath( ref.pPath ), mAlive( ref.mAlive )
 {
 }
 
 Enemy::Enemy( glm::vec3 position )
-	: GameObject( position, 1.0f ), mCurrent( 0 ), pPath( nullptr )
+	: GameObject( position, 1.0f ), mCurrent( -1 ), pPath( nullptr ), mAlive( false )
 {
 	this->mBoundRadius = 1.0f;
 }
 
 Enemy::Enemy()
-	: mCurrent( 0 ), pPath( nullptr )
+	: mCurrent( -1 ), pPath( nullptr ), mAlive( false )
 {
 	this->mBoundRadius = 1.0f;
 }

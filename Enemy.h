@@ -11,6 +11,9 @@ public:
 	void render( GLuint programID );
 
 	void setPath( sNode* path, int max );
+	void setAlive( bool alive );
+
+	bool getAlive() const;
 
 	Enemy& operator=( const Enemy& ref );
 	Enemy( const Enemy& ref );
@@ -22,4 +25,5 @@ private:
 	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;
+	bool mAlive;
 };

@@ -75,6 +75,30 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	mTacticalMarker.setScale(data.boxScale);
 	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
 	mTowerModel.setScale(data.boxScale);
+
+	data.mMolebats = 10;
+	data.pMolebats = new Molebat[data.mMolebats];
+	for( int i=0; i<data.mMolebats; i++ )
+	{
+		data.pMolebats[i].load( playerModel, playerTexture, specMap, normalMap );
+		data.pMolebats[i].setGameData( &data );
+	}
+
+	data.mMoleratmen = 5;
+	data.pMoleratmen = new Moleratman[data.mMoleratmen];
+	for( int i=0; i<data.mMoleratmen; i++ )
+		data.pMoleratmen[i].load( playerModel, playerTexture, specMap, normalMap );
+
+	pWaveSpawner = new WaveSpawner( &data );
+
+	Sound* sound = data.pAssets->load<Sound>( "Sounds/chant.wav" );
+	if( !sound )
+	{
+		const char* error = Mix_GetError();
+		std::cout << "Mixer error: " << error << std::endl;
+	}
+	else
+ 		sound->play();
 }
 
 Game::~Game() {
@@ -91,6 +115,7 @@ Game::~Game() {
 	}
 	//delete mpEnemy;
 	delete[] mpPath;
+	delete pWaveSpawner;
 
 	data.pAssets->unload();
 	delete data.pAssets;
@@ -131,6 +156,15 @@ void Game::render()
 	data.pPlayer->render( data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	mGround.render( data.pDeferredProgram->getProgramID() );
 	//mpEnemy->render( data.pDeferredProgram->getProgramID() );
+
+	for( int i=0; i<data.mMoleratmen; i++ )
+		if( data.pMoleratmen[i].getAlive() )
+			data.pMoleratmen[i].render( data.pDeferredProgram->getProgramID() );
+
+	for( int i=0; i<data.mMolebats; i++ )
+		if( data.pMolebats[i].getAlive() )
+			data.pMolebats[i].render( data.pDeferredProgram->getProgramID() );
+
 	for (int i = 0; i < mpTowers.size(); i++) {
 		mpTowers[i]->render(data.pDeferredProgram->getProgramID());
 	}
@@ -171,9 +205,23 @@ void Game::update(const Input* inputs, float dt)
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
 	//mpEnemy->update();
+
+	for( int i=0; i<data.mMoleratmen; i++ )
+		if( data.pMoleratmen[i].getAlive() )
+			data.pMoleratmen[i].update();
+
+	for (int i = 0; i<data.mMolebats; i++)
+		if (data.pMolebats[i].getAlive())
+			data.pMolebats[i].update();
+
 	mActionMarker.update(data.pPlayer);
 	// NOTE: Debug
 	float x = (float)( rand() % 100 - 50 );
 	float z = (float)( rand() % 100 - 50 );
 	glm::vec3 v = glm::normalize( glm::vec3( x, 50.0f, z ) ) * 0.25f;
+
+	pWaveSpawner->update( dt );
+
+	if( inputs->keyPressed( SDLK_k ) )
+		pWaveSpawner->spawn();
 }

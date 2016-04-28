@@ -56,8 +56,13 @@ void Molebat::update()
 		cosf( rotY ),	0,		-sinf( rotY ),	0,
 		0,				1,		0,				0,
 		sinf(rotY),		0,		cosf(rotY),		0,
-		mPosition.x,	mPosition.y,	mPosition.z, 1
+		mPosition.x,	mPosition.y+sin(mSin++*0.1f )*0.1f,	mPosition.z, 1
 	};
+}
+
+void Molebat::setGameData( GameData* data )
+{
+	pGameData = data;
 }
 
 Molebat& Molebat::operator=( const Molebat& ref )
@@ -72,8 +77,13 @@ Molebat::Molebat( const Molebat& ref )
 {
 }
 
-Molebat::Molebat( GameData* data, glm::vec3 position )
+/*Molebat::Molebat( GameData* data, glm::vec3 position )
 	: Enemy( position ), pGameData( data ), mSin( rand() % 1000 )
+{
+}*/
+
+Molebat::Molebat()
+	: Enemy( glm::vec3( 0.0f ) ), mSin( rand() % 1000 )
 {
 }
 

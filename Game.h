@@ -15,6 +15,8 @@
 #include "Enemy.h"
 #include "Marker.h"
 #include "Tower.h"
+#include "Sound.h"
+#include "WaveSpawner.h"
 class Game {
 public:
 	bool run(const Input* inputs, const float &dt);
@@ -34,6 +36,7 @@ private:
 	int mTargets;
 	std::vector<Enemy*> mpEnemy;
 	std::vector<Tower*> mpTowers;
+	WaveSpawner* pWaveSpawner;
 
 	void createScreenQuad();
 	void drawOnScreenQuad();

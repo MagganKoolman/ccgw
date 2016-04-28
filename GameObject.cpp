@@ -76,6 +76,14 @@ glm::vec3 GameObject::getPosition() const
 	return mPosition;
 }
 
+void GameObject::setPosition( glm::vec3 position )
+{
+	mPosition = position;
+	mWorld[3][0] = position.x;
+	mWorld[3][1] = position.y;
+	mWorld[3][2] = position.z;
+}
+
 void GameObject::setScale(int scale)
 {
 	mWorld = { scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1 };
@@ -100,7 +108,7 @@ GameObject::GameObject(glm::vec3 position = { 0, 0, 0 }, float scale = 1.0f)
 }
 
 GameObject::GameObject()
-	:scale(1.0f), rotX(0), rotY(0), mpMesh(nullptr), mpTexture(nullptr)
+	:scale(1.0f), rotX(0), rotY(0), mpMesh(nullptr), mpTexture(nullptr), mpSpecularMap(nullptr), mpNormalMap(nullptr)
 {
 	mPosition = { 0, 0, 0 };
 	mLookat = { 0, 0, -1 };
