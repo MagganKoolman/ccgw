@@ -29,12 +29,25 @@ void Arrow::update(float dt)
 {
 	this->mTimeSinceLastEmmit += dt;
 
-	glm::vec3 tempVec = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
+	/*glm::vec3 tempVec = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	this->rotY = glm::angle(mLookat, tempVec);
 	if (mLookat.y < 0) {
 		rotY *= -1;
 	}
 	this->mPosition += mSpeed*mLookat*dt;
+	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + 5.0f*mGravitation*dt);*/
+
+
+	glm::vec3 lastPos = mPosition;
+	mPosition += mVelocity * dt;
+	mVelocity.y -= 0.05f;
+
+	//rotY = atan2( lastPos.y - mPosition.y, lastPos.x - mPosition.x );
+	mLookat = glm::normalize( mPosition - lastPos );
+	glm::vec3 tempVec = glm::normalize( glm::vec3( mLookat.x, 0, mLookat.z ) );
+	rotY = glm::angle( mLookat, tempVec );
+	if( mLookat.y < 0 )
+		rotY *= -1;
 
 	/*
 	glm::mat3 rotationY = glm::mat3(
@@ -82,8 +95,6 @@ void Arrow::update(float dt)
 					mPosition.x,				mPosition.y,	mPosition.z,				1
 	};
 
-	this->mLookat = glm::normalize((this->mLookat*this->mSpeed) + 5.f*mGravitation*dt);
-
 	if (mTimeSinceLastEmmit > mEmmitInterval)
 	{
 		mEmitter.spawn(mPosition, glm::vec3(0.0f, 0.1f, 0.0f), 2.f, 0.1f, glm::vec2(0.3f), glm::vec2(0.1f));
@@ -110,6 +121,8 @@ void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, gl
 	this->mLookat = direction;
 	this->mSpeed = travelSpeed;
 	this->mGravitation = downVector;
+
+	mVelocity = direction * travelSpeed;
 }
 Arrow::~Arrow() 
 {

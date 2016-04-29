@@ -4,7 +4,8 @@ void Moleratman::update()
 {
 	if (mCurrent >= 0)
 	{
-		glm::vec3 target(pPath[mCurrent].x, 0, pPath[mCurrent].y);
+		// TODO: Factor out box scale
+		glm::vec3 target(pPath[mCurrent].x*2.0f, 0, pPath[mCurrent].y*2.0f);
 
 		float dist = glm::distance(mPosition, glm::vec3(target));
 		if (dist < MOLERATMAN_SPEED)
@@ -35,7 +36,10 @@ void Moleratman::update()
 			0,				1,		0,				0,
 			sinf(rotY),		0,		cosf(rotY),		0,
 			mPosition.x,	mPosition.y,	mPosition.z, 1
-		};
+		};	
+	}
+	if (mLife <= 0) {
+		mAlive = false;
 	}
 }
 

@@ -207,7 +207,7 @@ void Game::update(const Input* inputs, float dt)
 
 	for (int i = 0; i < mpTowers.size(); i++)
 	{
-		mpTowers[i]->update(data.pPlayer, dt);
+		mpTowers[i]->update(&data, dt);
 	}
 
 	mActionMarker.update(data.pPlayer);

@@ -27,6 +27,11 @@ void Enemy::setPath( sNode* path, int max )
 	mCurrent = max-1;
 }
 
+void Enemy::imHit(float strength)
+{
+	mLife -= strength;
+}
+
 void Enemy::setAlive( bool alive )
 {
 	mAlive = alive;
@@ -52,13 +57,13 @@ Enemy::Enemy( const Enemy& ref )
 }
 
 Enemy::Enemy( glm::vec3 position )
-	: GameObject( position, 1.0f ), mCurrent( -1 ), pPath( nullptr ), mAlive( false )
+	: GameObject( position, 1.0f ), mCurrent( -1 ), pPath( nullptr ), mAlive( false ), mLife(10)
 {
 	this->mBoundRadius = 1.0f;
 }
 
 Enemy::Enemy()
-	: mCurrent( -1 ), pPath( nullptr ), mAlive( false )
+	: mCurrent(-1), pPath(nullptr), mAlive(false), mLife(10)
 {
 	this->mBoundRadius = 1.0f;
 }

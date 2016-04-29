@@ -32,19 +32,24 @@ void Tower::update(Player* enemies, const float & dt)
 	}
 }
 
-void Tower::update(std::vector<Enemy*> enemies, const float & dt)
+void Tower::update(GameData* gameData, const float & dt)
 {
 	if (mWeaponReady)
 	{
-		for (int i = 0; i < enemies.size(); i++) {
-			glm::vec3 direction = enemies[i]->getPosition() - mPosition;
-			mDistanceToTarget = glm::length(direction);
-			if (mDistanceToTarget < mpWeapon->getRange())
-			{
-				mWeaponReady = false;
-				mReloadTime = 10;
-				mpWeapon->shoot(mPosition, direction, rotX, mStrength);
-				break;
+		for (int i = 0; i < gameData->mMoleratmen; i++) {
+			if (gameData->pMoleratmen[i].getAlive()) {
+				glm::vec3 direction = gameData->pMoleratmen[i].getPosition() - mPosition;
+				mDistanceToTarget = glm::length(direction);
+				direction = glm::normalize(direction);
+				if (mDistanceToTarget < mRange)
+				{
+					mWeaponReady = false;
+					mShooting = true;
+					mReloadTime = 3;
+					targetEnemy = &gameData->pMoleratmen[i];
+					mpWeapon->shoot(mPosition, direction, rotX, mStrength);
+					break;
+				}
 			}
 		}
 	}
@@ -53,17 +58,19 @@ void Tower::update(std::vector<Enemy*> enemies, const float & dt)
 		if (mReloadTime < 0.0)
 			mWeaponReady = true;
 	}
-	
+	if (mShooting) {
+		mpWeapon->update(dt);
+		mShooting = arrowShot(dt);
+	}
 }
 
 bool Tower::arrowShot(const float &dt) {
 	bool targetHit = true;
 	mDistanceToTarget -= mStrength * 15 * dt;
-	//std::cout << mDistanceToTarget << std::endl;
 	if (mDistanceToTarget <= 0.0f)
 	{
 		targetHit = false;	
-		//enemy.takeDmg(mstrenght);
+		targetEnemy->imHit(mStrength);
 	}
 	return targetHit;
 }
@@ -84,7 +91,7 @@ Tower::Tower(GameData* gameData, glm::vec3 position, const Tower &towerRef, floa
 	this->mWeaponReady = true;
 	mLookat = { 1 ,0, 0 };
 	mReloadTime = 5;
-	mFireRate = 2;
+	mFireRate = 3;
 	mShooting = false;
 	mRange = 10;
 	mStrength = 2;

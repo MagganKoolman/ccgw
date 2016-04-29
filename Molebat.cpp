@@ -59,6 +59,8 @@ void Molebat::update()
 		sinf(rotY),		0,		cosf(rotY),		0,
 		mPosition.x,	mPosition.y+sin(mSin++*0.1f )*0.1f,	mPosition.z, 1
 	};
+	if (mLife <= 0)
+		mAlive = false;
 }
 
 void Molebat::setGameData( GameData* data )
