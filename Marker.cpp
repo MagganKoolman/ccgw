@@ -23,6 +23,13 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	{		
 		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale , selectedTile.y / gameData.boxScale, TILE_HOLD);
 		mMarkedIndex.push_back(selectedTile);
+		sNode start = { 0, 0 };
+		sNode end = { 10, 10 };
+		int mTargets = 0;
+		if (!gameData.pGrid->findPath(start, end, gameData.pGrid->getPath(), &mTargets)) {
+			mMarkedIndex.erase(mMarkedIndex.end() - 1);
+			gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
+		}
 	}
 	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
 	{
