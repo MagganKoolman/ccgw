@@ -46,17 +46,18 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pPlayer = new Player(&data);
 	data.boxScale = 2;
 
-	tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/box2.obj" );
+	//tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/highreztear.obj" );
+	tempMesh* playerModel = data.pAssets->load<tempMesh>("Models/box2.obj");
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
 	Texture* normalMap = data.pAssets->load<Texture>("Models/tegelNormal.png");
 
-	data.pGrid = new Grid(20, 20, playerModel);
+	data.pGrid = new Grid(36, 100, playerModel);
 
 	sNode start = { 0, 0 };
 	sNode end = { 2, 2 };
-	mpPath = new sNode[20*20];
+	mpPath = new sNode[18*100];
 	mTargets = 0;
 
 	data.pGrid->findPath( start, end, mpPath, &mTargets );
@@ -118,7 +119,7 @@ Game::~Game() {
 	data.pAssets->unload();
 	delete data.pAssets;
 }
-
+int a = 0;
 bool Game::run(const Input* inputs, const float &dt) 
 {
 	update(inputs, dt);

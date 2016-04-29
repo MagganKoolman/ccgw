@@ -14,11 +14,15 @@ float Player::getRot() const
 
 void Player::update(const Input* inputs, const float &dt)
 {
+	bool canJump = false;
+
 	if (inputs->buttonDown(0))
 		this->mStrength += dt;
 	mWeapon->update(dt);
 	speedY -= 15 * dt;
-	mSpeed *= abs(1 - 8 * dt);
+	mSpeed *= 1- 15*dt;
+	if (mSpeed < 0)
+		mSpeed = 0;
 	//mSpeed = 0;
 	glm::vec3 tempLookat = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	glm::vec3 dir(0.0f, 0.0f, 0.0f);
@@ -46,9 +50,6 @@ void Player::update(const Input* inputs, const float &dt)
 		float r = glm::pi<float>() * 1.5f;
 		dir += glm::vec3(cos(rotX - r), 0.0f, sin(rotX - r));
 	}
-	if (inputs->keyPressed(SDLK_SPACE))
-		speedY += 10;
-
 	if (glm::length(dir) > 0.1f)
 	{
 		dir = glm::normalize(dir);
@@ -64,8 +65,10 @@ void Player::update(const Input* inputs, const float &dt)
 		deltaPos.x = dx;
 	if (checkMove({ mPosition.x,mPosition.y + dy,mPosition.z }))
 		deltaPos.y = dy;
-	else
+	else {
 		speedY = 0;
+		canJump = true;
+	}
 	if (checkMove({ mPosition.x,mPosition.y,mPosition.z + dz }))
 		deltaPos.z = dz;
 	mPosition += deltaPos;
@@ -81,39 +84,21 @@ void Player::update(const Input* inputs, const float &dt)
 		std::cout << std::endl;
 	}
 
-	/*	
-	mBB.center = this->mPosition + glm::vec3(dx, 0, dz);
-	
-	int x = (int)((int)(mPosition.x + dx + 1.0f) / mGameData->boxScale);
-	int y = (int)((int)(mPosition.z + dz + + 1.0f) / mGameData->boxScale);
-	std::cout << x << "  " << y << std::endl;
-
-	for (int i = -1; i <= 1 && !intersect; i++) {
-		for (int j = -1; j <= 1 && !intersect; j++) {
-			int x = (int)((int)(mPosition.x + dx + 1.0f) / mGameData->boxScale) + i;
-			int y = (int)((int)(mPosition.z + dz + 1.0f) / mGameData->boxScale) + j;
-			if (!(y < 0 || x < 0 || y >= (int)mGameData->pGrid->getHeight() || x >= (int)mGameData->pGrid->getWidth()))
-				if (mGameData->pGrid->getTile(x, y) != TILE_EMPTY)
-					if(this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 1, y*mGameData->boxScale), mGameData->boxScale/2))
-						intersect = this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 0, y*mGameData->boxScale), mGameData->boxScale);
-		}
-	}
-	*/
-	/*
-	if (!intersect) {
-		mPosition.x += dx;
-		mPosition.z += dz;
-	}*/
-
 	if (mPosition.y < 0.5) {
 		mPosition.y = 0.5;
 		speedY = 0;
+		canJump = true;
 	}
+
+	if (inputs->keyPressed(SDLK_SPACE) && canJump)
+		speedY += 10;
+
 
 	double degree = (inputs->mouseDelta().x) / 200 * -1;
 	double rad = (inputs->mouseDelta().y) / 400 * -1;
 
 	rotX += degree;
+
 	if (rotX > glm::pi<float>()*2.0f)
 		rotX -= glm::pi<float>()*2.0f;
 	else if (rotX < 0.0f)
@@ -199,6 +184,7 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 }
 bool Player::checkMove(glm::vec3 coord) {
 	mBB.center = coord;
+
 	bool intersect = false;
 	for (int i = -1; i <= 1 && !intersect; i++) {
 		for (int j = -1; j <= 1 && !intersect; j++) {

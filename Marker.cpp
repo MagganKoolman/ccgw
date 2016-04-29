@@ -21,7 +21,7 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	bool buildTowers = false;
 	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY)
 	{		
-		gameData.pGrid->setTile(selectedTile.x, selectedTile.y, TILE_HOLD);
+		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale , selectedTile.y / gameData.boxScale, TILE_HOLD);
 		mMarkedIndex.push_back(selectedTile);
 	}
 	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
