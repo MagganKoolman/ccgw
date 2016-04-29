@@ -41,6 +41,8 @@ void Moleratman::update()
 	if (mLife <= 0) {
 		mAlive = false;
 	}
+
+	mBoundingBox.center = mPosition;
 }
 
 Moleratman& Moleratman::operator=( const Moleratman& ref )
@@ -52,6 +54,7 @@ Moleratman& Moleratman::operator=( const Moleratman& ref )
 Moleratman::Moleratman( const Moleratman& ref )
 	: Enemy( ref )
 {
+	mBoundingBox.hWidth = mBoundingBox.hHeight = mBoundingBox.hDepth = 0.5f;
 }
 
 Moleratman::Moleratman()

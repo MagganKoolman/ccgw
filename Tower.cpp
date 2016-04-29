@@ -99,7 +99,7 @@ Tower::Tower(GameData* gameData, glm::vec3 position, const Tower &towerRef, floa
 
 Tower::Tower()
 {
-	
+	mpWeapon = nullptr;
 }
 
 

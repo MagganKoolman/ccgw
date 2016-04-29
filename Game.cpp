@@ -108,8 +108,8 @@ Game::~Game() {
 	delete data.pEmission;
 	delete data.pGrid;
 	delete pActionState;
-	for (int i = 0; i < mpTowers.size(); i++) {
-		delete mpTowers[i];
+	for (int i = 0; i < data.mpTowers.size(); i++) {
+		delete data.mpTowers[i];
 	}
 	delete[] mpPath;
 	delete pWaveSpawner;
@@ -157,8 +157,8 @@ void Game::render()
 		if( data.pMolebats[i].getAlive() )
 			data.pMolebats[i].render( data.pDeferredProgram->getProgramID() );
 
-	for (int i = 0; i < mpTowers.size(); i++) {
-		mpTowers[i]->render(data.pDeferredProgram->getProgramID());
+	for (int i = 0; i < data.mpTowers.size(); i++) {
+		data.mpTowers[i]->render(data.pDeferredProgram->getProgramID());
 	}
 	if(data.pCamera->getPosition().y < 15)
 		mActionMarker.render(data.pDeferredProgram->getProgramID());
@@ -206,9 +206,9 @@ void Game::update(const Input* inputs, float dt)
 		if (data.pMolebats[i].getAlive())
 			data.pMolebats[i].update();
 
-	for (int i = 0; i < mpTowers.size(); i++)
+	for (int i = 0; i < data.mpTowers.size(); i++)
 	{
-		mpTowers[i]->update(&data, dt);
+		data.mpTowers[i]->update(&data, dt);
 	}
 
 	mActionMarker.update(data.pPlayer);
@@ -228,7 +228,7 @@ void Game::update(const Input* inputs, float dt)
 void Game::buildTowers() {
 	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
 	for (int i = 0; i < tempVec.size(); i++) {
-		mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
+		data.mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
 	}
 	mTacticalMarker.resetMarkedTiles();
 }
