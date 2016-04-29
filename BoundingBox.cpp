@@ -10,11 +10,16 @@ const bool BoundingBox::intersect(const BoundingBox* subject) {
 		);
 }
 const bool BoundingBox::intersect(glm::vec3 acenter, float halfSide) {
-	return !(
-		(fabsf(this->center.x - acenter.x)	>	this->hWidth + halfSide)
-		|| (fabsf(this->center.y - acenter.y)	>	this->hHeight + halfSide)
-		|| (fabsf(this->center.z - acenter.z)	>	this->hDepth + halfSide)
+	bool result = !(
+		(fabsf(this->center.x - acenter.x) > this->hWidth + halfSide)
+		|| (fabsf(this->center.y - acenter.y) > this->hHeight + halfSide)
+		|| (fabsf(this->center.z - acenter.z) > this->hDepth + halfSide)
 		);
+	/*
+	if (result)
+		int a = 0;
+	*/
+	return result;
 }
 
 BoundingBox::BoundingBox(glm::vec3 centerPoint, float sides) {

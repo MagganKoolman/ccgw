@@ -12,6 +12,7 @@ public:
 	glm::vec3 getLookAt() const;
 	float getRot() const;
 	void render(const GLuint & programID, const glm::mat4 &viewMat);
+	bool checkMove(glm::vec3 coord);
 
 	Player();
 	Player(GameData* data);

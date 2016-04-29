@@ -18,7 +18,8 @@ void Player::update(const Input* inputs, const float &dt)
 		this->mStrength += dt;
 	mWeapon->update(dt);
 	speedY -= 15 * dt;
-	mSpeed *= abs(1 - 3 * dt);
+	mSpeed *= abs(1 - 8 * dt);
+	//mSpeed = 0;
 	glm::vec3 tempLookat = glm::normalize(glm::vec3(mLookat.x, 0, mLookat.z));
 	glm::vec3 dir(0.0f, 0.0f, 0.0f);
 
@@ -54,47 +55,55 @@ void Player::update(const Input* inputs, const float &dt)
 		mDirection = dir;
 	}
 
-	float dy = speedY * dt;
-	int xStart = (this->mPosition.x + mDirection.x * mSpeed * dt) / mGameData->boxScale;
-	int yStart =(this->mPosition.z + mDirection.z * mSpeed * dt)/ mGameData->boxScale;
-	bool intersect = false;
-	mBB.center = this->mPosition;
+	float dx = mDirection.x*mSpeed*dt;
+	float dz = mDirection.z*mSpeed*dt;
+	float dy = speedY*dt;
+	
+	glm::vec3 deltaPos = {0,0,0};
+	if (checkMove({mPosition.x + dx,mPosition.y,mPosition.z }))
+		deltaPos.x = dx;
+	if (checkMove({ mPosition.x,mPosition.y + dy,mPosition.z }))
+		deltaPos.y = dy;
+	else
+		speedY = 0;
+	if (checkMove({ mPosition.x,mPosition.y,mPosition.z + dz }))
+		deltaPos.z = dz;
+	mPosition += deltaPos;
 
-	int x = (int)((int)(this->mPosition.x + 1.0f) / mGameData->boxScale);
-	int y = (int)((int)(this->mPosition.z + 1.0f) / mGameData->boxScale);
-	std::cout << x << "  " << y << std::endl;
-	if (!(y < 0 || x < 0 || y >= mGameData->pGrid->getWidth() || x >= mGameData->pGrid->getHeight()))
-		if (mGameData->pGrid->getTile(x, y) != TILE_EMPTY)
-			if(this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 1 , y*mGameData->boxScale), mGameData->boxScale/2))
-				//std::cout << "COLLISON" << x*mGameData->boxScale << "  " << y*mGameData->boxScale;
-	std::cout << std::endl;
-	if (inputs->keyPressed(SDLK_q) ){
-		for (int i = 0; i < mGameData->pGrid->getHeight(); i++) {
-			for (int j = 0; j < mGameData->pGrid->getWidth();j++) {
-				std::cout << (int)mGameData->pGrid->getTile(j, i);
+	if (inputs->keyPressed(SDLK_q)) {
+		for (int i = 0; i < mGameData->pGrid->getHeight();i++) {
+			for (int j = 0; j < mGameData->pGrid->getWidth(); j++) {
+				std::cout << (int)mGameData->pGrid->getTile(j, i) << " ";
 			}
-		std::cout << endl;
+			std::cout << std::endl;
 		}
 		int a = 0;
+		std::cout << std::endl;
 	}
-	/*
+
+	/*	
+	mBB.center = this->mPosition + glm::vec3(dx, 0, dz);
+	
+	int x = (int)((int)(mPosition.x + dx + 1.0f) / mGameData->boxScale);
+	int y = (int)((int)(mPosition.z + dz + + 1.0f) / mGameData->boxScale);
+	std::cout << x << "  " << y << std::endl;
+
 	for (int i = -1; i <= 1 && !intersect; i++) {
 		for (int j = -1; j <= 1 && !intersect; j++) {
-			int x = (int)((int)(this->mPosition.x + 1.0f) / mGameData->boxScale) + i;
-			int y = (int)((int)(this->mPosition.z + 1.0f) / mGameData->boxScale) + j;
+			int x = (int)((int)(mPosition.x + dx + 1.0f) / mGameData->boxScale) + i;
+			int y = (int)((int)(mPosition.z + dz + 1.0f) / mGameData->boxScale) + j;
 			if (!(y < 0 || x < 0 || y >= (int)mGameData->pGrid->getHeight() || x >= (int)mGameData->pGrid->getWidth()))
-				if (mGameData->pGrid->getTile(x, y) != 0)
-					std::cout << "COLLISION" << x << "  "<< y;
-					//intersect = this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 0, y*mGameData->boxScale), mGameData->boxScale);
+				if (mGameData->pGrid->getTile(x, y) != TILE_EMPTY)
+					if(this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 1, y*mGameData->boxScale), mGameData->boxScale/2))
+						intersect = this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 0, y*mGameData->boxScale), mGameData->boxScale);
 		}
 	}
 	*/
-
+	/*
 	if (!intersect) {
-		this->mPosition += mDirection * mSpeed * dt + glm::vec3(0, dy, 0);
-
-	}
-
+		mPosition.x += dx;
+		mPosition.z += dz;
+	}*/
 
 	if (mPosition.y < 0.5) {
 		mPosition.y = 0.5;
@@ -187,6 +196,24 @@ glm::vec3 Player::getMovingDirection(glm::vec3 v1, glm::vec3 v2) {
 	if (result != result)
  		result = glm::vec3(0,0,0);
 	return result;
+}
+bool Player::checkMove(glm::vec3 coord) {
+	mBB.center = coord;
+	bool intersect = false;
+	for (int i = -1; i <= 1 && !intersect; i++) {
+		for (int j = -1; j <= 1 && !intersect; j++) {
+			int x = (int)((int)(coord.x + 1.0f) / mGameData->boxScale) + i;
+			int y = (int)((int)(coord.z + 1.0f) / mGameData->boxScale) + j;
+			if (!(y < 0 || x < 0 || y >= (int)mGameData->pGrid->getHeight() || x >= (int)mGameData->pGrid->getWidth())) {
+				if (mGameData->pGrid->getTile(x, y) != TILE_EMPTY) {
+					if (this->mBB.intersect(glm::vec3(x*mGameData->boxScale, 1, y*mGameData->boxScale), mGameData->boxScale / 2)) {
+						intersect = true;
+					}
+				}
+			}
+		}
+	}
+	return !intersect;
 }
 
 Player::Player() 

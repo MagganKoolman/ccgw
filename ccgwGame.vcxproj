@@ -50,6 +50,7 @@
     <ClInclude Include="TestSprite.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="WaveSpawner.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +84,7 @@
     <ClCompile Include="TestSprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="WaveSpawner.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +175,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)deps/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

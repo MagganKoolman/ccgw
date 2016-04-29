@@ -59,7 +59,7 @@ void Tower::update(std::vector<Enemy*> enemies, const float & dt)
 bool Tower::arrowShot(const float &dt) {
 	bool targetHit = true;
 	mDistanceToTarget -= mStrength * 15 * dt;
-	std::cout << mDistanceToTarget << std::endl;
+	//std::cout << mDistanceToTarget << std::endl;
 	if (mDistanceToTarget <= 0.0f)
 	{
 		targetHit = false;	
