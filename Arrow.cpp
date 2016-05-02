@@ -106,72 +106,71 @@ void Arrow::update(float dt)
 	}
 
 	// check collision against moleratmen
-	for( int i=0; i<pGameData->mMoleratmen && mAlive; i++ )
+	if (playerOwned)
 	{
-		if( pGameData->pMoleratmen[i].getAlive() )
+		for (int i = 0; i < pGameData->mMoleratmen && mAlive; i++)
 		{
-			float damage = 0.0f;
-			// check headshot
-			if( pGameData->pMoleratmen[i].getHeadBox().intersect( lastPos, mPosition ) )
-				damage = mSpeed * 2.0f;
-			// check bodyshot
-			else if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
-				damage = mSpeed;
-
-			if( damage > 0.0f )
+			if (pGameData->pMoleratmen[i].getAlive())
 			{
-				pGameData->pMoleratmen[i].imHit(mSpeed);
-				
-				mAlive = false;
-				mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
-				if (!pGameData->pMoleratmen[i].getAlive()) {
-					pGameData->pGold++;
-					pGameData->pScore++;
-				}
-				pGameData->pMoleratmen[i].imHit( damage );
-				if( !mPiercing )
-					mAlive = false;
-			}
-		}
-	}
+				float damage = 0.0f;
+				// check headshot
+				if (pGameData->pMoleratmen[i].getHeadBox().intersect(lastPos, mPosition))
+					damage = mSpeed * 2.0f;
+				// check bodyshot
+				else if (pGameData->pMoleratmen[i].getBoundingBox().intersect(lastPos, mPosition))
+					damage = mSpeed;
 
-	// check collision against molebats
-	for (int i = 0; i<pGameData->mMolebats && mAlive; i++)
-	{
-		if (pGameData->pMolebats[i].getAlive())
-		{
-			float damage = 0.0f;
-			if( pGameData->pMolebats[i].getHeadBox().intersect( lastPos, mPosition ) )
-				damage = mSpeed * 2.0f;
-			else if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
-				damage = mSpeed;
+				if (damage > 0.0f)
+				{
+					pGameData->pMoleratmen[i].imHit(damage);
 
-			if( damage > 0.0f )
-			{
-				pGameData->pMolebats[i].imHit( damage );
-				if( !mPiercing )
-					mAlive = false;
-			}
-		}
-	}
-
-	// check collision against tower
-	int x = (int)((int)(mPosition.x + 1.0f) / pGameData->boxScale);
-	int y = (int)((int)(mPosition.z + 1.0f) / pGameData->boxScale);
-	if (!(y < 0 || x < 0 || y >= (int)pGameData->pGrid->getHeight() || x >= (int)pGameData->pGrid->getWidth())) {
-		if (pGameData->pGrid->getTile(x, y) != TILE_EMPTY) {
-			if( mPosition.y < pGameData->boxScale )
-				mAlive = false;
-				pGameData->pMolebats[i].imHit(mSpeed);
-				mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
-				if (!pGameData->pMolebats[i].getAlive()) {
-					pGameData->pGold++;
-					pGameData->pScore++;
+					mEmitter.spawn(mPosition, glm::vec3(0.0f, -1.0f, 0.0f), 1.0f);
+					if (!pGameData->pMoleratmen[i].getAlive()) {
+						pGameData->pGold++;
+						pGameData->pScore++;
+					}
+					if (!mPiercing)
+						mAlive = false;
 				}
 			}
 		}
-	}
 
+		// check collision against molebats
+		for (int i = 0; i < pGameData->mMolebats && mAlive; i++)
+		{
+			if (pGameData->pMolebats[i].getAlive())
+			{
+				float damage = 0.0f;
+				if (pGameData->pMolebats[i].getHeadBox().intersect(lastPos, mPosition))
+					damage = mSpeed * 2.0f;
+				else if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
+					damage = mSpeed;
+
+				if (damage > 0.0f)
+				{
+					pGameData->pMolebats[i].imHit(damage);
+					mEmitter.spawn(mPosition, glm::vec3(0.0f, -1.0f, 0.0f), 1.0f);
+					if (!pGameData->pMolebats[i].getAlive()) {
+						pGameData->pGold++;
+						pGameData->pScore++;
+					}
+					if (!mPiercing)
+						mAlive = false;
+				}
+			}
+		}
+
+		// check collision against tower
+		int x = (int)((int)(mPosition.x + 1.0f) / pGameData->boxScale);
+		int y = (int)((int)(mPosition.z + 1.0f) / pGameData->boxScale);
+		if (!(y < 0 || x < 0 || y >= (int)pGameData->pGrid->getHeight() || x >= (int)pGameData->pGrid->getWidth())) {
+			if (pGameData->pGrid->getTile(x, y) != TILE_EMPTY) {
+				if( mPosition.y < pGameData->boxScale ){
+					mAlive = false;
+				}
+			}
+		}
+	}
 	// check if we hit the ground
 	if( mPosition.y < 0 )
 		mAlive = false;
@@ -188,11 +187,13 @@ Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 	mpNormalMap = nullptr;
 	pGameData = nullptr;
 	mAlive = false;
+	playerOwned = false;
 	mPiercing = true;
 }
 
-void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
+void Arrow::spawn(bool owner, glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
 {
+	playerOwned = owner;
 	rotY = 0;
 	rotX = rotation;
 	mPosition = position;

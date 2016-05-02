@@ -14,12 +14,14 @@ public:
 
 	bool isAlive();
 	void update(float dt);
-	void spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation);
+	void spawn(bool owner, glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation);
 	Arrow();
 	~Arrow();
 
 protected:
 	GameData* pGameData;
+
+	bool playerOwned;
 
 	float mSpeed;
 	glm::vec3 mGravitation;
