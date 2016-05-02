@@ -115,7 +115,7 @@ void Arrow::update(float dt)
 			{
 				pGameData->pMoleratmen[i].imHit( 1.0f );
 				mAlive = false;
-				mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
+				//mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
 			}
 		}
 	}
@@ -130,7 +130,7 @@ void Arrow::update(float dt)
 			{
 				pGameData->pMolebats[i].imHit(1.0f);
 				mAlive = false;
-				mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
+				//mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
 			}
 		}
 	}
