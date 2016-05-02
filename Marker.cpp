@@ -31,7 +31,7 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 			gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		}
 	}
-	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
+	if (inputs->buttonDown(2) && currrentTile == TILE_HOLD)
 	{
 		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		for (int i = 0; i < mMarkedIndex.size(); i++) {

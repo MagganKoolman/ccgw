@@ -19,10 +19,11 @@
 #include "Molebat.h"
 #include "Moleratman.h"
 #include "Sound.h"
+
 class Game {
 public:
-	bool run(const Input* inputs, const float &dt);
-	void tacticalRun(const Input* inputs, const float &dt);
+	bool run(const Input* inputs, const float &dt, bool menuActive);
+	void tacticalRun(const Input* inputs, const float &dt, bool menuActive);
 
 	Game();
 	~Game();

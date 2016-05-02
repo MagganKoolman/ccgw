@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "Input.h"
 #include "global_variables.h"
+#include "Menu.h"
+
 
 using namespace std;
 
@@ -46,7 +48,12 @@ int main(int argc, char** argv) {
 	float dt = 0;
 	int timeStamp = SDL_GetTicks(); int temp;
 	bool actionMode = true;
-	input.setMouseVisible(false);
+	input.setMouseVisible(true);
+	input.setMouseLock(false);
+
+	Menu mainMenu("menuBuild.txt");
+	char menuAction = 0;
+
 	while (running)
 	{
 		temp = SDL_GetTicks();
@@ -54,22 +61,37 @@ int main(int argc, char** argv) {
 		timeStamp = temp;
 		running = input.update();
 
-
-
 		if (input.keyPressed(SDLK_t)) {
 			actionMode = !actionMode;	
 			input.setMouseLock(actionMode);
 		}
-
-			
+		
 		if (actionMode)
-			game.run(&input, dt);
+			game.run(&input, dt, !mainMenu.mActive);
 		else
-			game.tacticalRun(&input, dt);
+			game.tacticalRun(&input, dt, !mainMenu.mActive);
 
-
-		if( input.keyPressed( SDLK_ESCAPE ) )
-			running = false;
+		if (mainMenu.mActive) {
+			menuAction = mainMenu.update(&input);
+			mainMenu.render();
+			switch (menuAction) {
+			case 'q':
+				running = false;
+				break;
+			case'p':
+				mainMenu.mActive = !mainMenu.mActive;
+				input.setMouseVisible(mainMenu.mActive);
+				input.setMouseLock(actionMode && !mainMenu.mActive);
+				break;
+			}
+		}
+			
+		if (input.keyPressed(SDLK_ESCAPE))
+		{
+			mainMenu.mActive = !mainMenu.mActive;
+			input.setMouseVisible(mainMenu.mActive);
+			input.setMouseLock(actionMode && !mainMenu.mActive);
+		}
 		SDL_GL_SwapWindow(window);
 	}
 	Mix_CloseAudio();

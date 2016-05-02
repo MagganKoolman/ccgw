@@ -21,15 +21,6 @@ void Game::createScreenQuad()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Game::drawOnScreenQuad()
-{
-	glBindBuffer(GL_ARRAY_BUFFER, testScreen);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, x));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, s));
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
 Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/
 {
 
@@ -107,6 +98,7 @@ Game::~Game() {
 	delete data.pCamera;
 	delete data.pEmission;
 	delete data.pGrid;
+	delete data.pMenuProgram;
 	delete pActionState;
 	for (int i = 0; i < mpTowers.size(); i++) {
 		delete mpTowers[i];
@@ -120,24 +112,27 @@ Game::~Game() {
 	delete data.pAssets;
 }
 int a = 0;
-bool Game::run(const Input* inputs, const float &dt) 
+bool Game::run(const Input* inputs, const float &dt, bool menuActive) 
 {
-	update(inputs, dt);
+	if(menuActive)
+		update(inputs, dt);
 	render();
 	return true;
 }
 
- void Game::tacticalRun(const Input* inputs, const float &dt) 
+ void Game::tacticalRun(const Input* inputs, const float &dt, bool menuActive) 
  {
-	if (data.pCamera->getPosition().y < 18) {
-		glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
-		this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });
-	}
-	else {
-		data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);
-		if (mTacticalMarker.update(inputs, data))
-			buildTowers();
-	}
+	 if (menuActive) {
+		 if (data.pCamera->getPosition().y < 18) {
+			 glm::vec3 dPosition = (glm::vec3(0, 20, 0) - (data.pCamera->getPosition() - glm::vec3(0, -1, 0))) * (5 * dt);
+			 this->data.pCamera->follow(data.pCamera->getPosition() + dPosition - glm::vec3(0, 1, 0), { 0,-1,0 }, 1, { 0,0,-1 });
+		 }
+		 else {
+			 data.pCamera->tacticalMovement(data.pPlayer->tacticalUpdate(inputs, dt, data), 20);
+			 if (mTacticalMarker.update(inputs, data))
+				 buildTowers();
+		 }
+	 }
 	render();
  }
 
@@ -147,8 +142,6 @@ void Game::render()
 	data.pCamera->updateUniforms( data.pDeferredProgram->getViewPerspectiveLocation(), data.pDeferredProgram->getCameraPositionLocation() );
 	data.pPlayer->render(data.pDeferredProgram->getProgramID(), data.pCamera->getView());
 	mGround.render( data.pDeferredProgram->getProgramID() );
-	//mpEnemy->render( data.pDeferredProgram->getProgramID() );
-
 	for( int i=0; i<data.mMoleratmen; i++ )
 		if( data.pMoleratmen[i].getAlive() )
 			data.pMoleratmen[i].render( data.pDeferredProgram->getProgramID() );
@@ -172,23 +165,13 @@ void Game::render()
 	data.pBillboardProgram->begin( data.pCamera );
 
 	data.pEmission->draw();
-
 	data.pBillboardProgram->end();
 	data.pBillboardProgram->unUse();
-
 	data.pDeferredProgram->unUse();
 
-	data.pForwardProgram->use();
-	data.pDeferredProgram->enableTextures(data.pForwardProgram->getProgramID());
 
-	GLuint cameraPos = glGetUniformLocation(data.pForwardProgram->getProgramID(), "cameraPos");
-	glUniform3fv(cameraPos, 1, &data.pCamera->getPosition()[0]);
-	GLuint inverseViewPerspective = glGetUniformLocation(data.pForwardProgram->getProgramID(), "invViewPerspective");
-	glUniformMatrix4fv(inverseViewPerspective, 1, GL_FALSE, &glm::inverse(data.pCamera->getViewPerspective())[0][0]);
-
-	drawOnScreenQuad();
-	data.pDeferredProgram->disableTextures();
-	data.pForwardProgram->unUse();
+	
+	drawOnScreenQuad();	
 }
 
 void Game::update(const Input* inputs, float dt) 
@@ -231,4 +214,24 @@ void Game::buildTowers() {
 		mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
 	}
 	mTacticalMarker.resetMarkedTiles();
+}
+
+void Game::drawOnScreenQuad()
+{
+	data.pForwardProgram->use();
+	data.pDeferredProgram->enableTextures(data.pForwardProgram->getProgramID());
+
+	GLuint cameraPos = glGetUniformLocation(data.pForwardProgram->getProgramID(), "cameraPos");
+	glUniform3fv(cameraPos, 1, &data.pCamera->getPosition()[0]);
+	GLuint inverseViewPerspective = glGetUniformLocation(data.pForwardProgram->getProgramID(), "invViewPerspective");
+	glUniformMatrix4fv(inverseViewPerspective, 1, GL_FALSE, &glm::inverse(data.pCamera->getViewPerspective())[0][0]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, testScreen);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, x));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ScreenVertex), (void*)offsetof(ScreenVertex, s));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	data.pDeferredProgram->disableTextures();
+	data.pForwardProgram->unUse();
 }

@@ -19,6 +19,7 @@ struct GameData
 	Camera* pCamera;
 	DeferredProgram* pDeferredProgram;
 	ForwardProgram* pForwardProgram;
+	ForwardProgram* pMenuProgram;
 	BillboardProgram* pBillboardProgram;
 	Player* pPlayer;
 	Emission* pEmission;
