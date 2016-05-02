@@ -10,6 +10,7 @@ class Moleratman : public Enemy
 public:
 	//Follows a path and updates position
 	void update(float dt);
+	void render( GLuint programID );
 
 	Moleratman& operator=( const Moleratman& ref );
 	Moleratman( const Moleratman& ref );

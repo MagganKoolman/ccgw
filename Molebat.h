@@ -13,6 +13,7 @@ class Molebat : public Enemy
 {
 public:
 	//Chases the player, stays off the ground and updates position.
+	void render( GLuint programID );
 	void update(float dt);
 
 	void setGameData( GameData* data );

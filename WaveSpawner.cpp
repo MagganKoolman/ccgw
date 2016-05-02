@@ -89,6 +89,7 @@ void WaveSpawner::spawnMoleratman()
 	{
 		m->setPosition( mPosition );
 		m->setAlive( true );
+		m->setLife( 1.0f );
 		m->setPath( mpPath, mTargets );
 	}
 }
@@ -112,6 +113,7 @@ void WaveSpawner::spawnMolebat()
 		pos.y = MOLEBAT_HEIGHT;
 		m->setPosition( pos );
 		m->setAlive( true );
+		m->setLife( 1.0f );
 	}
 }
 

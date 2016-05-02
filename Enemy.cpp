@@ -40,14 +40,29 @@ void Enemy::setAlive( bool alive )
 	mAlive = alive;
 }
 
+void Enemy::setLife( float life )
+{
+	mLife = life;
+}
+
 bool Enemy::getAlive() const
 {
 	return mAlive;
 }
 
+float Enemy::getLife() const
+{
+	return mLife;
+}
+
 const BoundingBox& Enemy::getBoundingBox() const
 {
 	return mBoundingBox;
+}
+
+const BoundingBox& Enemy::getHeadBox() const
+{
+	return mHeadBox;
 }
 
 Enemy& Enemy::operator=( const Enemy& ref )
