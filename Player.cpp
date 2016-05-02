@@ -19,7 +19,7 @@ void Player::update(const Input* inputs, const float &dt)
 	if (inputs->buttonDown(0))
 		this->mStrength += dt;
 	mWeapon->update(dt);
-	speedY -= 15 * dt;
+	speedY -= 25 * dt;
 	mSpeed *= 1- 15*dt;
 	if (mSpeed < 0)
 		mSpeed = 0;
@@ -91,7 +91,7 @@ void Player::update(const Input* inputs, const float &dt)
 	}
 
 	if (inputs->keyPressed(SDLK_SPACE) && canJump)
-		speedY += 10;
+		speedY += 15;
 
 
 	double degree = (inputs->mouseDelta().x) / 200 * -1;
@@ -202,18 +202,28 @@ bool Player::checkMove(glm::vec3 coord) {
 	return !intersect;
 }
 
+void Player::takeDamage(float damage) 
+{
+	this->mHealth -= damage;
+}
+
+bool Player::isAlive() {
+	return this->mHealth > 0;
+}
+
 Player::Player() 
 {}
 
 Player::Player(GameData* data) : GameObject()
 {
 	this->mGameData = data;
-	mWeapon = new Weapon(data);
+	mWeapon = new Weapon(true, data);
 	mWorld = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	mMaxSpeed = 10;
 	speedY = 0;
 	rotX = glm::pi<float>() * -0.5f;
 	mStrength = 0.0f;
+	mHealth = 100;
 }
 
 Player::~Player()

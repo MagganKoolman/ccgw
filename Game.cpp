@@ -23,8 +23,11 @@ void Game::createScreenQuad()
 
 Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)*/
 {
-
+	mBabyCount = 25;
 	pActionState = nullptr;
+	mDelayCleared = 2.0f;
+	mCounter = 0;
+	tactical = false;
 	
 	createScreenQuad();
 
@@ -36,9 +39,11 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pEmission = new Emission(&data, 10000);
 	data.pPlayer = new Player(&data);
 	data.boxScale = 2;
+	data.pScore = 0;
+	data.pGold = 5;
 
 	//tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/highreztear.obj" );
-	tempMesh* playerModel = data.pAssets->load<tempMesh>("Models/box2.obj");
+	tempMesh* playerModel = data.pAssets->load<tempMesh>("Models/box4.obj");
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
@@ -59,7 +64,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
 	mGround.load(data.pAssets->load<tempMesh>("Models/plane.obj"), groundTexture, specMap, nullptr);
-	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), groundTexture, specMap, nullptr);
+	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), data.pAssets->load<Texture>("Models/pns.png"), specMap, nullptr);
 	mTacticalMarker.load(playerModel, groundTexture, specMap, nullptr);
 	mTacticalMarker.setScale(data.boxScale);
 	mTowerModel.load(playerModel, groundTexture, nullptr, nullptr);
@@ -75,8 +80,10 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 
 	data.mMoleratmen = 5;
 	data.pMoleratmen = new Moleratman[data.mMoleratmen];
-	for( int i=0; i<data.mMoleratmen; i++ )
-		data.pMoleratmen[i].load( playerModel, playerTexture, specMap, normalMap );
+	for (int i = 0; i < data.mMoleratmen; i++) {
+		data.pMoleratmen[i].load(playerModel, playerTexture, specMap, normalMap);
+		data.pMoleratmen[i].pGameData = &data;
+	}
 
 	pWaveSpawner = new WaveSpawner( &data );
 
@@ -100,8 +107,8 @@ Game::~Game() {
 	delete data.pGrid;
 	delete data.pMenuProgram;
 	delete pActionState;
-	for (int i = 0; i < mpTowers.size(); i++) {
-		delete mpTowers[i];
+	for (int i = 0; i < data.mpTowers.size(); i++) {
+		delete data.mpTowers[i];
 	}
 	delete[] mpPath;
 	delete pWaveSpawner;
@@ -117,7 +124,12 @@ bool Game::run(const Input* inputs, const float &dt, bool menuActive)
 	if(menuActive)
 		update(inputs, dt);
 	render();
-	return true;
+	State result = GAME_PLAYING;
+	if (!data.pPlayer->isAlive())
+		result = GAME_LOST;
+	if (pWaveSpawner->hasWon())
+		result = GAME_WON;
+	return result;
 }
 
  void Game::tacticalRun(const Input* inputs, const float &dt, bool menuActive) 
@@ -150,8 +162,8 @@ void Game::render()
 		if( data.pMolebats[i].getAlive() )
 			data.pMolebats[i].render( data.pDeferredProgram->getProgramID() );
 
-	for (int i = 0; i < mpTowers.size(); i++) {
-		mpTowers[i]->render(data.pDeferredProgram->getProgramID());
+	for (int i = 0; i < data.mpTowers.size(); i++) {
+		data.mpTowers[i]->render(data.pDeferredProgram->getProgramID());
 	}
 	if(data.pCamera->getPosition().y < 15)
 		mActionMarker.render(data.pDeferredProgram->getProgramID());
@@ -180,18 +192,32 @@ void Game::update(const Input* inputs, float dt)
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
 	//mpEnemy->update();
-
+	bool waveDone = true;
 	for( int i=0; i<data.mMoleratmen; i++ )
-		if( data.pMoleratmen[i].getAlive() )
-			data.pMoleratmen[i].update();
-
+		if (data.pMoleratmen[i].getAlive())
+		{
+			data.pMoleratmen[i].update(dt);
+			waveDone = false;
+		}
 	for (int i = 0; i<data.mMolebats; i++)
 		if (data.pMolebats[i].getAlive())
-			data.pMolebats[i].update();
-
-	for (int i = 0; i < mpTowers.size(); i++)
+		{
+			data.pMolebats[i].update(dt);
+			waveDone = false;
+		}
+	if (waveDone)
 	{
-		mpTowers[i]->update(&data, dt);
+		mCounter += dt;
+		if (mCounter > mDelayCleared) 
+		{
+			tactical = true;
+			mCounter = 0;
+		}
+	}
+	
+	for (int i = 0; i < data.mpTowers.size(); i++)
+	{
+		data.mpTowers[i]->update(&data, dt);
 	}
 
 	mActionMarker.update(data.pPlayer);
@@ -205,13 +231,21 @@ void Game::update(const Input* inputs, float dt)
 
 	if( inputs->keyPressed( SDLK_k ) )
 		pWaveSpawner->spawn();
+
+	if (!data.pPlayer->isAlive())
+		int a = 0;
 }
 
 
 void Game::buildTowers() {
 	std::vector<glm::vec2> tempVec = mTacticalMarker.getMarkedTiles();
 	for (int i = 0; i < tempVec.size(); i++) {
-		mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
+		data.mpTowers.push_back(new Tower(&data, glm::vec3(tempVec[i].x, 1, tempVec[i].y), mTowerModel, data.boxScale));
+		glm::vec3 ppos = data.pPlayer->getPosition();
+		if (!data.pPlayer->checkMove(ppos))
+		{
+			data.pPlayer->setPosition({ ppos.x, 5, ppos.z });
+		}
 	}
 	mTacticalMarker.resetMarkedTiles();
 }

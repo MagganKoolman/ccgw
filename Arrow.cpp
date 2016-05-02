@@ -1,7 +1,9 @@
 #include "Arrow.h"
 #define GLM_FORCE_RADIANS
 #include "glm\gtx\vector_angle.hpp"
-
+#include "Moleratman.h"
+#include "Molebat.h"
+#include "Tower.h"
  
 bool Arrow::load(GameData* data, string mesh)
 {
@@ -18,12 +20,14 @@ bool Arrow::load(GameData* data, string mesh)
 	else
 		result = false;
 
+	pGameData = data;
+
 	return result;
 }
 
 bool Arrow::isAlive() 
 {
-	return mPosition.y > -1;
+	return mAlive;
 }
 void Arrow::update(float dt)
 {
@@ -40,7 +44,7 @@ void Arrow::update(float dt)
 
 	glm::vec3 lastPos = mPosition;
 	mPosition += mVelocity * dt;
-	mVelocity.y -= 0.05f;
+	mVelocity += mGravitation * 0.05f;
 
 	//rotY = atan2( lastPos.y - mPosition.y, lastPos.x - mPosition.x );
 	mLookat = glm::normalize( mPosition - lastPos );
@@ -100,29 +104,106 @@ void Arrow::update(float dt)
 		mEmitter.spawn(mPosition, glm::vec3(0.0f, 0.1f, 0.0f), 2.f, 0.1f, glm::vec2(0.3f), glm::vec2(0.1f));
 		mTimeSinceLastEmmit = 0;
 	}
+
+	// check collision against moleratmen
+	if (playerOwned)
+	{
+		for (int i = 0; i < pGameData->mMoleratmen && mAlive; i++)
+		{
+			if (pGameData->pMoleratmen[i].getAlive())
+			{
+				float damage = 0.0f;
+				// check headshot
+				if (pGameData->pMoleratmen[i].getHeadBox().intersect(lastPos, mPosition))
+					damage = mSpeed * 2.0f;
+				// check bodyshot
+				else if (pGameData->pMoleratmen[i].getBoundingBox().intersect(lastPos, mPosition))
+					damage = mSpeed;
+
+				if (damage > 0.0f)
+				{
+					pGameData->pMoleratmen[i].imHit(damage);
+
+					mEmitter.spawn(mPosition, glm::vec3(0.0f, -1.0f, 0.0f), 1.0f);
+					if (!pGameData->pMoleratmen[i].getAlive()) {
+						pGameData->pGold++;
+						pGameData->pScore++;
+					}
+					if (!mPiercing)
+						mAlive = false;
+				}
+			}
+		}
+
+		// check collision against molebats
+		for (int i = 0; i < pGameData->mMolebats && mAlive; i++)
+		{
+			if (pGameData->pMolebats[i].getAlive())
+			{
+				float damage = 0.0f;
+				if (pGameData->pMolebats[i].getHeadBox().intersect(lastPos, mPosition))
+					damage = mSpeed * 2.0f;
+				else if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
+					damage = mSpeed;
+
+				if (damage > 0.0f)
+				{
+					pGameData->pMolebats[i].imHit(damage);
+					mEmitter.spawn(mPosition, glm::vec3(0.0f, -1.0f, 0.0f), 1.0f);
+					if (!pGameData->pMolebats[i].getAlive()) {
+						pGameData->pGold++;
+						pGameData->pScore++;
+					}
+					if (!mPiercing)
+						mAlive = false;
+				}
+			}
+		}
+
+		// check collision against tower
+		int x = (int)((int)(mPosition.x + 1.0f) / pGameData->boxScale);
+		int y = (int)((int)(mPosition.z + 1.0f) / pGameData->boxScale);
+		if (!(y < 0 || x < 0 || y >= (int)pGameData->pGrid->getHeight() || x >= (int)pGameData->pGrid->getWidth())) {
+			if (pGameData->pGrid->getTile(x, y) != TILE_EMPTY) {
+				if( mPosition.y < pGameData->boxScale ){
+					mAlive = false;
+				}
+			}
+		}
+	}
+	// check if we hit the ground
+	if( mPosition.y < 0 )
+		mAlive = false;
 }
 Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 {
-	this->rotX = 0;
-	this->mEmmitInterval = 0.1;
-	this->mTimeSinceLastEmmit = 0;
-	this->mLookat = {1,0,0};
-	this->mSpeed = 1.f;
-	this->mGravitation = {0,-1,0};
-	this->mpSpecularMap = nullptr;
-	this->mpNormalMap = nullptr;
+	rotX = 0;
+	mEmmitInterval = 0.1;
+	mTimeSinceLastEmmit = 0;
+	mLookat = {1,0,0};
+	mSpeed = 1.f;
+	mGravitation = {0,-1,0};
+	mpSpecularMap = nullptr;
+	mpNormalMap = nullptr;
+	pGameData = nullptr;
+	mAlive = false;
+	playerOwned = false;
+	mPiercing = true;
 }
 
-void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
+void Arrow::spawn(bool owner, glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
 {
-	this->rotY = 0;
-	this->rotX = rotation;
-	this->mPosition = position;
-	this->mLookat = direction;
-	this->mSpeed = travelSpeed;
-	this->mGravitation = downVector;
+	playerOwned = owner;
+	rotY = 0;
+	rotX = rotation;
+	mPosition = position;
+	mLookat = direction;
+	mSpeed = travelSpeed;
+	mGravitation = downVector;
 
 	mVelocity = direction * travelSpeed;
+	mAlive = true;
+	mPiercing = true;
 }
 Arrow::~Arrow() 
 {

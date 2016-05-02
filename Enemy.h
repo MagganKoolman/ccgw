@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Grid.h"
+#include "BoundingBox.h"
 #include "glm\gtx\vector_angle.hpp"
 
 //Abstract class for enemies.
@@ -16,7 +17,11 @@ public:
 
 	void imHit(float strength);
 	void setAlive( bool alive );
+	void setLife( float life );
 	bool getAlive() const;
+	float getLife() const;
+	const BoundingBox& getBoundingBox() const;
+	const BoundingBox& getHeadBox() const;
 
 	Enemy& operator=( const Enemy& ref );
 	Enemy( const Enemy& ref );
@@ -25,6 +30,8 @@ public:
 	~Enemy();
 
 protected:
+	BoundingBox mBoundingBox;
+	BoundingBox mHeadBox;
 	float mBoundRadius;
 	sNode* pPath;
 	int mCurrent;

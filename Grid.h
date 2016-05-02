@@ -10,7 +10,7 @@ enum
 	TILE_EMPTY = 0,
 	TILE_BOX = 0x1,
 	TILE_BALLISTA = 0x2,
-	TILE_HOLD = 0x3,
+	TILE_HOLD = 0x4,
 };
 
 struct sNode
