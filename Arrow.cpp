@@ -110,13 +110,19 @@ void Arrow::update(float dt)
 	{
 		if( pGameData->pMoleratmen[i].getAlive() )
 		{
-			//if( pGameData->pMoleratmen[i].getBoundingBox().intersect( mPosition ) )
-			if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
+			float damage = 0.0f;
+			// check headshot
+			if( pGameData->pMoleratmen[i].getHeadBox().intersect( lastPos, mPosition ) )
+				damage = mSpeed * 2.0f;
+			// check bodyshot
+			else if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
+				damage = mSpeed;
+
+			if( damage > 0.0f )
 			{
-				pGameData->pMoleratmen[i].imHit( 1.0f );
+				pGameData->pMoleratmen[i].imHit( damage );
 				if( !mPiercing )
 					mAlive = false;
-				//mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
 			}
 		}
 	}
@@ -126,14 +132,28 @@ void Arrow::update(float dt)
 	{
 		if (pGameData->pMolebats[i].getAlive())
 		{
-			//if (pGameData->pMolebats[i].getBoundingBox().intersect(mPosition))
-			if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
+			float damage = 0.0f;
+			if( pGameData->pMolebats[i].getHeadBox().intersect( lastPos, mPosition ) )
+				damage = mSpeed * 2.0f;
+			else if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
+				damage = mSpeed;
+
+			if( damage > 0.0f )
 			{
-				pGameData->pMolebats[i].imHit(1.0f);
+				pGameData->pMolebats[i].imHit( damage );
 				if( !mPiercing )
 					mAlive = false;
-				//mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
 			}
+		}
+	}
+
+	// check collision against tower
+	int x = (int)((int)(mPosition.x + 1.0f) / pGameData->boxScale);
+	int y = (int)((int)(mPosition.z + 1.0f) / pGameData->boxScale);
+	if (!(y < 0 || x < 0 || y >= (int)pGameData->pGrid->getHeight() || x >= (int)pGameData->pGrid->getWidth())) {
+		if (pGameData->pGrid->getTile(x, y) != TILE_EMPTY) {
+			if( mPosition.y < pGameData->boxScale )
+				mAlive = false;
 		}
 	}
 
@@ -143,27 +163,27 @@ void Arrow::update(float dt)
 }
 Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 {
-	this->rotX = 0;
-	this->mEmmitInterval = 0.1;
-	this->mTimeSinceLastEmmit = 0;
-	this->mLookat = {1,0,0};
-	this->mSpeed = 1.f;
-	this->mGravitation = {0,-1,0};
-	this->mpSpecularMap = nullptr;
-	this->mpNormalMap = nullptr;
-	this->pGameData = nullptr;
-	this->mAlive = false;
-	this->mPiercing = true;
+	rotX = 0;
+	mEmmitInterval = 0.1;
+	mTimeSinceLastEmmit = 0;
+	mLookat = {1,0,0};
+	mSpeed = 1.f;
+	mGravitation = {0,-1,0};
+	mpSpecularMap = nullptr;
+	mpNormalMap = nullptr;
+	pGameData = nullptr;
+	mAlive = false;
+	mPiercing = true;
 }
 
 void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
 {
-	this->rotY = 0;
-	this->rotX = rotation;
-	this->mPosition = position;
-	this->mLookat = direction;
-	this->mSpeed = travelSpeed;
-	this->mGravitation = downVector;
+	rotY = 0;
+	rotX = rotation;
+	mPosition = position;
+	mLookat = direction;
+	mSpeed = travelSpeed;
+	mGravitation = downVector;
 
 	mVelocity = direction * travelSpeed;
 	mAlive = true;

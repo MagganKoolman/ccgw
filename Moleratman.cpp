@@ -42,7 +42,39 @@ void Moleratman::update()
 		mPosition.x,	mPosition.y,	mPosition.z, 1
 	};
 
-	mBoundingBox.center = mPosition;
+	mBoundingBox.center = mPosition - glm::vec3( 0.0f, 0.25f, 0.0f );
+	mHeadBox.center = mPosition + glm::vec3( 0.0f, 0.25f, 0.0f );
+}
+
+void Moleratman::render( GLuint programID )
+{
+	//Enemy::render( programID );
+
+	GLuint worldLocation = glGetUniformLocation( programID, "world" );
+	glm::mat4 world;
+	world[3][0] = mBoundingBox.center.x;
+	world[3][1] = mBoundingBox.center.y;
+	world[3][2] = mBoundingBox.center.z;
+
+	world[0][0] = mBoundingBox.hWidth*2.0f;
+	world[1][1] = mBoundingBox.hHeight*2.0f;
+	world[2][2] = mBoundingBox.hDepth*2.0f;
+
+	glUniformMatrix4fv( worldLocation, 1, GL_FALSE, &world[0][0] );
+
+	mpMesh->draw();
+
+	world[3][0] = mHeadBox.center.x;
+	world[3][1] = mHeadBox.center.y;
+	world[3][2] = mHeadBox.center.z;
+
+	world[0][0] = mHeadBox.hWidth*2.0f;
+	world[1][1] = mHeadBox.hHeight*2.0f;
+	world[2][2] = mHeadBox.hDepth*2.0f;
+
+	glUniformMatrix4fv(worldLocation, 1, GL_FALSE, &world[0][0]);
+
+	mpMesh->draw();
 }
 
 Moleratman& Moleratman::operator=( const Moleratman& ref )
@@ -54,11 +86,16 @@ Moleratman& Moleratman::operator=( const Moleratman& ref )
 Moleratman::Moleratman( const Moleratman& ref )
 	: Enemy( ref )
 {
-	mBoundingBox.hWidth = mBoundingBox.hHeight = mBoundingBox.hDepth = 0.5f;
+	mBoundingBox.hWidth = mBoundingBox.hDepth = 0.5f;
+	mBoundingBox.hHeight = 0.25f;
+	mHeadBox.hWidth = mHeadBox.hHeight = mHeadBox.hDepth = 0.25f;
 }
 
 Moleratman::Moleratman()
 {
+	mBoundingBox.hWidth = mBoundingBox.hDepth = 0.5f;
+	mBoundingBox.hHeight = 0.25f;
+	mHeadBox.hWidth = mHeadBox.hHeight = mHeadBox.hDepth = 0.25f;
 }
 
 Moleratman::~Moleratman()
