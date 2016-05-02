@@ -60,13 +60,8 @@ int main(int argc, char** argv) {
 		dt = (float)(temp - timeStamp) / 1000.f;
 		timeStamp = temp;
 		running = input.update();
-
-		if (input.keyPressed(SDLK_t)) {
-			actionMode = !actionMode;	
-			input.setMouseLock(actionMode);
-		}
 		
-		if (actionMode)
+		if (!game.tactical)
 			game.run(&input, dt, !mainMenu.mActive);
 		else
 			game.tacticalRun(&input, dt, !mainMenu.mActive);

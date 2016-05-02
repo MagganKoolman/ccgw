@@ -58,10 +58,6 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 
 	data.pGrid->findPath( start, end, mpPath, &mTargets );
 
-	/*mpEnemy = new Enemy( glm::vec3( 0.0f ) );
-	mpEnemy->load( playerModel, playerTexture, specMap, normalMap );
-	mpEnemy->setPath( mpPath, mTargets );*/
-
 	data.pPlayer->load( playerModel, playerTexture, specMap, normalMap);
 	mGround.load(data.pAssets->load<tempMesh>("Models/plane.obj"), groundTexture, specMap, nullptr);
 	mActionMarker.load(data.pAssets->load<tempMesh>("Models/marker.obj"), data.pAssets->load<Texture>("Models/pns.png"), specMap, nullptr);
@@ -119,7 +115,7 @@ Game::~Game() {
 	delete data.pAssets;
 }
 int a = 0;
-State Game::run(const Input* inputs, const float &dt, bool menuActive) 
+State Game::run(Input* inputs, const float &dt, bool menuActive) 
 {
 	if(menuActive)
 		update(inputs, dt);
@@ -132,7 +128,7 @@ State Game::run(const Input* inputs, const float &dt, bool menuActive)
 	return result;
 }
 
- void Game::tacticalRun(const Input* inputs, const float &dt, bool menuActive) 
+ void Game::tacticalRun(Input* inputs, const float &dt, bool menuActive) 
  {
 	 if (menuActive) {
 		 if (data.pCamera->getPosition().y < 18) {
@@ -144,6 +140,12 @@ State Game::run(const Input* inputs, const float &dt, bool menuActive)
 			 if (mTacticalMarker.update(inputs, data))
 				 buildTowers();
 		 }
+	 }
+	 if (inputs->keyPressed(SDLK_t))
+	 {
+		 inputs->setMouseLock(true);
+		 tactical = false;
+		 pWaveSpawner->spawn();
 	 }
 	render();
  }
@@ -186,12 +188,12 @@ void Game::render()
 	drawOnScreenQuad();	
 }
 
-void Game::update(const Input* inputs, float dt) 
+void Game::update(Input* inputs, float dt) 
 {
 	data.pPlayer->update(inputs, dt);
 	data.pEmission->update(dt);
 	data.pCamera->follow(data.pPlayer->getPosition(), data.pPlayer->getLookAt(), 5, {0,1,0});
-	//mpEnemy->update();
+	
 	bool waveDone = true;
 	for( int i=0; i<data.mMoleratmen; i++ )
 		if (data.pMoleratmen[i].getAlive())
@@ -210,6 +212,7 @@ void Game::update(const Input* inputs, float dt)
 		mCounter += dt;
 		if (mCounter > mDelayCleared) 
 		{
+			inputs->setMouseLock(false);
 			tactical = true;
 			mCounter = 0;
 		}

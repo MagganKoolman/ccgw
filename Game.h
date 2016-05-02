@@ -30,8 +30,8 @@ public:
 
 
 
-	State run(const Input* inputs, const float &dt, bool menuActive);
-	void tacticalRun(const Input* inputs, const float &dt, bool menuActive);
+	State run(Input* inputs, const float &dt, bool menuActive);
+	void tacticalRun(Input* inputs, const float &dt, bool menuActive);
 
 	Game();
 	~Game();
@@ -64,5 +64,5 @@ private:
 	void drawOnScreenQuad();
 	void render();
 	void buildTowers();
-	void update(const Input* inputs, float dt);
+	void update(Input* inputs, float dt);
 };
