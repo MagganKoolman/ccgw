@@ -113,9 +113,14 @@ void Arrow::update(float dt)
 			//if( pGameData->pMoleratmen[i].getBoundingBox().intersect( mPosition ) )
 			if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
 			{
-				pGameData->pMoleratmen[i].imHit( 1.0f );
+				pGameData->pMoleratmen[i].imHit(mSpeed);
+				
 				mAlive = false;
 				mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
+				if (!pGameData->pMoleratmen[i].getAlive()) {
+					pGameData->pGold++;
+					pGameData->pScore++;
+				}
 			}
 		}
 	}
@@ -128,9 +133,13 @@ void Arrow::update(float dt)
 			//if (pGameData->pMolebats[i].getBoundingBox().intersect(mPosition))
 			if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
 			{
-				pGameData->pMolebats[i].imHit(1.0f);
+				pGameData->pMolebats[i].imHit(mSpeed);
 				mAlive = false;
 				mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
+				if (!pGameData->pMolebats[i].getAlive()) {
+					pGameData->pGold++;
+					pGameData->pScore++;
+				}
 			}
 		}
 	}

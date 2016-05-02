@@ -30,6 +30,9 @@ void Enemy::setPath( sNode* path, int max )
 void Enemy::imHit(float strength)
 {
 	mLife -= strength;
+	if (mLife <= 0) {
+		mAlive = false;
+	}
 }
 
 void Enemy::setAlive( bool alive )

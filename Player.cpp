@@ -202,6 +202,15 @@ bool Player::checkMove(glm::vec3 coord) {
 	return !intersect;
 }
 
+void Player::takeDamage(float damage) 
+{
+	this->mHealth -= damage;
+}
+
+bool Player::isAlive() {
+	return this->mHealth > 0;
+}
+
 Player::Player() 
 {}
 
@@ -214,6 +223,7 @@ Player::Player(GameData* data) : GameObject()
 	speedY = 0;
 	rotX = glm::pi<float>() * -0.5f;
 	mStrength = 0.0f;
+	mHealth = 100;
 }
 
 Player::~Player()

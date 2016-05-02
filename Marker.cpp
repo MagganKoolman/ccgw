@@ -19,7 +19,7 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 	selectedTile = mousePicking(inputs->mousePosition(), gameData) * (float)gameData.boxScale;
 	uchar currrentTile = gameData.pGrid->getTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale);
 	bool buildTowers = false;
-	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY)
+	if (inputs->buttonDown(0) && currrentTile == TILE_EMPTY && gameData.pGold > 0)
 	{		
 		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale , selectedTile.y / gameData.boxScale, TILE_HOLD);
 		mMarkedIndex.push_back(selectedTile);
@@ -30,13 +30,17 @@ bool Marker::update(const Input * inputs, GameData &gameData)
 			mMarkedIndex.erase(mMarkedIndex.end() - 1);
 			gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		}
+		else
+			gameData.pGold--;
 	}
 	if (inputs->buttonDown(2) && currrentTile != TILE_EMPTY)
 	{
 		gameData.pGrid->setTile(selectedTile.x / gameData.boxScale, selectedTile.y / gameData.boxScale, TILE_EMPTY);
 		for (int i = 0; i < mMarkedIndex.size(); i++) {
-			if (mMarkedIndex[i] == selectedTile)
+			if (mMarkedIndex[i] == selectedTile) {
 				mMarkedIndex.erase(mMarkedIndex.begin() + i);
+				gameData.pGold++;
+			}
 		}	
 	}
 	if (inputs->keyDown(SDLK_1))

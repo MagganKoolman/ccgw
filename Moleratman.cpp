@@ -1,14 +1,14 @@
 #include "Moleratman.h"
 
-void Moleratman::update()
+void Moleratman::update(float dt)
 {
 	if (mCurrent >= 0)
 	{
 		// TODO: Factor out box scale
-		glm::vec3 target(pPath[mCurrent].x*2.0f, 0, pPath[mCurrent].y*2.0f);
+		glm::vec3 target(pPath[mCurrent].x * pGameData->boxScale, 0, pPath[mCurrent].y * pGameData->boxScale);
 
 		float dist = glm::distance(mPosition, glm::vec3(target));
-		if (dist < MOLERATMAN_SPEED)
+		if (dist < MOLERATMAN_SPEED * dt)
 		{
 			mCurrent--;
 			mPosition = target;
@@ -16,7 +16,7 @@ void Moleratman::update()
 		else
 		{
 			glm::vec3 dir = glm::normalize(target - mPosition);
-			mPosition += dir * MOLERATMAN_SPEED;
+			mPosition += dir * MOLERATMAN_SPEED * dt;
 		}
 
 		mWorld[3][0] = mPosition.x;

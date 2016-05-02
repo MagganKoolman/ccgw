@@ -49,6 +49,11 @@ void WaveSpawner::spawn()
 	}
 }
 
+
+bool WaveSpawner::hasWon() {
+	return this->mWave > 10;
+}
+
 void WaveSpawner::incrementWave()
 {
 	mWave++;
@@ -138,9 +143,9 @@ WaveSpawner::WaveSpawner( const WaveSpawner& ref )
 	mpPath = new sNode[20*20];
 }
 
-WaveSpawner::WaveSpawner( GameData* data )
-	: pGameData( data ),
-	mWave( 0 ), mDelay( 0.0f ), mPosition( 0.0f ),
+WaveSpawner::WaveSpawner(GameData* data)
+	: pGameData(data),
+	mWave(0), mDelay(0.0f), mPosition(0.0f) ,
 	mCurMoleratmen( 0 ), mSpawnMoleratmen( 0 ),
 	mCurMolebats( 0 ), mSpawnMolebats( 0 ),
 	mMoleratmanIndex( 0 ), mMolebatIndex( 0 ),

@@ -28,5 +28,7 @@ struct GameData
 	int mMolebats;
 	Moleratman* pMoleratmen;
 	int mMoleratmen;
+	int pScore;
+	int pGold;
 	std::vector<Tower*> mpTowers;
 };

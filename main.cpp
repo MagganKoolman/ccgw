@@ -47,7 +47,10 @@ int main(int argc, char** argv) {
 	int timeStamp = SDL_GetTicks(); int temp;
 	bool actionMode = true;
 	input.setMouseVisible(false);
-	while (running)
+
+	State gamestate = GAME_PLAYING;
+
+	while (running && gamestate == GAME_PLAYING)
 	{
 		temp = SDL_GetTicks();
 		dt = (float)(temp - timeStamp) / 1000.f;
@@ -56,22 +59,19 @@ int main(int argc, char** argv) {
 
 
 
-		if (input.keyPressed(SDLK_t)) {
-			actionMode = !actionMode;	
-			input.setMouseLock(actionMode);
-		}
+		input.setMouseLock(!game.tactical);
 
 			
-		if (actionMode)
-			game.run(&input, dt);
+		if (!game.tactical)
+			gamestate = game.run(&input, dt);
 		else
 			game.tacticalRun(&input, dt);
-
 
 		if( input.keyPressed( SDLK_ESCAPE ) )
 			running = false;
 		SDL_GL_SwapWindow(window);
 	}
+
 	Mix_CloseAudio();
 	SDL_Quit();
 	return 0;

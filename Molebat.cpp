@@ -1,7 +1,8 @@
 #include "Molebat.h"
 
-void Molebat::update()
+void Molebat::update(float dt)
 {
+	mTimeSinceLastHit += dt;
 	glm::vec3 newPos = mPosition;
 	glm::vec3 movement;
 
@@ -18,8 +19,12 @@ void Molebat::update()
 		dir = -glm::normalize( dir );
 		movement += dir;
 	}
+	else if(mTimeSinceLastHit > 1){
+		pGameData->pPlayer->takeDamage(10);
+		mTimeSinceLastHit = 0;
+	}
 
-	newPos += movement * 0.1f;
+	newPos += movement * dt;
 
 	// stay above ground
 	if( newPos.y < MOLEBAT_HEIGHT )
@@ -86,6 +91,7 @@ Molebat::Molebat()
 	: Enemy( glm::vec3( 0.0f ) ), mSin( rand() % 1000 )
 {
 	mBoundingBox.hWidth = mBoundingBox.hHeight = mBoundingBox.hDepth = 0.5f;
+	mTimeSinceLastHit = 0;
 }
 
 Molebat::~Molebat()

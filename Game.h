@@ -19,9 +19,18 @@
 #include "Molebat.h"
 #include "Moleratman.h"
 #include "Sound.h"
+
+enum State {
+	GAME_LOST, GAME_WON, GAME_PLAYING
+};
+
 class Game {
 public:
-	bool run(const Input* inputs, const float &dt);
+	bool tactical;
+
+
+
+	State run(const Input* inputs, const float &dt);
 	void tacticalRun(const Input* inputs, const float &dt);
 
 	Game();
@@ -43,6 +52,12 @@ private:
 	int mScore;
 
 	int mMaxWaves;
+	int mBabyCount;
+
+
+	float mCounter;
+	float mDelayCleared;
+	float mDelay2;
 
 
 	void createScreenQuad();
