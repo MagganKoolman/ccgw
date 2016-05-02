@@ -27,7 +27,7 @@ void Moleratman::update()
 		glm::vec3 dir = glm::normalize( target - mPosition );
 
 		mLookat = glm::normalize(glm::vec3(dir.x, 0.0f, dir.z));
-		float rotY = -glm::angle(mLookat, glm::vec3(1.0f, 0.0f, 0.0f));
+		rotY = -glm::angle(mLookat, glm::vec3(1.0f, 0.0f, 0.0f));
 		if (mLookat.z < 0.0f)
 			rotY *= -1.0f;		
 	}

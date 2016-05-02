@@ -27,7 +27,7 @@ protected:
 	float mEmmitInterval;
 
 	glm::vec3 mVelocity;
-	bool mAlive, mPlayerArrow;
+	bool mAlive, mPlayerArrow, mPiercing;
 
 	Emitter mEmitter;
 };

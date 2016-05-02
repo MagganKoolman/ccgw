@@ -114,7 +114,8 @@ void Arrow::update(float dt)
 			if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
 			{
 				pGameData->pMoleratmen[i].imHit( 1.0f );
-				mAlive = false;
+				if( !mPiercing )
+					mAlive = false;
 				//mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
 			}
 		}
@@ -129,7 +130,8 @@ void Arrow::update(float dt)
 			if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
 			{
 				pGameData->pMolebats[i].imHit(1.0f);
-				mAlive = false;
+				if( !mPiercing )
+					mAlive = false;
 				//mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
 			}
 		}
@@ -151,6 +153,7 @@ Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 	this->mpNormalMap = nullptr;
 	this->pGameData = nullptr;
 	this->mAlive = false;
+	this->mPiercing = true;
 }
 
 void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
@@ -164,6 +167,7 @@ void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, gl
 
 	mVelocity = direction * travelSpeed;
 	mAlive = true;
+	mPiercing = true;
 }
 Arrow::~Arrow() 
 {
