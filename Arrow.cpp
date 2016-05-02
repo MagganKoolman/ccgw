@@ -40,7 +40,7 @@ void Arrow::update(float dt)
 
 	glm::vec3 lastPos = mPosition;
 	mPosition += mVelocity * dt;
-	mVelocity.y -= 0.05f;
+	mVelocity += mGravitation * 0.05f;
 
 	//rotY = atan2( lastPos.y - mPosition.y, lastPos.x - mPosition.x );
 	mLookat = glm::normalize( mPosition - lastPos );

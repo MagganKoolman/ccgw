@@ -6,8 +6,8 @@ public:
 	glm::vec3 center;
 	float hWidth, hHeight, hDepth;
 
-	const bool intersect(const BoundingBox* subject);
-	const bool intersect(glm::vec3 corner, float sides);
+	bool intersect(const BoundingBox* subject) const;
+	bool intersect(glm::vec3 corner, float sides) const;
 
 
 	BoundingBox(glm::vec3 centerPoint, float sides);

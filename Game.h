@@ -39,6 +39,12 @@ private:
 	std::vector<Tower*> mpTowers;
 	WaveSpawner* pWaveSpawner;
 
+	int mGold;
+	int mScore;
+
+	int mMaxWaves;
+
+
 	void createScreenQuad();
 	void drawOnScreenQuad();
 	void render();
