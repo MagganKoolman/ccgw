@@ -12,7 +12,7 @@ class Emission;
 class Grid;
 class Molebat;
 class Moleratman;
-
+class Tower;
 struct GameData
 {
 	Assets* pAssets;
@@ -28,4 +28,5 @@ struct GameData
 	int mMolebats;
 	Moleratman* pMoleratmen;
 	int mMoleratmen;
+	std::vector<Tower*> mpTowers;
 };

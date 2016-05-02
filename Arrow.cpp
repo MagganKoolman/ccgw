@@ -1,7 +1,9 @@
 #include "Arrow.h"
 #define GLM_FORCE_RADIANS
 #include "glm\gtx\vector_angle.hpp"
-
+#include "Moleratman.h"
+#include "Molebat.h"
+#include "Tower.h"
  
 bool Arrow::load(GameData* data, string mesh)
 {
@@ -18,12 +20,14 @@ bool Arrow::load(GameData* data, string mesh)
 	else
 		result = false;
 
+	pGameData = data;
+
 	return result;
 }
 
 bool Arrow::isAlive() 
 {
-	return mPosition.y > -1;
+	return mAlive;
 }
 void Arrow::update(float dt)
 {
@@ -100,6 +104,40 @@ void Arrow::update(float dt)
 		mEmitter.spawn(mPosition, glm::vec3(0.0f, 0.1f, 0.0f), 2.f, 0.1f, glm::vec2(0.3f), glm::vec2(0.1f));
 		mTimeSinceLastEmmit = 0;
 	}
+
+	// check collision against moleratmen
+	for( int i=0; i<pGameData->mMoleratmen && mAlive; i++ )
+	{
+		if( pGameData->pMoleratmen[i].getAlive() )
+		{
+			//if( pGameData->pMoleratmen[i].getBoundingBox().intersect( mPosition ) )
+			if( pGameData->pMoleratmen[i].getBoundingBox().intersect( lastPos, mPosition ) )
+			{
+				pGameData->pMoleratmen[i].imHit( 1.0f );
+				mAlive = false;
+				mEmitter.spawn( mPosition, glm::vec3( 0.0f ), 10.0f );
+			}
+		}
+	}
+
+	// check collision against molebats
+	for (int i = 0; i<pGameData->mMolebats && mAlive; i++)
+	{
+		if (pGameData->pMolebats[i].getAlive())
+		{
+			//if (pGameData->pMolebats[i].getBoundingBox().intersect(mPosition))
+			if (pGameData->pMolebats[i].getBoundingBox().intersect(lastPos, mPosition))
+			{
+				pGameData->pMolebats[i].imHit(1.0f);
+				mAlive = false;
+				mEmitter.spawn(mPosition, glm::vec3(0.0f), 10.0f);
+			}
+		}
+	}
+
+	// check if we hit the ground
+	if( mPosition.y < 0 )
+		mAlive = false;
 }
 Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 {
@@ -111,6 +149,8 @@ Arrow::Arrow() : GameObject({0,-10,0}, 1.0f)
 	this->mGravitation = {0,-1,0};
 	this->mpSpecularMap = nullptr;
 	this->mpNormalMap = nullptr;
+	this->pGameData = nullptr;
+	this->mAlive = false;
 }
 
 void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, glm::vec3 downVector, float rotation)
@@ -123,6 +163,7 @@ void Arrow::spawn(glm::vec3 position, glm::vec3 direction, float travelSpeed, gl
 	this->mGravitation = downVector;
 
 	mVelocity = direction * travelSpeed;
+	mAlive = true;
 }
 Arrow::~Arrow() 
 {

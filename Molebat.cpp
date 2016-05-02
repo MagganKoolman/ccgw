@@ -61,6 +61,8 @@ void Molebat::update()
 	};
 	if (mLife <= 0)
 		mAlive = false;
+
+	mBoundingBox.center = mPosition;
 }
 
 void Molebat::setGameData( GameData* data )
@@ -83,6 +85,7 @@ Molebat::Molebat( const Molebat& ref )
 Molebat::Molebat()
 	: Enemy( glm::vec3( 0.0f ) ), mSin( rand() % 1000 )
 {
+	mBoundingBox.hWidth = mBoundingBox.hHeight = mBoundingBox.hDepth = 0.5f;
 }
 
 Molebat::~Molebat()

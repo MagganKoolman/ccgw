@@ -36,7 +36,7 @@ private:
 	GameData data;
 	sNode* mpPath;
 	int mTargets;
-	std::vector<Tower*> mpTowers;
+	//std::vector<Tower*> mpTowers;
 	WaveSpawner* pWaveSpawner;
 
 	int mGold;

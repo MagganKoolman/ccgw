@@ -42,6 +42,11 @@ bool Enemy::getAlive() const
 	return mAlive;
 }
 
+const BoundingBox& Enemy::getBoundingBox() const
+{
+	return mBoundingBox;
+}
+
 Enemy& Enemy::operator=( const Enemy& ref )
 {
 	GameObject::operator=( ref );
@@ -52,18 +57,18 @@ Enemy& Enemy::operator=( const Enemy& ref )
 }
 
 Enemy::Enemy( const Enemy& ref )
-	: GameObject( ref ), mCurrent( ref.mCurrent ), pPath( ref.pPath ), mAlive( ref.mAlive )
+	: GameObject( ref ), mCurrent( ref.mCurrent ), pPath( ref.pPath ), mAlive( ref.mAlive ), mBoundingBox( ref.mBoundingBox )
 {
 }
 
 Enemy::Enemy( glm::vec3 position )
-	: GameObject( position, 1.0f ), mCurrent( -1 ), pPath( nullptr ), mAlive( false ), mLife(10)
+	: GameObject( position, 1.0f ), mCurrent( -1 ), pPath( nullptr ), mAlive( false ), mLife(1), mBoundingBox( position, 0.5f )
 {
 	this->mBoundRadius = 1.0f;
 }
 
 Enemy::Enemy()
-	: mCurrent(-1), pPath(nullptr), mAlive(false), mLife(10)
+	: mCurrent(-1), pPath(nullptr), mAlive(false), mLife(1), mBoundingBox( glm::vec3( 0.0f ), 0.5f )
 {
 	this->mBoundRadius = 1.0f;
 }
