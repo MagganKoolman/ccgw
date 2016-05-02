@@ -46,6 +46,4 @@ private:
 	std::string readBuild(std::string filePath);
 	std::vector<Button> mButtons;
 	ForwardProgram* menuShader;
-	GLuint mBackGroundTex;
-	GLuint menuVboID;
 };

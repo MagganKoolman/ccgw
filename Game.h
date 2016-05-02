@@ -30,8 +30,8 @@ public:
 
 
 
-	State run(const Input* inputs, const float &dt);
-	void tacticalRun(const Input* inputs, const float &dt);
+	State run(const Input* inputs, const float &dt, bool menuActive);
+	void tacticalRun(const Input* inputs, const float &dt, bool menuActive);
 
 	Game();
 	~Game();

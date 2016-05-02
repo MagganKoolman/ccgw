@@ -43,7 +43,7 @@ Game::Game() /*mCamera(45.0f, (float)gWidth/gHeight, 0.5, 50), mPlayer(&mAssets)
 	data.pGold = 5;
 
 	//tempMesh* playerModel = data.pAssets->load<tempMesh>( "Models/highreztear.obj" );
-	tempMesh* playerModel = data.pAssets->load<tempMesh>("Models/box4.obj");
+	tempMesh* playerModel = data.pAssets->load<tempMesh>("Models/box2.obj");
 	Texture* groundTexture = data.pAssets->load<Texture>( "Models/ground.png" );
 	Texture* playerTexture = data.pAssets->load<Texture>( "Models/cube.png" );
 	Texture* specMap = data.pAssets->load<Texture>("Models/specMap.png");
@@ -119,7 +119,7 @@ Game::~Game() {
 	delete data.pAssets;
 }
 int a = 0;
-bool Game::run(const Input* inputs, const float &dt, bool menuActive) 
+State Game::run(const Input* inputs, const float &dt, bool menuActive) 
 {
 	if(menuActive)
 		update(inputs, dt);
