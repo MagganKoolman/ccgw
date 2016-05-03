@@ -101,7 +101,7 @@ Game::~Game() {
 	delete data.pCamera;
 	delete data.pEmission;
 	delete data.pGrid;
-	delete data.pMenuProgram;
+	//delete data.pMenuProgram;
 	delete pActionState;
 	for (int i = 0; i < data.mpTowers.size(); i++) {
 		delete data.mpTowers[i];

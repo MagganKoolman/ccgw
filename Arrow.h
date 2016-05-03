@@ -5,6 +5,8 @@
 #include "GameData.h"
 #include "BoundingBox.h"
 
+#define MAX_PIERCING_DEPTH 3
+
 class Moleratman;
 class Molebat;
 class Tower;
@@ -30,6 +32,10 @@ protected:
 
 	glm::vec3 mVelocity;
 	bool mAlive, mPlayerArrow, mPiercing;
+
+	Molebat* mpPiercedMolebats[MAX_PIERCING_DEPTH];
+	Moleratman* mpPiercedMoleratmen[MAX_PIERCING_DEPTH];
+	int mPiercings;
 
 	Emitter mEmitter;
 };

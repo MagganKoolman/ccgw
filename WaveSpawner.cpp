@@ -113,7 +113,7 @@ void WaveSpawner::spawnMolebat()
 		pos.y = MOLEBAT_HEIGHT;
 		m->setPosition( pos );
 		m->setAlive( true );
-		m->setLife( 1.0f );
+		m->setLife( 5.0f );
 	}
 }
 
